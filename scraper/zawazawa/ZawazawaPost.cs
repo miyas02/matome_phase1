@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace matome_phase1.scraper
+namespace matome_phase1.scraper.zawazawa
 {
-    internal class scraper
+    internal class zawazawaPost : AbstractPost
     {
     }
 }
