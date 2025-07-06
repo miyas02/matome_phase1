@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace matome_phase1.scraper {
-    internal interface IScraperController {
-        List<AbstractPost> GetPosts();
+    internal interface IScraperOwner {
+        List<AbstractPost> GetPosts(AbstractScraperConfig scraperConfig);
     }
 }
