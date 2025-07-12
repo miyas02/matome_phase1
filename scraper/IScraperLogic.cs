@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace matome_phase1.scraper {
-    internal interface IScraperLogic {
+    public interface IScraperLogic {
         HtmlNode GetPostsNode(HtmlDocument doc);
         HtmlNode GetPostNode(HtmlNode postsNode);
         string GetText(HtmlNode textNode);

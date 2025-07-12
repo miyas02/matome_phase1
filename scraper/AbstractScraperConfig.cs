@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace matome_phase1.scraper {
     public abstract class AbstractScraperConfig {
+        public abstract IScraperLogic ScraperLogic {
+            get;
+        }
+
         public abstract string URL { get; }
         public abstract string SITE_NAME {
             get;
