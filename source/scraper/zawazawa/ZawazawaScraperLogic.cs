@@ -11,7 +11,7 @@ namespace matome_phase1.scraper.zawazawa {
         public static HtmlNode GetPostsNode(HtmlDocument doc) {
             var contentNode = doc.DocumentNode.SelectSingleNode(Constants.nodes);
             if (contentNode == null) {
-                throw new Exception(Constants.contentNodeNotFound);
+                throw new Exception(Constants.ContentNodeNotFound);
             }
             return contentNode;
         }

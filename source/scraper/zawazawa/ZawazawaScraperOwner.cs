@@ -59,7 +59,7 @@ namespace matome_phase1.scraper.zawazawa
             HtmlNode contentNode = doc.DocumentNode.SelectSingleNode(scraperConfig.LIST_NODE);
             if (contentNode == null)
             {
-                throw new Exception(Constants.contentNodeNotFound);
+                throw new Exception(Constants.ContentNodeNotFound);
             }
             var postNodes = new List<HtmlNode>();
             // class='list-view-item'の全要素を取得

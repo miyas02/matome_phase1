@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -9,7 +10,9 @@ namespace matome_phase1.constants
 {
     public class Constants {
         //Erorrログ
-        public const string contentNodeNotFound = "Content node not found in the document.";
+        public const string ContentNodeNotFound = "Content node not found in the document.";
+        public const string ConfigJsonLogicNotFound = "Logic property not found in the config JSON.";
+        public const string  InvalidLogicValue =  "Invalid logic value in JSON configuration.";
 
         //zawazawaの定数
         public const string ZAWAZAWA = "https://zawazawa.jp/spla3/";

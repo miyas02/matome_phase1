@@ -9,9 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="scraper\AbstractPost.cs" />
+    <Compile Remove="scraper\IScraperLogic.cs" />
+    <Compile Remove="scraper\zawazawa\ZawazawaPost.cs" />
+    <Compile Remove="scraper\zawazawa\ZawazawaScraperConfig.cs" />
+    <Compile Remove="scraper\zawazawa\ZawazawaScraperLogic.cs" />
+    <Compile Remove="scraper\zawazawa\ZawazawaScraperOwner.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
     <PackageReference Include="Selenium.WebDriver" Version="4.34.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="138.0.7204.4900" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="scraper\zawazawa\" />
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,7 @@
 using System.Data;
 using System.Windows;
 using matome_phase1.scraper;
+using matome_phase1.test;
 
 namespace matome_phase1 {
     /// <summary>
@@ -9,9 +10,8 @@ namespace matome_phase1 {
     /// </summary>
     public partial class App : Application {
         protected override void OnStartup(StartupEventArgs e) {
+            Test_main test = new Test_main();
             base.OnStartup(e);
-            Iscraper scraper = new spla3Scraper();
-            scraper.GetPosts();
         }
     }
 

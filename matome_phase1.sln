@@ -3,15 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "matome_phase1", "source\matome_phase1.csproj", "{F578624A-48CB-44F3-BB02-57CC4D1BCC12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "matome_phase1", "source\matome_phase1.csproj", "{F578624A-48CB-44F3-BB02-57CC4D1BCC12}"
 EndProject
 Global
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F788F1AB-495C-4399-B009-C2D9B48AE712}
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -33,5 +27,11 @@ Global
 		{F578624A-48CB-44F3-BB02-57CC4D1BCC12}.Release|x64.Build.0 = Release|Any CPU
 		{F578624A-48CB-44F3-BB02-57CC4D1BCC12}.Release|x86.ActiveCfg = Release|Any CPU
 		{F578624A-48CB-44F3-BB02-57CC4D1BCC12}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F788F1AB-495C-4399-B009-C2D9B48AE712}
 	EndGlobalSection
 EndGlobal
