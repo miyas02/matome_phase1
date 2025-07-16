@@ -1,6 +1,6 @@
  {
-    "SITE_NAME": "siteName",
-    "URL": "https://sample.com",
+    "SITE_NAME": "zawazawaSpla3",
+    "URL": "https://zawazawa.jp/spla3/topic/280",
     "LOGIC": "Posts",
     "LIST_NODE": "//div[@id='main-list-view-widget']",
     "POST_NODE": ".//*[contains(@class, 'list-view-item')]",
