@@ -11,6 +11,15 @@ using System.Diagnostics;
 
 namespace matome_phase1.scraper {
     internal class ScraperOwner : IScraperOwner  {
+        private static readonly Dictionary<string, Func<string, object>> _logicHandlers = new() {
+            { ScraperLogics.Posts, json => {
+                var config = JsonSerializer.Deserialize<PostsScraperConfig>(json);
+                return config.GetPosts();
+                }
+            }
+            // 他ロジックも追加
+        };
+
         public void LoadConfig(string configPath) {
             string json = File.ReadAllText(configPath);
             using JsonDocument doc = JsonDocument.Parse(json);

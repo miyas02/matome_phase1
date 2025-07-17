@@ -25,22 +25,22 @@ namespace matome_phase1.scraper {
         public string POST_NODE {
             get; set;
         }
-        public string USER_ID_NODE {
+        public NodeSelector USER_ID {
             get; set;
         }
-        public string TEXT_NODE {
+        public NodeSelector TEXT {
             get; set;
         }
-        public string DATE_NODE {
+        public NodeSelector DATE {
             get; set;
         }
-        public string REPLY_NODE {
+        public NodeSelector REPLY {
             get; set;
         }
-        public string IMAGE_URL_NODE {
+        public NodeSelector IMAGE {
             get; set;
         }
-        public string ID_KEY {
+        public NodeSelector POST_ID {
             get; set;
         }
 
@@ -51,56 +51,41 @@ namespace matome_phase1.scraper {
             return DocParsePosts(doc);
         }
 
+        private string SelectorSwitch (HtmlNode postNode, NodeSelector selector) {
+            if (selector.TYPE == "text") {
+                var bodyNode = postNode.SelectSingleNode(selector.NODE);
+                return bodyNode?.InnerText.Trim() ?? "";
+            } else if (selector.TYPE == "attribute") {
+                var bodyNode = postNode.SelectSingleNode(selector.NODE);
+                return bodyNode.GetAttributeValue(selector.ATTRIBUTE, null).Trim();
+            }
+            throw new Exception($"Unsupported selector type: {selector.TYPE}");
+        }
+
         private List<Post> DocParsePosts(HtmlDocument doc) {
             HtmlNode contentNode = doc.DocumentNode.SelectSingleNode(LIST_NODE);
             if (contentNode == null) {
                 throw new Exception(Constants.ContentNodeNotFound);
             }
             var postNodes = new List<HtmlNode>();
-            // class='list-view-item'の全要素を取得
+            // LIST_NODEの全要素を取得
             if (contentNode.SelectNodes(POST_NODE) != null) {
                 postNodes.AddRange(contentNode.SelectNodes(POST_NODE));
             }
 
             var posts = new List<Post>();
-            foreach (var node in postNodes) {
+            foreach (var postNode in postNodes) {
                 Post post = new();
-                var bodyNode = node.SelectSingleNode(TEXT_NODE);
-                post.Text = bodyNode?.InnerText.Trim() ?? "";
-                post.Id = node.GetAttributeValue(DATE_NODE, null);
-
-                // ユーザーID
-                var userIdNode = node.SelectSingleNode(USER_ID_NODE)
-                    ?? node.SelectSingleNode(USER_ID_NODE);
-                if (userIdNode != null) {
-                    post.UserId = Regex.Replace(userIdNode.InnerText, @"[\s\n]", "");
-                } else {
-                    post.UserId = "";
-                }
-                // 投稿日時
-                var timestampNode = node.SelectSingleNode(DATE_NODE);
-                if (timestampNode != null) {
-                    var timestamp = timestampNode.InnerText.Trim();
-                    if (timestamp.Contains("修正")) {
-                        timestamp = timestamp.Replace("修正", "");
-                    }
-                    var cleanedDateString = Regex.Replace(timestamp, @"\s*\(.\)\s*", " ");
-                    // 日付フォーマットは必要に応じて調整
-                    if (DateTime.TryParseExact(cleanedDateString.Trim(), "yyyy/MM/dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out var dt)) {
-                        post.Date = dt;
-                    }
-                }
-
-                // 返信ID
-                var replyNode = node.SelectSingleNode(REPLY_NODE);
-                if (replyNode != null) {
-                    post.Reply = Regex.Replace(replyNode.InnerText, @"\D", "");
-                }
-
-                // 画像URL
-                var imageNode = node.SelectSingleNode(IMAGE_URL_NODE);
-                if (imageNode != null) {
-                    post.ImageUrl = imageNode.GetAttributeValue("href", "");
+                // 各NodeSelectorに基づいて値を取得
+                post.Text = SelectorSwitch(postNode, TEXT);
+                post.Id = SelectorSwitch(postNode, POST_ID);
+                post.UserId = SelectorSwitch(postNode, USER_ID);
+                post.Reply = SelectorSwitch(postNode, REPLY);
+                post.ImageUrl = SelectorSwitch(postNode, IMAGE);
+                var timestamp = SelectorSwitch(postNode, DATE);
+                var cleanedDateString = Regex.Replace(timestamp, @"\s*\(.\)\s*", " ");
+                if (DateTime.TryParseExact(cleanedDateString.Trim(), "yyyy/MM/dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out var dt)) {
+                    post.Date = dt;
                 }
                 posts.Add(post);
             }

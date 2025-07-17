@@ -4,10 +4,29 @@
     "LOGIC": "Posts",
     "LIST_NODE": "//div[@id='main-list-view-widget']",
     "POST_NODE": ".//*[contains(@class, 'list-view-item')]",
-    "USER_ID_NODE": ".//*[contains(@class, 'hashed-track-info')]",
-    "TEXT_NODE": ".//div[contains(@class, 'body')]//p",
-    "DATE_NODE": ".//div[contains(@class, 'comment-timestamp')]//a",
-    "REPLY_NODE": ".//div[contains(@class, 'comment-parent-link')]",
-    "IMAGE_URL_NODE": ".//div[contains(@class, 'media-modal')]",
-    "ID_KEY": "data-key"
+    "USER_ID": {
+      "NODE": ".//*[contains(@class, 'hashed-track-info')]",
+      "TYPE": "text"
+    },
+    "TEXT": {
+        "NODE":".//div[contains(@class, 'body')]//p",
+        "TYPE": "text"
+    },
+    "DATE": {
+        "NODE":".//small[@class='comment-timestamp']/a",
+        "TYPE": "text"
+    },
+    "REPLY": {
+        "NODE": ".//div[contains(@class, 'comment-parent-link')]",
+        "TYPE": "text"
+    },
+    "IMAGE": {
+        "NODE": ".//div[contains(@class, 'media-modal')]",
+        "TYPE": "text"
+    },
+    "POST_ID": {
+        "NODE": ".",
+        "TYPE": "attribute",
+        "ATTRIBUTE": "data-key"
+    }
   }
