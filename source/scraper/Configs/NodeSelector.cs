@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace matome_phase1.scraper {
+namespace matome_phase1.scraper.Configs {
     public class NodeSelector {
-        public string NODE {
+        public string NODE { 
             get; set;
         }
         public string TYPE {

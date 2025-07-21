@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using matome_phase1.constants;
+using matome_phase1.scraper.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace matome_phase1.scraper {
+namespace matome_phase1.scraper.Configs {
     internal class PostsScraperConfig : AbstractScraperConfig {
         public override string URL {
             get; set;
@@ -44,7 +45,7 @@ namespace matome_phase1.scraper {
             get; set;
         }
 
-        public List<Post> GetPosts() {
+        public override List<Object> GetItems() {
             string html = GetHtml(URL);
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
@@ -62,7 +63,7 @@ namespace matome_phase1.scraper {
             throw new Exception($"Unsupported selector type: {selector.TYPE}");
         }
 
-        private List<Post> DocParsePosts(HtmlDocument doc) {
+        private List<Object> DocParsePosts(HtmlDocument doc) {
             HtmlNode contentNode = doc.DocumentNode.SelectSingleNode(LIST_NODE);
             if (contentNode == null) {
                 throw new Exception(Constants.ContentNodeNotFound);
@@ -73,7 +74,7 @@ namespace matome_phase1.scraper {
                 postNodes.AddRange(contentNode.SelectNodes(POST_NODE));
             }
 
-            var posts = new List<Post>();
+            var posts = new List<Object>();
             foreach (var postNode in postNodes) {
                 Post post = new();
                 // 各NodeSelectorに基づいて値を取得

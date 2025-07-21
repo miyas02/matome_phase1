@@ -7,7 +7,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace matome_phase1.scraper {
+namespace matome_phase1.scraper.Configs {
     public abstract class AbstractScraperConfig {
         /// <summary>
         /// urlを渡してHTMLを取得するメソッド
@@ -26,6 +26,7 @@ namespace matome_phase1.scraper {
                 return driver.PageSource;
             }
         }
+        public abstract List<Object> GetItems();
 
         public abstract string URL {
             get; set;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace matome_phase1.scraper {
+namespace matome_phase1.scraper.Models {
     public class Post {
         public string Id { 
             get; set; 

@@ -7,14 +7,16 @@ using System.IO;
 using System.Text.Json;
 using matome_phase1.constants;
 using System.Diagnostics;
+using matome_phase1.scraper.Models;
+using matome_phase1.scraper.Configs;
 
 
 namespace matome_phase1.scraper {
     internal class ScraperOwner : IScraperOwner  {
-        private static readonly Dictionary<string, Func<string, object>> _logicHandlers = new() {
+        private static readonly Dictionary<string, Func<string, object>> _handlers = new() {
             { ScraperLogics.Posts, json => {
                 var config = JsonSerializer.Deserialize<PostsScraperConfig>(json);
-                return config.GetPosts();
+                return config.GetItems();
                 }
             }
             // 他ロジックも追加
@@ -27,14 +29,13 @@ namespace matome_phase1.scraper {
 
             //jsonのlogic属性のvalueで生成するインスタンスを切り替え
             //サイトカテゴリごとに条件分岐を追加する
-            if (logicValue == ScraperLogics.Posts) {
-                PostsScraperConfig ScraperConfig = JsonSerializer.Deserialize<PostsScraperConfig>(json);
-                List<Post> Posts = ScraperConfig.GetPosts();
-                foreach (var post in Posts) {
-                    Debug.WriteLine($"ID: {post.Id}, UserID: {post.UserId}, Text: {post.Text}, Date: {post.Date}");
-                }
-                Debug.WriteLine(Posts);
+            AbstractScraperConfig scraperConfig = ScraperConfigFactory.Create(json);
+            List<Object> Posts = scraperConfig.GetItems();
+            foreach (var post in Posts) {
+                var p = (Post)post;
+                Debug.WriteLine($"ID: {p.Id}, UserID: {p.UserId}, Text: {p.Text}, Date: {p.Date}");
             }
+            Debug.WriteLine(Posts);
         }
     }
 }
