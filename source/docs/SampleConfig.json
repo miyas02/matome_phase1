@@ -1,32 +1,45 @@
- {
-    "SITE_NAME": "zawazawaSpla3",
-    "URL": "https://zawazawa.jp/spla3/topic/280",
-    "LOGIC": "Posts",
-    "LIST_NODE": "//div[@id='main-list-view-widget']",
-    "POST_NODE": ".//*[contains(@class, 'list-view-item')]",
-    "USER_ID": {
-      "NODE": ".//*[contains(@class, 'hashed-track-info')]",
-      "TYPE": "text"
-    },
-    "TEXT": {
-        "NODE":".//div[contains(@class, 'body')]//p",
-        "TYPE": "text"
-    },
-    "DATE": {
-        "NODE":".//small[@class='comment-timestamp']/a",
-        "TYPE": "text"
-    },
-    "REPLY": {
-        "NODE": ".//div[contains(@class, 'comment-parent-link')]",
-        "TYPE": "text"
-    },
-    "IMAGE": {
-        "NODE": ".//div[contains(@class, 'media-modal')]",
-        "TYPE": "text"
-    },
-    "POST_ID": {
-        "NODE": ".",
-        "TYPE": "attribute",
-        "ATTRIBUTE": "data-key"
+{
+  "SITE_NAME": "zawazawaSpla3_ブキ",
+  "URL": "https://zawazawa.jp/spla3/tag/%E3%83%96%E3%82%AD",
+  "PAGE": [
+    {
+      "TARGET_LINK": {
+        "NODE": "//h3[contains(@class, 'list-view-item-heading')]/a",
+        "LINKTEXT": "わかばシューター"
+      },
+      "PAGINATION": {
+        "NEXT_LINK": "//li[contains(@class, 'next')]/a",
+        "PREV_LINK": "//li[contains(@class, 'prev')]/a"
+      }
     }
+  ],
+  "LOGIC": "Posts",
+  "LIST_NODE": "//div[@id='main-list-view-widget']",
+  "POST_NODE": ".//*[contains(@class, 'list-view-item')]",
+  "USER_ID": {
+    "NODE": ".//*[contains(@class, 'hashed-track-info')]",
+    "TYPE": "text"
+  },
+  "TEXT": {
+    "NODE": ".//div[contains(@class, 'body')]//p",
+    "TYPE": "text"
+  },
+  "DATE": {
+    "NODE": ".//small[@class='comment-timestamp']/a",
+    "TYPE": "text"
+  },
+  "REPLY": {
+    "NODE": ".//div[contains(@class, 'comment-parent-link')]",
+    "TYPE": "text"
+  },
+  "IMAGE": {
+    "NODE": ".//div[contains(@class, 'media-modal')]",
+    "TYPE": "text"
+  },
+  "POST_ID": {
+    "NODE": ".",
+    "TYPE": "attribute",
+    "ATTRIBUTE": "data-key"
   }
+}
+
