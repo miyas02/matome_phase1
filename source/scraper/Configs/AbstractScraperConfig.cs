@@ -37,5 +37,8 @@ namespace matome_phase1.scraper.Configs {
         public abstract string LOGIC {
             get; set;
         }
+        public List<PageConfig> PAGES {
+       get; set;
+        }
     }
 }
