@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace matome_phase1.scraper.Configs {
-    public class PageConfig {
+    public class NavigatePagesConfig {
         public TargetLinkConfig TARGET_LINK {
             get; set;
         }

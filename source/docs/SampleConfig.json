@@ -1,7 +1,7 @@
 {
   "SITE_NAME": "zawazawaSpla3_ブキ",
   "URL": "https://zawazawa.jp/spla3/tag/%E3%83%96%E3%82%AD",
-  "PAGES": [
+  "NAVIGATE_PAGES": [
     {
       "TARGET_LINK": {
         "NODE": "//h3[contains(@class, 'list-view-item-heading')]/a",

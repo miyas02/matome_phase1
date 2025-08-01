@@ -26,6 +26,13 @@ namespace matome_phase1.scraper.Configs {
                 return driver.PageSource;
             }
         }
+
+        protected void NavigateToPage() {
+            //NavigatePagesConfig nullチェック
+            //NavigatePagesConfigのListの各要素を取り出す
+            //
+        }
+
         public abstract List<Object> GetItems();
 
         public abstract string URL {
@@ -37,7 +44,7 @@ namespace matome_phase1.scraper.Configs {
         public abstract string LOGIC {
             get; set;
         }
-        public List<PageConfig> PAGES {
+        public List<NavigatePagesConfig> PAGES {
        get; set;
         }
     }
