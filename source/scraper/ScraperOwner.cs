@@ -30,14 +30,14 @@ namespace matome_phase1.scraper {
             //jsonのlogic属性のvalueで生成するインスタンスを切り替え
             //サイトカテゴリごとに条件分岐を追加する
             AbstractScraperConfig scraperConfig = ScraperConfigFactory.Create(json);
+            IScraperService scraperService = ScraperServiceFactory.Create(scraperConfig);
             //Page遷移処理を行う
-            List<Object> Items = scraperConfig.GetItems();
+            List<Object> Items = scraperService.GetItems(scraperConfig);
             foreach (var item in Items) {
                 if (item is Post) {
                     var p = (Post)item;
                     Debug.WriteLine($"ID: {p.Id}, UserID: {p.UserId}, Text: {p.Text}, Date: {p.Date}");
                 }
-                
             }
             Debug.WriteLine(Items);
         }
