@@ -3,13 +3,21 @@
   "URL": "https://zawazawa.jp/spla3/tag/%E3%83%96%E3%82%AD",
   "NAVIGATE_PAGES": [
     {
+      "TYPE": "pagination_search",
       "TARGET_LINK": {
-        "NODE": "//h3[contains(@class, 'list-view-item-heading')]/a",
-        "LINKTEXT": "わかばシューター"
+        "SELECTOR": {
+          "TYPE": "xpath",
+          "VALUE": "//h3[contains(@class, 'list-view-item-heading')]/a"
+        },
+        "TEXT": "わかばシューター"
       },
       "PAGINATION": {
-        "NEXT_LINK": "//li[contains(@class, 'next')]/a",
-        "PREV_LINK": "//li[contains(@class, 'prev')]/a"
+        "SELECTOR": {
+          "TYPE": "xpath",
+          "VALUE": "//li[contains(@class, 'next')]/a"
+        },
+        "ACTION": "click",
+        "MAX_LOOP": 20 // 任意：無限ループ防止
       }
     }
   ],
