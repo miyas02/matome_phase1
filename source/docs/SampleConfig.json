@@ -6,15 +6,13 @@
       "TYPE": "pagination_search",
       "TARGET_LINK": {
         "SELECTOR": {
-          "TYPE": "xpath",
-          "VALUE": "//h3[contains(@class, 'list-view-item-heading')]/a"
+          "NODE": "//h3[contains(@class, 'list-view-item-heading')]/a"
         },
         "TEXT": "わかばシューター"
       },
       "PAGINATION": {
         "SELECTOR": {
-          "TYPE": "xpath",
-          "VALUE": "//li[contains(@class, 'next')]/a"
+          "NODE": "//li[contains(@class, 'next')]/a"
         },
         "ACTION": "click",
         "MAX_LOOP": 20 // 任意：無限ループ防止
@@ -25,29 +23,41 @@
   "LIST_NODE": "//div[@id='main-list-view-widget']",
   "POST_NODE": ".//*[contains(@class, 'list-view-item')]",
   "USER_ID": {
-    "NODE": ".//*[contains(@class, 'hashed-track-info')]",
-    "TYPE": "text"
+    "SELECTOR": {
+      "NODE": ".//*[contains(@class, 'hashed-track-info')]",
+      "TYPE": "text"
+    }
   },
   "TEXT": {
-    "NODE": ".//div[contains(@class, 'body')]//p",
-    "TYPE": "text"
+    "SELECTOR": {
+      "NODE": ".//div[contains(@class, 'body')]//p",
+      "TYPE": "text"
+    }
   },
   "DATE": {
-    "NODE": ".//small[@class='comment-timestamp']/a",
-    "TYPE": "text"
+    "SELECTOR": {
+      "NODE": ".//small[@class='comment-timestamp']/a",
+      "TYPE": "text"
+    }
   },
   "REPLY": {
-    "NODE": ".//div[contains(@class, 'comment-parent-link')]",
-    "TYPE": "text"
+    "SELECTOR": {
+      "NODE": ".//div[contains(@class, 'comment-parent-link')]",
+      "TYPE": "text"
+    }
   },
   "IMAGE": {
-    "NODE": ".//div[contains(@class, 'media-modal')]",
-    "TYPE": "text"
+    "SELECTOR": {
+      "NODE": ".//div[contains(@class, 'media-modal')]",
+      "TYPE": "text"
+    }
   },
   "POST_ID": {
-    "NODE": ".",
-    "TYPE": "attribute",
-    "ATTRIBUTE": "data-key"
+    "SELECTOR": {
+      "NODE": ".",
+      "TYPE": "attribute",
+      "ATTRIBUTE": "data-key"
+    }
   }
 }
 

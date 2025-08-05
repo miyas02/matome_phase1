@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace matome_phase1.scraper.Configs {
     public class NavigatePagesConfig {
-        public TargetLinkConfig TARGET_LINK {
-            get; set;
-        }
-        public PaginationConfig PAGINATION {
-            get; set;
-        }
+        public string Type { get; set; } = string.Empty;
+        public TargetLinkConfig? TargetLink { get; set; }
+        public PaginationConfig? Pagination { get; set; }
     }
 }

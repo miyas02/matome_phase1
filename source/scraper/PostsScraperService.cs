@@ -1,0 +1,71 @@
+﻿using HtmlAgilityPack;
+using matome_phase1.constants;
+using matome_phase1.scraper.Configs;
+using matome_phase1.scraper.Models;
+using OpenQA.Selenium.BiDi.Script;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace matome_phase1.scraper {
+    internal class PostsScraperService : ScraperService{
+        private List<System.Object> DocParsePosts(PostsScraperConfig Config, HtmlDocument doc) {
+            HtmlNode contentNode = doc.DocumentNode.SelectSingleNode(Config.LIST_NODE);
+            if (contentNode == null) {
+                throw new Exception(Constants.ContentNodeNotFound);
+            }
+            var postNodes = new List<HtmlNode>();
+            // LIST_NODEの全要素を取得
+            if (contentNode.SelectNodes(Config.POST_NODE) != null) {
+                postNodes.AddRange(contentNode.SelectNodes(Config.POST_NODE));
+            }
+
+            var posts = new List<System.Object>();
+            foreach (var postNode in postNodes) {
+                Post post = new();
+                // 各NodeSelectorに基づいて値を取得
+                post.Text = SelectorSwitch(postNode, Config.TEXT);
+                post.Id = SelectorSwitch(postNode, Config.POST_ID);
+                post.UserId = SelectorSwitch(postNode, Config.USER_ID);
+                post.Reply = SelectorSwitch(postNode, Config.REPLY);
+                post.ImageUrl = SelectorSwitch(postNode, Config.IMAGE);
+                var timestamp = SelectorSwitch(postNode, Config.DATE);
+                var cleanedDateString = Regex.Replace(timestamp, @"\s*\(.\)\s*", " ");
+                if (DateTime.TryParseExact(cleanedDateString.Trim(), "yyyy/MM/dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out var dt)) {
+                    post.Date = dt;
+                }
+                posts.Add(post);
+            }
+            return posts;
+        }
+
+        protected override List<System.Object> DocParseItems(AbstractScraperConfig AConfig, HtmlDocument doc) {
+            switch (AConfig.LOGIC) {
+                case ScraperLogics.Posts:
+                    return DocParsePosts((PostsScraperConfig)AConfig, doc);
+                // 他のロジックも追加
+                default:
+                    throw new NotImplementedException($"Logic '{AConfig.LOGIC}' is not implemented.");
+            }
+
+            // This method should be implemented in derived classes to parse items from the document
+            throw new NotImplementedException("This method should be overridden in derived classes.");
+        }
+
+        private string SelectorSwitch(HtmlNode postNode, NodeSelector selector) {
+            if (selector.TYPE == "text") {
+                var bodyNode = postNode.SelectSingleNode(selector.NODE);
+                return bodyNode?.InnerText.Trim() ?? "";
+            } else if (selector.TYPE == "attribute") {
+                var bodyNode = postNode.SelectSingleNode(selector.NODE);
+                return bodyNode.GetAttributeValue(selector.ATTRIBUTE, null).Trim();
+            }
+            throw new Exception($"Unsupported selector type: {selector.TYPE}");
+        }
+    }
+}

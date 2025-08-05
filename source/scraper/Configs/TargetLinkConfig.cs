@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace matome_phase1.scraper.Configs {
     public class TargetLinkConfig {
-        public string NODE {
+        public NodeSelector Selector {
             get; set;
-        }
-        public string LINKTEXT {
+        } = new NodeSelector();
+        public string? Text {
             get; set;
         }
     }

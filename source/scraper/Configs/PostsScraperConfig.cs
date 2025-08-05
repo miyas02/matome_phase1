@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using matome_phase1.constants;
 using matome_phase1.scraper.Models;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,10 @@ namespace matome_phase1.scraper.Configs {
         }
 
         public override List<Object> GetItems() {
-            string html = GetHtml(URL);
+            IWebDriver driver = GetDriver(URL);
+            //TODO navigateToPage()を呼び出す
+
+            string html = driver.PageSource;
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
             return DocParsePosts(doc);
