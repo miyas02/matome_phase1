@@ -35,13 +35,13 @@ namespace matome_phase1.scraper {
             driver.Navigate().GoToUrl(url);
             return driver;
         }
-        public void NavigateToPage(IWebDriver driver, AbstractScraperConfig AConfig) {
+        private void NavigateToPage(IWebDriver driver, AbstractScraperConfig AConfig) {
             //NavigatePagesConfig nullチェック
-            if (AConfig.PAGES == null || AConfig.PAGES.Count == 0) {
+            if (AConfig.NAVIGATE_PAGES == null || AConfig.NAVIGATE_PAGES.Count == 0) {
                 return;
             }
             //NavigatePagesConfigのListの各要素を取り出す
-            foreach (var pageConfig in AConfig.PAGES) {
+            foreach (var pageConfig in AConfig.NAVIGATE_PAGES) {
 
                 ////PAGINATIONのページ数を取得
                 //int pageCount = pageConfig.PAGINATION.PageCount;

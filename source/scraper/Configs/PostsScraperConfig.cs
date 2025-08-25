@@ -45,56 +45,5 @@ namespace matome_phase1.scraper.Configs {
         public NodeSelector POST_ID {
             get; set;
         }
-
-        public override List<Object> GetItems() {
-            IWebDriver driver = GetDriver(URL);
-            //TODO navigateToPage()を呼び出す
-
-            string html = driver.PageSource;
-            var doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            return DocParsePosts(doc);
-        }
-
-        private string SelectorSwitch (HtmlNode postNode, NodeSelector selector) {
-            if (selector.TYPE == "text") {
-                var bodyNode = postNode.SelectSingleNode(selector.NODE);
-                return bodyNode?.InnerText.Trim() ?? "";
-            } else if (selector.TYPE == "attribute") {
-                var bodyNode = postNode.SelectSingleNode(selector.NODE);
-                return bodyNode.GetAttributeValue(selector.ATTRIBUTE, null).Trim();
-            }
-            throw new Exception($"Unsupported selector type: {selector.TYPE}");
-        }
-
-        private List<Object> DocParsePosts(HtmlDocument doc) {
-            HtmlNode contentNode = doc.DocumentNode.SelectSingleNode(LIST_NODE);
-            if (contentNode == null) {
-                throw new Exception(Constants.ContentNodeNotFound);
-            }
-            var postNodes = new List<HtmlNode>();
-            // LIST_NODEの全要素を取得
-            if (contentNode.SelectNodes(POST_NODE) != null) {
-                postNodes.AddRange(contentNode.SelectNodes(POST_NODE));
-            }
-
-            var posts = new List<Object>();
-            foreach (var postNode in postNodes) {
-                Post post = new();
-                // 各NodeSelectorに基づいて値を取得
-                post.Text = SelectorSwitch(postNode, TEXT);
-                post.Id = SelectorSwitch(postNode, POST_ID);
-                post.UserId = SelectorSwitch(postNode, USER_ID);
-                post.Reply = SelectorSwitch(postNode, REPLY);
-                post.ImageUrl = SelectorSwitch(postNode, IMAGE);
-                var timestamp = SelectorSwitch(postNode, DATE);
-                var cleanedDateString = Regex.Replace(timestamp, @"\s*\(.\)\s*", " ");
-                if (DateTime.TryParseExact(cleanedDateString.Trim(), "yyyy/MM/dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out var dt)) {
-                    post.Date = dt;
-                }
-                posts.Add(post);
-            }
-            return posts;
-        }
     }
 }

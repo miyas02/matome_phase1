@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace matome_phase1.scraper {
     public interface IScraperService {
         public IWebDriver GetDriver(string url);
-        public void NavigateToPage(IWebDriver driver, AbstractScraperConfig AConfig);
+        //protected void NavigateToPage(IWebDriver driver, AbstractScraperConfig AConfig);
         public List<System.Object> GetItems(AbstractScraperConfig AConfig);
     }
 }

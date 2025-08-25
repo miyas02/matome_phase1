@@ -13,15 +13,6 @@ using matome_phase1.scraper.Configs;
 
 namespace matome_phase1.scraper {
     internal class ScraperOwner : IScraperOwner  {
-        private static readonly Dictionary<string, Func<string, object>> _handlers = new() {
-            { ScraperLogics.Posts, json => {
-                var config = JsonSerializer.Deserialize<PostsScraperConfig>(json);
-                return config.GetItems();
-                }
-            }
-            // 他ロジックも追加
-        };
-
         public void LoadConfig(string configPath) {
             string json = File.ReadAllText(configPath);
             using JsonDocument doc = JsonDocument.Parse(json);
@@ -32,8 +23,8 @@ namespace matome_phase1.scraper {
             AbstractScraperConfig scraperConfig = ScraperFactory.Create(json);
             IScraperService scraperService = ScraperFactory.Create(scraperConfig);
             //TODO Page遷移処理を行う
-
             //scraperService.NavigateToPage(scraperConfig);
+
             List<Object> Items = scraperService.GetItems(scraperConfig);
             foreach (var item in Items) {
                 if (item is Post) {
