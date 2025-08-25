@@ -31,12 +31,10 @@ namespace matome_phase1.scraper {
             service.HideCommandPromptWindow = true; // コンソール非表示
             service.SuppressInitialDiagnosticInformation = true; // DevToolsなどのログ非表示
 
-            using (IWebDriver driver = new ChromeDriver(service, options)) {
-                driver.Navigate().GoToUrl(url);
-                return driver;
-            }
+            IWebDriver driver = new ChromeDriver(service, options);
+            driver.Navigate().GoToUrl(url);
+            return driver;
         }
-
         public void NavigateToPage(IWebDriver driver, AbstractScraperConfig AConfig) {
             //NavigatePagesConfig nullチェック
             if (AConfig.PAGES == null || AConfig.PAGES.Count == 0) {
@@ -59,12 +57,15 @@ namespace matome_phase1.scraper {
         }
 
         public List<System.Object> GetItems(AbstractScraperConfig AConfig) {
+
             IWebDriver driver = GetDriver(AConfig.URL);
             //TODO navigateToPage()を呼び出す
 
             string html = driver.PageSource;
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
+
+            driver.Quit(); // ドライバーを閉じる
             return DocParseItems(AConfig, doc);
         }
 

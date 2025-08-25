@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using matome_phase1.scraper.Configs.NavigatePages;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
@@ -28,27 +29,27 @@ namespace matome_phase1.scraper.Configs {
             }
         }
 
-        protected void NavigateToPage(IWebDriver driver) {
-            //NavigatePagesConfig nullチェック
-            if (PAGES == null || PAGES.Count == 0) {
-                return;
-            }
-            //NavigatePagesConfigのListの各要素を取り出す
-            foreach (var pageConfig in PAGES) {
-                string targetNode = pageConfig.TARGET_LINK.NODE;
+        //protected void NavigateToPage(IWebDriver driver) {
+        //    //NavigatePagesConfig nullチェック
+        //    if (PAGES == null || PAGES.Count == 0) {
+        //        return;
+        //    }
+        //    //NavigatePagesConfigのListの各要素を取り出す
+        //    foreach (var pageConfig in PAGES) {
+        //        string targetNode = pageConfig.TARGET_LINK.NODE;
 
-                //PAGINATIONのページ数を取得
-                int pageCount = pageConfig.PAGINATION.PageCount;
-                //ページ数分ループ
-                for (int i = 1; i <= pageCount; i++) {
-                    //URLにページ数を追加してHTMLを取得
-                    string urlWithPage = $"{targetNode}?page={i}";
-                    string html = GetDriver(urlWithPage);
-                    //HTMLを解析してアイテムを取得
-                    //アイテムの取得はサブクラスで実装する
-                }
-            }
-        }
+        //        //PAGINATIONのページ数を取得
+        //        int pageCount = pageConfig.PAGINATION.PageCount;
+        //        //ページ数分ループ
+        //        for (int i = 1; i <= pageCount; i++) {
+        //            //URLにページ数を追加してHTMLを取得
+        //            string urlWithPage = $"{targetNode}?page={i}";
+        //            string html = GetDriver(urlWithPage);
+        //            //HTMLを解析してアイテムを取得
+        //            //アイテムの取得はサブクラスで実装する
+        //        }
+        //    }
+        //}
 
         public abstract List<Object> GetItems();
 

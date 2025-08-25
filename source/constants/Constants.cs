@@ -13,6 +13,7 @@ namespace matome_phase1.constants
         public const string ContentNodeNotFound = "Content node not found in the document.";
         public const string ConfigJsonLogicNotFound = "Logic property not found in the config JSON.";
         public const string  InvalidLogicValue =  "Invalid logic value in JSON configuration.";
+        public const string ContentNodeIsNull = "Content node is null. Please check the HTML structure."; 
 
         //zawazawaの定数
         public const string ZAWAZAWA = "https://zawazawa.jp/spla3/";

@@ -15,7 +15,7 @@
           "NODE": "//li[contains(@class, 'next')]/a"
         },
         "ACTION": "click",
-        "MAX_LOOP": 20 // 任意：無限ループ防止
+        "MAX_LOOP": 20
       }
     }
   ],

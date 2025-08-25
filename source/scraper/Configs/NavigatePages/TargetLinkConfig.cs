@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace matome_phase1.scraper.Configs {
+namespace matome_phase1.scraper.Configs.NavigatePages {
     public class TargetLinkConfig {
         public NodeSelector Selector {
             get; set;

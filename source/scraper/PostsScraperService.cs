@@ -17,7 +17,7 @@ namespace matome_phase1.scraper {
         private List<System.Object> DocParsePosts(PostsScraperConfig Config, HtmlDocument doc) {
             HtmlNode contentNode = doc.DocumentNode.SelectSingleNode(Config.LIST_NODE);
             if (contentNode == null) {
-                throw new Exception(Constants.ContentNodeNotFound);
+                throw new Exception(Constants.ContentNodeIsNull);
             }
             var postNodes = new List<HtmlNode>();
             // LIST_NODEの全要素を取得
