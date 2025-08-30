@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace matome_phase1.scraper.Interface {
     public interface IScraperService {
-        protected IWebDriver GetDriver(string url);
-        protected IWebDriver NavigateToPage(IWebDriver driver, AbstractScraperConfig AConfig);
+        //protected IWebDriver GetDriver(string url);
+        //protected IWebDriver NavigateToPage(IWebDriver driver, AbstractScraperConfig AConfig);
         public List<object> GetItems(AbstractScraperConfig AConfig);
     }
 }

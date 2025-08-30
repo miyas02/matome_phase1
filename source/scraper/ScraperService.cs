@@ -26,7 +26,7 @@ namespace matome_phase1.scraper {
         /// </summary>
         /// <param name="url">url</param>
         /// <returns>Driver</returns>
-        protected IWebDriver GetDriver(string url) {
+        private IWebDriver GetDriver(string url) {
             var options = new ChromeOptions();
             options.AddArgument("--headless");
             var service = ChromeDriverService.CreateDefaultService();
@@ -37,24 +37,20 @@ namespace matome_phase1.scraper {
             driver.Navigate().GoToUrl(url);
             return driver;
         }
-        protected IWebDriver NavigateToPage(IWebDriver driver, AbstractScraperConfig AConfig) {
+        private IWebDriver NavigateToPage(IWebDriver driver, AbstractScraperConfig AConfig) {
             //NavigatePagesConfig nullチェック
             if (AConfig.NAVIGATE_PAGES == null || AConfig.NAVIGATE_PAGES.Count == 0) {
                 throw new Exception(Constants.NavigateToPagesIsNull);
             }
             //NavigatePagesConfigのListの各要素を取り出す
-            foreach (var pageConfig in AConfig.NAVIGATE_PAGES) {
+            foreach (var navi in AConfig.NAVIGATE_PAGES) {
+                if (navi.Type == Configs.NavigatePages.NavigatePageTypes.pagination_search) {
+                    driver.FindElement(By.XPath(navi.TargetLink.Selector.NODE));
+                }
 
-                ////PAGINATIONのページ数を取得
-                //int pageCount = pageConfig.PAGINATION.PageCount;
-                ////ページ数分ループ
-                //for (int i = 1; i <= pageCount; i++) {
-                //    //URLにページ数を追加してHTMLを取得
-                //    string urlWithPage = $"{targetNode}?page={i}";
-                //    string html = GetDriver(urlWithPage);
-                //    //HTMLを解析してアイテムを取得
-                //    //アイテムの取得はサブクラスで実装する
-                //}
+                if (navi.Type == Configs.NavigatePages.NavigatePageTypes.search) {
+
+                }
             }
 
             return driver;
@@ -63,7 +59,7 @@ namespace matome_phase1.scraper {
         public List<System.Object> GetItems(AbstractScraperConfig AConfig) {
 
             IWebDriver driver = GetDriver(AConfig.URL);
-            //TODO navigateToPage()を呼び出す
+            driver = NavigateToPage(driver, AConfig);
 
             string html = driver.PageSource;
             var doc = new HtmlDocument();
