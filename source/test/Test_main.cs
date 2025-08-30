@@ -1,10 +1,13 @@
 ﻿using matome_phase1.scraper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
+using static System.Net.WebRequestMethods;
 
 namespace matome_phase1.test {
     /// <summary>
@@ -12,11 +15,14 @@ namespace matome_phase1.test {
     /// </summary>
     internal class Test_main {
         //config.json取得
-        string path = "C:\\Users\\aabca\\source\\repos\\matome_phase1\\source\\docs\\SampleConfig.json";
+        string configPathURL = "https://raw.githubusercontent.com/miyas02/matome_phase1/refs/heads/master/source/docs/SampleConfig.json";
 
-        public Test_main() {
+    public Test_main() {
+            using HttpClient client = new HttpClient();
+            string config = client.GetStringAsync(configPathURL).Result;
+
             IScraperOwner scraperOwner = new ScraperOwner();
-            scraperOwner.LoadConfig(path);
+            scraperOwner.LoadConfig(config);
         }
 
         //scraperOwnerにconfig.jsonを渡す

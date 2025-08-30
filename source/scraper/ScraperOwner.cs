@@ -13,14 +13,13 @@ using matome_phase1.scraper.Configs;
 
 namespace matome_phase1.scraper {
     internal class ScraperOwner : IScraperOwner  {
-        public void LoadConfig(string configPath) {
-            string json = File.ReadAllText(configPath);
-            using JsonDocument doc = JsonDocument.Parse(json);
+        public void LoadConfig(string config) {
+            using JsonDocument doc = JsonDocument.Parse(config);
             string logicValue = doc.RootElement.GetProperty("LOGIC").GetString();
 
             //jsonのlogic属性のvalueで生成するインスタンスを切り替え
             //サイトカテゴリごとに条件分岐を追加する
-            AbstractScraperConfig scraperConfig = ScraperFactory.Create(json);
+            AbstractScraperConfig scraperConfig = ScraperFactory.Create(config);
             IScraperService scraperService = ScraperFactory.Create(scraperConfig);
             //TODO Page遷移処理を行う
             //scraperService.NavigateToPage(scraperConfig);
