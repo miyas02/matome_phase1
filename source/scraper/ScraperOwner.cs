@@ -9,6 +9,7 @@ using matome_phase1.constants;
 using System.Diagnostics;
 using matome_phase1.scraper.Models;
 using matome_phase1.scraper.Configs;
+using matome_phase1.scraper.Interface;
 
 
 namespace matome_phase1.scraper {
@@ -21,8 +22,6 @@ namespace matome_phase1.scraper {
             //サイトカテゴリごとに条件分岐を追加する
             AbstractScraperConfig scraperConfig = ScraperFactory.Create(config);
             IScraperService scraperService = ScraperFactory.Create(scraperConfig);
-            //TODO Page遷移処理を行う
-            //scraperService.NavigateToPage(scraperConfig);
 
             List<Object> Items = scraperService.GetItems(scraperConfig);
             foreach (var item in Items) {

@@ -1,6 +1,8 @@
-﻿using HtmlAgilityPack;
+﻿
+using HtmlAgilityPack;
 using matome_phase1.constants;
 using matome_phase1.scraper.Configs;
+using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.BiDi.Script;
@@ -24,7 +26,7 @@ namespace matome_phase1.scraper {
         /// </summary>
         /// <param name="url">url</param>
         /// <returns>Driver</returns>
-        public IWebDriver GetDriver(string url) {
+        protected IWebDriver GetDriver(string url) {
             var options = new ChromeOptions();
             options.AddArgument("--headless");
             var service = ChromeDriverService.CreateDefaultService();
@@ -35,10 +37,10 @@ namespace matome_phase1.scraper {
             driver.Navigate().GoToUrl(url);
             return driver;
         }
-        private void NavigateToPage(IWebDriver driver, AbstractScraperConfig AConfig) {
+        protected IWebDriver NavigateToPage(IWebDriver driver, AbstractScraperConfig AConfig) {
             //NavigatePagesConfig nullチェック
             if (AConfig.NAVIGATE_PAGES == null || AConfig.NAVIGATE_PAGES.Count == 0) {
-                return;
+                throw new Exception(Constants.NavigateToPagesIsNull);
             }
             //NavigatePagesConfigのListの各要素を取り出す
             foreach (var pageConfig in AConfig.NAVIGATE_PAGES) {
@@ -54,6 +56,8 @@ namespace matome_phase1.scraper {
                 //    //アイテムの取得はサブクラスで実装する
                 //}
             }
+
+            return driver;
         }
 
         public List<System.Object> GetItems(AbstractScraperConfig AConfig) {

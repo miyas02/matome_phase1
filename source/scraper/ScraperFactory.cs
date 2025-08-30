@@ -1,4 +1,5 @@
 ﻿using matome_phase1.scraper.Configs;
+using matome_phase1.scraper.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
