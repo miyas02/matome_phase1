@@ -2,6 +2,7 @@
 using HtmlAgilityPack;
 using matome_phase1.constants;
 using matome_phase1.scraper.Configs;
+using matome_phase1.scraper.Configs.NavigatePages;
 using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
 using OpenQA.Selenium;
@@ -45,8 +46,20 @@ namespace matome_phase1.scraper {
             //NavigatePagesConfigのListの各要素を取り出す
             foreach (var navi in AConfig.NAVIGATE_PAGES) {
                 if (navi.Type == Configs.NavigatePages.NavigatePageTypes.pagination_search) {
-                    driver.FindElement(By.XPath(navi.TargetLink.Selector.NODE));
+                    
+                    //configのNodeとリンクテキストを検索
+                    string text = "[" + navi.TargetLink.Selector.NODE + "text()=" + navi.TargetLink.Text + "]";
+                    var node = driver.FindElement(By.XPath(text));
+                    if (node != null) {
+                        node.Click();
+                    }
+                    if (node == null) {
+                        //pagination処理
+
+                    }
+                    
                 }
+
 
                 if (navi.Type == Configs.NavigatePages.NavigatePageTypes.search) {
 
@@ -54,6 +67,26 @@ namespace matome_phase1.scraper {
             }
 
             return driver;
+        }
+
+        private IWebDriver Pagination(IWebDriver driver, NavigatePagesConfig navi) {
+            while(true) {
+                //configのNodeとリンクテキストを検索
+                string text = "[" + navi.TargetLink.Selector.NODE + "text()=" + navi.TargetLink.Text + "]";
+                var node = driver.FindElement(By.XPath(text));
+                if (node != null) {
+                    node.Click();
+                    return driver;
+                }
+                if (node == null) {
+                    var paginationNode = driver.FindElement(By.XPath(navi.Pagination.Selector.NODE));
+                    if(paginationNode == null) {
+                        throw new Exception(Constants.ContentNodeIsNull);
+                    }
+                    paginationNode.Click();
+                }
+                
+            }
         }
 
         public List<System.Object> GetItems(AbstractScraperConfig AConfig) {
