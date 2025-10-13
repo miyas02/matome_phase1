@@ -15,16 +15,17 @@ using matome_phase1.scraper.Interface;
 namespace matome_phase1.scraper {
     internal class ScraperOwner : IScraperOwner  {
         public IScraperService ScraperService { get; set; }
+        public AbstractScraperConfig AConfig { get; set; }
         public void LoadConfig(string config) {
             using JsonDocument doc = JsonDocument.Parse(config);
             string logicValue = doc.RootElement.GetProperty("LOGIC").GetString();
 
             //jsonのlogic属性のvalueで生成するインスタンスを切り替え
             //サイトカテゴリごとに条件分岐を追加する
-            AbstractScraperConfig scraperConfig = ScraperFactory.Create(config);
-            ScraperService = ScraperFactory.Create(scraperConfig);
+            AConfig = ScraperFactory.Create(config);
+            ScraperService = ScraperFactory.Create(AConfig);
 
-            List<Object> Items = ScraperService.GetItems(scraperConfig);
+            List<Object> Items = ScraperService.GetItems(AConfig);
             foreach (var item in Items) {
                 if (item is Post) {
                     var p = (Post)item;
