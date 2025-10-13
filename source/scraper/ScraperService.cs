@@ -48,19 +48,16 @@ namespace matome_phase1.scraper {
                 if (navi.Type == Configs.NavigatePages.NavigatePageTypes.pagination_search) {
                     
                     //configのNodeとリンクテキストを検索
-                    string text = "[" + navi.TargetLink.Selector.NODE + "text()=" + navi.TargetLink.Text + "]";
-                    var node = driver.FindElement(By.XPath(text));
-                    if (node != null) {
+                    string text = navi.TargetLink.Selector.NODE + "[contains(text(),'" + navi.TargetLink.Text + "')]";
+
+                    var n = driver.FindElements(By.XPath(text));
+                    if (n.Count > 0 ){
+                        var node = n[0];
                         node.Click();
-                    }
-                    if (node == null) {
-                        //pagination処理
-
-                    }
-                    
+                    } else {
+                        driver = Pagination(driver, navi);
+                    }                  
                 }
-
-
                 if (navi.Type == Configs.NavigatePages.NavigatePageTypes.search) {
 
                 }
@@ -72,13 +69,13 @@ namespace matome_phase1.scraper {
         private IWebDriver Pagination(IWebDriver driver, NavigatePagesConfig navi) {
             while(true) {
                 //configのNodeとリンクテキストを検索
-                string text = "[" + navi.TargetLink.Selector.NODE + "text()=" + navi.TargetLink.Text + "]";
-                var node = driver.FindElement(By.XPath(text));
-                if (node != null) {
-                    node.Click();
+                string text = navi.TargetLink.Selector.NODE + "[contains(text(),'" + navi.TargetLink.Text + "')]";
+                var nodes = driver.FindElements(By.XPath(text));
+                if (nodes.Count > 0) {
+                    nodes[0].Click();
                     return driver;
                 }
-                if (node == null) {
+                if (nodes.Count == 0) {
                     var paginationNode = driver.FindElement(By.XPath(navi.Pagination.Selector.NODE));
                     if(paginationNode == null) {
                         throw new Exception(Constants.ContentNodeIsNull);

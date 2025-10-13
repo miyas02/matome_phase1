@@ -25,6 +25,8 @@ namespace matome_phase1.scraper {
             AConfig = ScraperFactory.Create(config);
             ScraperService = ScraperFactory.Create(AConfig);
 
+            //TODO AConfigの入力(読み込み)チェック
+
             List<Object> Items = ScraperService.GetItems(AConfig);
             foreach (var item in Items) {
                 if (item is Post) {

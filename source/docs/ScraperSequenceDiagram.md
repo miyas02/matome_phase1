@@ -19,5 +19,6 @@ ScraperOwner ->> ScraperFactory: Create(ScraperConfig)
 ScraperFactory -->> -ScraperOwner: IScraperService
 ScraperOwner ->> +ScraperService: GetItems(ScraperConfig)
 Note over ScraperService:  NavigateToPages(driver, AConfig): IWebDriver
+Note over ScraperService: Pagination(driver, NavigatePagesConfig)
 ScraperService -->> -ScraperOwner:List<Object>
 ```
