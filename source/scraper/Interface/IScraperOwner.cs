@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace matome_phase1.scraper.Interface {
     internal interface IScraperOwner {
+        IScraperService ScraperService {get; set;}
         public void LoadConfig(string configPath);
     }
 }
