@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace matome_phase1.scraper.Configs.NavigatePages {
     public class TargetLinkConfig {
         [JsonPropertyName("SELECTOR")]
-        public NodeSelector Selector {
+        public NodeSelector NodeSelector {
             get; set;
         } = new NodeSelector();
         [JsonPropertyName("TEXT")]

@@ -57,15 +57,15 @@ namespace matome_phase1.scraper {
             throw new NotImplementedException("This method should be overridden in derived classes.");
         }
 
-        private string SelectorSwitch(HtmlNode postNode, NodeSelector selector) {
-            if (selector.TYPE == "text") {
-                var bodyNode = postNode.SelectSingleNode(selector.NODE);
+        private string SelectorSwitch(HtmlNode postNode, NodeSelector nodeSelector) {
+            if (nodeSelector.Selector.TYPE == "text") {
+                var bodyNode = postNode.SelectSingleNode(nodeSelector.Selector.NODE);
                 return bodyNode?.InnerText.Trim() ?? "";
-            } else if (selector.TYPE == "attribute") {
-                var bodyNode = postNode.SelectSingleNode(selector.NODE);
-                return bodyNode.GetAttributeValue(selector.ATTRIBUTE, null).Trim();
+            } else if (nodeSelector.Selector.TYPE == "attribute") {
+                var bodyNode = postNode.SelectSingleNode(nodeSelector.Selector.NODE);
+                return bodyNode.GetAttributeValue(nodeSelector.Selector.ATTRIBUTE, null).Trim();
             }
-            throw new Exception($"Unsupported selector type: {selector.TYPE}");
+            throw new Exception($"Unsupported selector type: {nodeSelector.Selector.TYPE}");
         }
     }
 }

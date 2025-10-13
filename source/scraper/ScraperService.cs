@@ -48,7 +48,7 @@ namespace matome_phase1.scraper {
                 if (navi.Type == Configs.NavigatePages.NavigatePageTypes.pagination_search) {
                     
                     //configのNodeとリンクテキストを検索
-                    string text = navi.TargetLink.Selector.NODE + "[contains(text(),'" + navi.TargetLink.Text + "')]";
+                    string text = navi.TargetLink.NodeSelector.Selector.NODE + "[contains(text(),'" + navi.TargetLink.Text + "')]";
 
                     var n = driver.FindElements(By.XPath(text));
                     if (n.Count > 0 ){
@@ -69,14 +69,14 @@ namespace matome_phase1.scraper {
         private IWebDriver Pagination(IWebDriver driver, NavigatePagesConfig navi) {
             while(true) {
                 //configのNodeとリンクテキストを検索
-                string text = navi.TargetLink.Selector.NODE + "[contains(text(),'" + navi.TargetLink.Text + "')]";
+                string text = navi.TargetLink.NodeSelector.Selector.NODE + "[contains(text(),'" + navi.TargetLink.Text + "')]";
                 var nodes = driver.FindElements(By.XPath(text));
                 if (nodes.Count > 0) {
                     nodes[0].Click();
                     return driver;
                 }
                 if (nodes.Count == 0) {
-                    var paginationNode = driver.FindElement(By.XPath(navi.Pagination.Selector.NODE));
+                    var paginationNode = driver.FindElement(By.XPath(navi.Pagination.Selector.Selector.NODE));
                     if(paginationNode == null) {
                         throw new Exception(Constants.ContentNodeIsNull);
                     }
