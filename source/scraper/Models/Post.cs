@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace matome_phase1.scraper.Models {
     public class Post {
-        public string Id { 
+        public string? Id { 
             get; set; 
         }
-        public DateTime Date{ 
+        public DateTime? Date{ 
             get; set; 
         }
-        public string Text { 
+        public string? Text { 
             get; set; 
         }
-        public string UserId {
+        public string? UserId {
             get; set;
         }
-        public string Reply {
+        public string? Reply {
             get; set;
         }
-        public string ImageUrl {
+        public string? ImageUrl {
             get; set;
         }
     }

@@ -1,0 +1,47 @@
+﻿using matome_phase1.scraper.Configs;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+
+namespace matome_phase1.constants {
+    public enum ScraperExceptionType {
+        ContentNodeNotFound,
+        ConfigJsonLogicNotFound,
+        InvalidLogicValue,
+        ContentNodeIsNull,
+        NavigateToPagesIsNull
+    }
+    public class ConfigException : Exception {
+        private static readonly List<string> list = new List<string>();
+        private static readonly Dictionary<ScraperExceptionType, string> Messages = new()
+        {
+            { ScraperExceptionType.ContentNodeNotFound, "Content node not found in the document." },
+            { ScraperExceptionType.ConfigJsonLogicNotFound, "Logic property not found in the config JSON." },
+            { ScraperExceptionType.InvalidLogicValue, "Invalid logic value in JSON configuration." },
+            { ScraperExceptionType.ContentNodeIsNull, "Content node is null. Please check the HTML structure." },
+            { ScraperExceptionType.NavigateToPagesIsNull, "NavigateToPages property not found in the config JSON." }
+        };
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="additionalMessage"></param>
+        /// <param name="config"></param>
+        public ConfigException(ScraperExceptionType type, AbstractScraperConfig? config = null, string ? additionalMessage = null)
+            : base(FormatMessage(type, additionalMessage, config)) {
+        }
+
+        private static string FormatMessage(ScraperExceptionType type, string? additionalMessage, AbstractScraperConfig? config) {
+            string baseMessage = Messages.ContainsKey(type) ? Messages[type] : "Unknown scraper error.";
+            if (!string.IsNullOrEmpty(additionalMessage))
+                baseMessage += " " + additionalMessage;
+            if (config != null)
+                Debug.WriteLine("AbstractScraperConfig : " + config);
+
+            // デバッグログに出力
+            Debug.WriteLine(baseMessage);
+            return baseMessage;
+        }
+    }
+}

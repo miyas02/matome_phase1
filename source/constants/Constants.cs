@@ -9,13 +9,6 @@ using System.Threading.Tasks;
 namespace matome_phase1.constants
 {
     public class Constants {
-        //Erorrログ
-        public const string ContentNodeNotFound = "Content node not found in the document.";
-        public const string ConfigJsonLogicNotFound = "Logic property not found in the config JSON.";
-        public const string  InvalidLogicValue =  "Invalid logic value in JSON configuration.";
-        public const string ContentNodeIsNull = "Content node is null. Please check the HTML structure.";
-        public const string NavigateToPagesIsNull = "NavigateToPages property not found in the config JSON.";
-
         //zawazawaの定数
         public const string ZAWAZAWA = "https://zawazawa.jp/spla3/";
         public const string CHATLOG3 = "https://zawazawa.jp/spla3/chatlog/3";

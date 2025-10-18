@@ -14,15 +14,44 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace matome_phase1.scraper {
     internal class PostsScraperService : ScraperService {
-        private List<System.Object> DocParsePosts(PostConfig Config, HtmlDocument doc) {
-            HtmlNode contentNode = doc.DocumentNode.SelectSingleNode(Config.LIST_NODE);
-            if (contentNode == null) {
-                throw new Exception(Constants.ContentNodeIsNull);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="AConfig"></param>
+        /// <param name="doc"></param>
+        /// <returns List></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        protected override List<System.Object> DocParseItems(AbstractScraperConfig AConfig, HtmlDocument doc) {
+            switch (AConfig.LOGIC) {
+                case ScraperLogics.Posts:
+                    return DocParsePosts((PostConfig)AConfig, doc);
+                // 他のロジックも追加
+                default:
+                    throw new NotImplementedException($"Logic '{AConfig.LOGIC}' is not implemented.");
             }
+
+            // This method should be implemented in derived classes to parse items from the document
+            throw new NotImplementedException("This method should be overridden in derived classes.");
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Config"></param>
+        /// <param name="doc"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private List<System.Object> DocParsePosts(PostConfig Config, HtmlDocument doc) {
+            HtmlNode? contentNode = doc.DocumentNode.SelectSingleNode(Config.LIST_NODE);
+
+            if (contentNode == null) {
+                throw new ConfigException(ScraperExceptionType.ContentNodeIsNull, Config);
+            }
+
             var postNodes = new List<HtmlNode>();
             // LIST_NODEの全要素を取得
             if (contentNode.SelectNodes(Config.POST_NODE) != null) {
-                postNodes.AddRange(contentNode.SelectNodes(Config.POST_NODE));
+                postNodes.AddRange(contentNode.SelectNodes(Config.POST_NODE) ?? Enumerable.Empty<HtmlNode>());
             }
 
             var posts = new List<System.Object>();
@@ -44,20 +73,13 @@ namespace matome_phase1.scraper {
             return posts;
         }
 
-        protected override List<System.Object> DocParseItems(AbstractScraperConfig AConfig, HtmlDocument doc) {
-            switch (AConfig.LOGIC) {
-                case ScraperLogics.Posts:
-                    return DocParsePosts((PostConfig)AConfig, doc);
-                // 他のロジックも追加
-                default:
-                    throw new NotImplementedException($"Logic '{AConfig.LOGIC}' is not implemented.");
-            }
-
-            // This method should be implemented in derived classes to parse items from the document
-            throw new NotImplementedException("This method should be overridden in derived classes.");
-        }
-
-        private string GetInnerText(HtmlNode postNode, string node) {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="postNode"></param>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        private static string GetInnerText(HtmlNode postNode, string node) {
             var bodyNode = postNode.SelectSingleNode(node);
             return bodyNode?.InnerText.Trim() ?? "";
         }

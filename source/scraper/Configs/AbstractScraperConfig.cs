@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 namespace matome_phase1.scraper.Configs {
     public abstract class AbstractScraperConfig {
         [JsonPropertyName("SITE_NAME")]
-        public string SITE_NAME { get; set; }
+        public string? SITE_NAME { get; set; }
 
         [JsonPropertyName("URL")]
-        public string URL { get; set; }
+        public string? URL { get; set; }
 
         [JsonPropertyName("NAVIGATE_PAGES")]
-        public List<NAVIGATEPAGE> NAVIGATE_PAGES { get; set; }
+        public List<NAVIGATEPAGE>? NAVIGATE_PAGES { get; set; }
 
         [JsonPropertyName("LOGIC")]
-        public string LOGIC { get; set; }
+        public string? LOGIC { get; set; }
     }
 }
