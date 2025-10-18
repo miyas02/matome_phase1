@@ -26,7 +26,7 @@ namespace matome_phase1.scraper {
                 }
             };
             return logic switch {
-                "Posts" => JsonSerializer.Deserialize<PostsScraperConfig>(json, options)
+                "Posts" => JsonSerializer.Deserialize<PostConfig>(json, options)
             };
         }
     }

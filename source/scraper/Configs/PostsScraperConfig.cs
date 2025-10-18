@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 
 namespace matome_phase1.scraper.Configs {
     internal class PostsScraperConfig : AbstractScraperConfig {
-        public override string URL {
-            get; set;
-        }
-        public override string SITE_NAME {
-            get; set;
-        }
-        public override string LOGIC {
-            get; set;
-        }
+        //public override string URL {
+        //    get; set;
+        //}
+        //public override string SITE_NAME {
+        //    get; set;
+        //}
+        //public override string LOGIC {
+        //    get; set;
+        //}
 
         public string LIST_NODE {
             get; set;

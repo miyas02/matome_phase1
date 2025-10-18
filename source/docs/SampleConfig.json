@@ -5,15 +5,11 @@
     {
       "TYPE": "pagination_search",
       "TARGET_LINK": {
-        "SELECTOR": {
-          "NODE": "//h3[contains(@class, 'list-view-item-heading')]/a"
+          "NODE": "//h3[contains(@class, 'list-view-item-heading')]/a",
+          "TEXT": "わかばシューター"
         },
-        "TEXT": "わかばシューター"
-      },
       "PAGINATION": {
-        "SELECTOR": {
-          "NODE": "//li[contains(@class, 'next')]/a"
-        },
+        "NODE": "//li[contains(@class, 'next')]/a",
         "ACTION": "click",
         "MAX_LOOP": 20
       }
@@ -23,41 +19,29 @@
   "LIST_NODE": "//div[@id='main-list-view-widget']",
   "POST_NODE": ".//*[contains(@class, 'list-view-item')]",
   "USER_ID": {
-    "SELECTOR": {
       "NODE": ".//*[contains(@class, 'hashed-track-info')]",
       "TYPE": "text"
-    }
   },
   "TEXT": {
-    "SELECTOR": {
       "NODE": ".//div[contains(@class, 'body')]//p",
       "TYPE": "text"
-    }
   },
   "DATE": {
-    "SELECTOR": {
       "NODE": ".//small[@class='comment-timestamp']/a",
       "TYPE": "text"
-    }
   },
   "REPLY": {
-    "SELECTOR": {
       "NODE": ".//div[contains(@class, 'comment-parent-link')]",
       "TYPE": "text"
-    }
   },
   "IMAGE": {
-    "SELECTOR": {
       "NODE": ".//div[contains(@class, 'media-modal')]",
       "TYPE": "text"
-    }
   },
   "POST_ID": {
-    "SELECTOR": {
       "NODE": ".",
       "TYPE": "attribute",
       "ATTRIBUTE": "data-key"
-    }
   }
 }
 
