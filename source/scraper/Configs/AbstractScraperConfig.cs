@@ -1,5 +1,4 @@
-﻿using matome_phase1.scraper.Configs.NavigatePages;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;

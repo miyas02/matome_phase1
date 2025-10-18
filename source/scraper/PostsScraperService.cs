@@ -13,8 +13,8 @@ using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace matome_phase1.scraper {
-    internal class PostsScraperService : ScraperService{
-        private List<System.Object> DocParsePosts(PostsScraperConfig Config, HtmlDocument doc) {
+    internal class PostsScraperService : ScraperService {
+        private List<System.Object> DocParsePosts(PostConfig Config, HtmlDocument doc) {
             HtmlNode contentNode = doc.DocumentNode.SelectSingleNode(Config.LIST_NODE);
             if (contentNode == null) {
                 throw new Exception(Constants.ContentNodeIsNull);
@@ -29,12 +29,12 @@ namespace matome_phase1.scraper {
             foreach (var postNode in postNodes) {
                 Post post = new();
                 // 各NodeSelectorに基づいて値を取得
-                post.Text = SelectorSwitch(postNode, Config.TEXT);
-                post.Id = SelectorSwitch(postNode, Config.POST_ID);
-                post.UserId = SelectorSwitch(postNode, Config.USER_ID);
-                post.Reply = SelectorSwitch(postNode, Config.REPLY);
-                post.ImageUrl = SelectorSwitch(postNode, Config.IMAGE);
-                var timestamp = SelectorSwitch(postNode, Config.DATE);
+                post.Text = GetInnerText(postNode, Config.TEXT.NODE);
+                post.Id = GetInnerText(postNode, Config.POST_ID.NODE);
+                post.UserId = GetInnerText(postNode, Config.USER_ID.NODE);
+                post.Reply = GetInnerText(postNode, Config.REPLY.NODE);
+                post.ImageUrl = GetInnerText(postNode, Config.IMAGE.NODE);
+                var timestamp = GetInnerText(postNode, Config.DATE.NODE);
                 var cleanedDateString = Regex.Replace(timestamp, @"\s*\(.\)\s*", " ");
                 if (DateTime.TryParseExact(cleanedDateString.Trim(), "yyyy/MM/dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out var dt)) {
                     post.Date = dt;
@@ -47,7 +47,7 @@ namespace matome_phase1.scraper {
         protected override List<System.Object> DocParseItems(AbstractScraperConfig AConfig, HtmlDocument doc) {
             switch (AConfig.LOGIC) {
                 case ScraperLogics.Posts:
-                    return DocParsePosts((PostsScraperConfig)AConfig, doc);
+                    return DocParsePosts((PostConfig)AConfig, doc);
                 // 他のロジックも追加
                 default:
                     throw new NotImplementedException($"Logic '{AConfig.LOGIC}' is not implemented.");
@@ -57,15 +57,9 @@ namespace matome_phase1.scraper {
             throw new NotImplementedException("This method should be overridden in derived classes.");
         }
 
-        private string SelectorSwitch(HtmlNode postNode, NodeSelector nodeSelector) {
-            if (nodeSelector.Selector.TYPE == "text") {
-                var bodyNode = postNode.SelectSingleNode(nodeSelector.Selector.NODE);
-                return bodyNode?.InnerText.Trim() ?? "";
-            } else if (nodeSelector.Selector.TYPE == "attribute") {
-                var bodyNode = postNode.SelectSingleNode(nodeSelector.Selector.NODE);
-                return bodyNode.GetAttributeValue(nodeSelector.Selector.ATTRIBUTE, null).Trim();
-            }
-            throw new Exception($"Unsupported selector type: {nodeSelector.Selector.TYPE}");
+        private string GetInnerText(HtmlNode postNode, string node) {
+            var bodyNode = postNode.SelectSingleNode(node);
+            return bodyNode?.InnerText.Trim() ?? "";
         }
     }
 }

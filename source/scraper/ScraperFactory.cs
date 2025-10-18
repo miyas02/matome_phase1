@@ -13,7 +13,7 @@ namespace matome_phase1.scraper {
         public static IScraperService Create(AbstractScraperConfig Config) {
 
             return Config switch {
-                PostsScraperConfig  => new PostsScraperService(),
+                PostConfig  => new PostsScraperService(),
             };
         }
 

@@ -2,7 +2,6 @@
 using HtmlAgilityPack;
 using matome_phase1.constants;
 using matome_phase1.scraper.Configs;
-using matome_phase1.scraper.Configs.NavigatePages;
 using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
 using OpenQA.Selenium;
@@ -45,10 +44,10 @@ namespace matome_phase1.scraper {
             }
             //NavigatePagesConfigのListの各要素を取り出す
             foreach (var navi in AConfig.NAVIGATE_PAGES) {
-                if (navi.TYPE == Configs.NavigatePages.NavigatePageTypes.pagination_search) {
+                if (navi.TYPE == NavigatePageTypes.pagination_search) {
                     
                     //configのNodeとリンクテキストを検索
-                    string text = navi.TARGET_LINK.NODE + "[contains(text(),'" + navi.TARGET_LINK.TEXT + "')]";
+                    string text = navi.TARGET_LINK.NODE + "//*[contains(text(),'" + navi.TARGET_LINK.TEXT + "')]";
 
                     var n = driver.FindElements(By.XPath(text));
                     if (n.Count > 0 ){
@@ -58,7 +57,7 @@ namespace matome_phase1.scraper {
                         driver = Pagination(driver, navi);
                     }                  
                 }
-                if (navi.TYPE == Configs.NavigatePages.NavigatePageTypes.search) {
+                if (navi.TYPE == NavigatePageTypes.search) {
 
                 }
             }
