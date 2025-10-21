@@ -90,11 +90,11 @@ namespace matome_phase1.scraper {
                     return driver;
                 }
                 if (nodes.Count == 0) {
-                    var paginationNode = driver.FindElement(By.XPath(navi.PAGINATION.NODE ?? throw new ConfigException(ScraperExceptionType.ContentNodeIsNull)));
-                    if(paginationNode == null) {
-                        throw new ConfigException(ScraperExceptionType.ContentNodeIsNull,null, "paginationNode");
+                    var paginationNodes = driver.FindElements(By.XPath(navi.PAGINATION.NODE ?? throw new ConfigException(ScraperExceptionType.ContentNodeIsNull)));
+                    if(paginationNodes == null || paginationNodes.Count == 0) {
+                        throw new ConfigException(ScraperExceptionType.NavigateToPagesIsNull,null, "paginationNode is Null");
                     }
-                    paginationNode.Click();
+                    paginationNodes[0].Click();
                 }
                 
             }

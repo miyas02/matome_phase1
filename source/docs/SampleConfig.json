@@ -6,7 +6,7 @@
       "TYPE": "pagination_search",
       "TARGET_LINK": {
           "NODE": "//h3[contains(@class, 'list-view-item-heading')]/a",
-          "TEXT": "わかばシューター"
+          "TEXT": "aaaaaaaaaa"
         },
       "PAGINATION": {
         "NODE": "//li[contains(@class, 'next')]/a",

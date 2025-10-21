@@ -26,8 +26,8 @@ namespace matome_phase1.constants {
         /// 
         /// </summary>
         /// <param name="type"></param>
-        /// <param name="additionalMessage"></param>
-        /// <param name="config"></param>
+        /// <param name="config" type="AbstractScraperConfig"></param>
+        /// <param name="additionalMessage" type="string"></param>
         public ConfigException(ScraperExceptionType type, AbstractScraperConfig? config = null, string ? additionalMessage = null)
             : base(FormatMessage(type, additionalMessage, config)) {
         }
@@ -35,7 +35,7 @@ namespace matome_phase1.constants {
         private static string FormatMessage(ScraperExceptionType type, string? additionalMessage, AbstractScraperConfig? config) {
             string baseMessage = Messages.ContainsKey(type) ? Messages[type] : "Unknown scraper error.";
             if (!string.IsNullOrEmpty(additionalMessage))
-                baseMessage += " " + additionalMessage;
+                baseMessage += " : [additional Message] " + additionalMessage;
             if (config != null)
                 Debug.WriteLine("AbstractScraperConfig : " + config);
 
