@@ -14,8 +14,8 @@ using matome_phase1.scraper.Interface;
 
 namespace matome_phase1.scraper {
     internal class ScraperOwner : IScraperOwner  {
-        public required IScraperService ScraperService { get; set; }
-        public required AbstractScraperConfig AConfig { get; set; }
+        public IScraperService ScraperService { get; set; }
+        public AbstractScraperConfig AConfig { get; set; }
         public void LoadConfig(string config) {
             using JsonDocument doc = JsonDocument.Parse(config);
             string logicValue = doc.RootElement.GetProperty("LOGIC").GetString() ?? "default";
