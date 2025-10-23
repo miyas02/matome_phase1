@@ -10,7 +10,6 @@ namespace matome_phase1 {
     /// </summary>
     public partial class App : Application {
         protected override void OnStartup(StartupEventArgs e) {
-            Test_main test = new Test_main();
             base.OnStartup(e);
         }
     }

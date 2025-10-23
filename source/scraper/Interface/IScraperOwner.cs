@@ -10,6 +10,6 @@ namespace matome_phase1.scraper.Interface {
     internal interface IScraperOwner {
         IScraperService ScraperService {get; set;}
         AbstractScraperConfig AConfig { get; set; }
-        public void LoadConfig(string configPath);
+        public List<Object> LoadConfig(string configPath);
     }
 }

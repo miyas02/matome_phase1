@@ -16,7 +16,7 @@ namespace matome_phase1.scraper {
     internal class ScraperOwner : IScraperOwner  {
         public IScraperService ScraperService { get; set; }
         public AbstractScraperConfig AConfig { get; set; }
-        public void LoadConfig(string config) {
+        public List<Object> LoadConfig(string config) {
             using JsonDocument doc = JsonDocument.Parse(config);
             string logicValue = doc.RootElement.GetProperty("LOGIC").GetString() ?? "default";
 
@@ -34,13 +34,7 @@ namespace matome_phase1.scraper {
             //TODO AConfigの入力(読み込み)チェック
 
             List<Object> Items = ScraperService.GetItems(AConfig);
-            foreach (var item in Items) {
-                if (item is Post) {
-                    var p = (Post)item;
-                    Debug.WriteLine($"ID: {p.Id}, UserID: {p.UserId}, Text: {p.Text}, Date: {p.Date}");
-                }
-            }
-            Debug.WriteLine(Items);
+            return Items;
         }
     }
 }
