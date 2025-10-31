@@ -23,17 +23,17 @@ namespace matome_phase1 {
         //config.json取得
         string configPathURL = "https://raw.githubusercontent.com/miyas02/matome_phase1/refs/heads/master/source/docs/SampleConfig.json";
 
-        //postsの実態(バッキングフィールド
+        //postsの実態(バッキングフィールド)
         private List<Post> _posts = new List<Post>();
         public List<Post> Posts {
-            get => _posts;//バッキングフィールドの値を返す
+            get { return _posts; }//バッキングフィールドの値を返す
             set {
                 _posts = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Posts))); // ← UIに通知！
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Posts)));
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public MainWindow() {
             InitializeComponent();
