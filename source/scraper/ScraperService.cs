@@ -33,7 +33,7 @@ namespace matome_phase1.scraper {
             return DocParseItems(AConfig, doc);
         }
 
-        protected abstract List<System.Object> DocParseItems(AbstractScraperConfig AConfig, HtmlDocument doc);
+        internal abstract List<System.Object> DocParseItems(AbstractScraperConfig AConfig, HtmlDocument doc);
 
         /// <summary>
         /// urlを渡してDriverを取得するメソッド

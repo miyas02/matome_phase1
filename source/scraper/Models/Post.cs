@@ -24,5 +24,13 @@ namespace matome_phase1.scraper.Models {
         public string? ImageUrl {
             get; set;
         }
+        public override bool Equals(object? obj) {
+            if (obj is not Post other) return false;
+            return Id == other.Id &&
+                   Date == other.Date &&
+                   ImageUrl == other.ImageUrl &&
+                   Reply == other.Reply &&
+                   Text == other.Text;
+        }
     }
 }

@@ -24,15 +24,25 @@ class ScraperOwner{
     + IScraperService
     + LoadCofig(configFIlePath)void
 }
-class ScraperService
+class ScraperService {
+  - GetDriver(string url)
+}
 
 class PostsScraperConfig
+
+class PostsScraperService {
+  + GetItems(AbstractScraperConfig) List<Object>
+  # DocParseItems(AConfig, HtmlDocument doc) List<Object>
+  - DocParsePosts(AConfig, HtmlDocument doc) List<Object>
+  - GetInnerText(HtmlNode postNode, string node)
+}
 
 %% 関連
 UI --> IScraperOwner: インスタンス化
 IScraperOwner <|-- ScraperOwner
 IScraperOwner --* IScraperService
 IScraperService <|-- ScraperService
+ScraperService <|-- PostsScraperService
 IScraperOwner --* AbstractScraperConfig
 AbstractScraperConfig <|-- PostsScraperConfig
 ```

@@ -6,34 +6,17 @@ using OpenQA.Selenium.BiDi.Script;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+[assembly: InternalsVisibleTo("matome_phase1.Tests")]
 
 namespace matome_phase1.scraper {
-    internal class PostsScraperService : ScraperService {
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="AConfig"></param>
-        /// <param name="doc"></param>
-        /// <returns List></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        protected override List<System.Object> DocParseItems(AbstractScraperConfig AConfig, HtmlDocument doc) {
-            switch (AConfig.LOGIC) {
-                case ScraperLogics.Posts:
-                    return DocParsePosts((PostConfig)AConfig, doc);
-                // 他のロジックも追加
-                default:
-                    throw new NotImplementedException($"Logic '{AConfig.LOGIC}' is not implemented.");
-            }
-
-            // This method should be implemented in derived classes to parse items from the document
-            throw new NotImplementedException("This method should be overridden in derived classes.");
-        }
+    public class PostsScraperService : ScraperService {
+        private PostConfig Config;
         /// <summary>
         /// 
         /// </summary>
@@ -41,7 +24,13 @@ namespace matome_phase1.scraper {
         /// <param name="doc"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private List<System.Object> DocParsePosts(PostConfig Config, HtmlDocument doc) {
+        internal override List<System.Object> DocParseItems(AbstractScraperConfig AConfig, HtmlDocument doc) {
+            try {
+                Config = (PostConfig)AConfig;
+            } catch (InvalidCastException) {
+                throw new ConfigException(ScraperExceptionType.InvalidLogicValue, AConfig);
+            }
+
             HtmlNode? contentNode = doc.DocumentNode.SelectSingleNode(Config.LIST_NODE);
 
             if (contentNode == null) {
@@ -58,12 +47,13 @@ namespace matome_phase1.scraper {
             foreach (var postNode in postNodes) {
                 Post post = new();
                 // 各NodeSelectorに基づいて値を取得
-                post.Text = GetInnerText(postNode, Config.TEXT.NODE);
-                post.Id = GetInnerText(postNode, Config.POST_ID.NODE);
-                post.UserId = GetInnerText(postNode, Config.USER_ID.NODE);
-                post.Reply = GetInnerText(postNode, Config.REPLY.NODE);
-                post.ImageUrl = GetInnerText(postNode, Config.IMAGE.NODE);
-                var timestamp = GetInnerText(postNode, Config.DATE.NODE);
+
+                post.Text = GetValue(postNode, Config.TEXT);//GetInnerText(postNode, Config.TEXT.NODE);
+                post.Id = GetValue(postNode, Config.POST_ID);//GetInnerText(postNode, Config.POST_ID.NODE);
+                post.UserId = GetValue(postNode, Config.USER_ID);//GetInnerText(postNode, Config.USER_ID.NODE);
+                post.Reply = GetValue(postNode, Config.REPLY);//GetInnerText(postNode, Config.REPLY.NODE);
+                post.ImageUrl = GetValue(postNode, Config.IMAGE);//GetInnerText(postNode, Config.IMAGE.NODE);
+                var timestamp = GetValue(postNode, Config.DATE);//GetInnerText(postNode, Config.DATE.NODE);
                 var cleanedDateString = Regex.Replace(timestamp, @"\s*\(.\)\s*", " ");
                 if (DateTime.TryParseExact(cleanedDateString.Trim(), "yyyy/MM/dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out var dt)) {
                     post.Date = dt;
@@ -73,6 +63,15 @@ namespace matome_phase1.scraper {
             return posts;
         }
 
+        private string GetValue(HtmlNode postNode, ConfigNodeBase configNode) {
+            if (configNode.TYPE == "attribute") {
+                return GetAttributeValue(postNode, configNode.NODE, configNode.ATTRIBUTE);
+            } 
+            if (configNode.TYPE == "text"){
+                return GetInnerText(postNode, configNode.NODE);
+            }
+            throw new ConfigException(ScraperExceptionType.ContentNodeIsNull);
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -82,6 +81,10 @@ namespace matome_phase1.scraper {
         private static string GetInnerText(HtmlNode postNode, string node) {
             var bodyNode = postNode.SelectSingleNode(node);
             return bodyNode?.InnerText.Trim() ?? "";
+        }
+        private static string GetAttributeValue(HtmlNode postNode, string node, string attribute) {
+            var bodyNode = postNode.SelectSingleNode(node);
+            return bodyNode?.GetAttributeValue(attribute, "").Trim() ?? "";
         }
     }
 }
