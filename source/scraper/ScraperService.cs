@@ -55,7 +55,7 @@ namespace matome_phase1.scraper {
         private IWebDriver NavigateToPage(IWebDriver driver, AbstractScraperConfig AConfig) {
             //NavigatePagesConfig nullチェック
             if (AConfig.NAVIGATE_PAGES == null || AConfig.NAVIGATE_PAGES.Count == 0) {
-                throw new ConfigException(ScraperExceptionType.NavigateToPagesIsNull,AConfig);
+                return driver;
             }
             //NavigatePagesConfigのListの各要素を取り出す
             foreach (var navi in AConfig.NAVIGATE_PAGES) {

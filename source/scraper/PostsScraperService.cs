@@ -46,8 +46,6 @@ namespace matome_phase1.scraper {
             var posts = new List<System.Object>();
             foreach (var postNode in postNodes) {
                 Post post = new();
-                // 各NodeSelectorに基づいて値を取得
-
                 post.Text = GetValue(postNode, Config.TEXT);//GetInnerText(postNode, Config.TEXT.NODE);
                 post.Id = GetValue(postNode, Config.POST_ID);//GetInnerText(postNode, Config.POST_ID.NODE);
                 post.UserId = GetValue(postNode, Config.USER_ID);//GetInnerText(postNode, Config.USER_ID.NODE);
