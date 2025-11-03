@@ -27,7 +27,6 @@ namespace matome_phase1.scraper {
             if (AConfig.LOGIC == null) {
                 throw new ConfigException(ScraperExceptionType.ConfigJsonLogicNotFound, AConfig);
             }
-            string te = AConfig.LOGIC;
 
             ScraperService = ScraperFactory.Create(AConfig);
 
