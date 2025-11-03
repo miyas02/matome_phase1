@@ -6,7 +6,6 @@
       "TYPE": "pagination_search",
       "TARGET_LINK": {
           "NODE": "//h3[contains(@class, 'list-view-item-heading')]/a",
-          "TYPE": "text",
           "TEXT": "わかばシューター"
         },
       "PAGINATION": {
@@ -32,12 +31,13 @@
       "TYPE": "text"
   },
   "REPLY": {
-      "NODE": ".//div[contains(@class, 'comment-parent-link')]",
+      "NODE": ".//a[contains(@class, 'comment-parent-link')]",
       "TYPE": "text"
   },
   "IMAGE": {
-      "NODE": ".//div[contains(@class, 'media-modal')]",
-      "TYPE": "text"
+      "NODE": "//div[contains(@class,'owner-icon-container')]//img",
+      "TYPE": "attribute",
+      "ATTRIBUTE": "src"
   },
   "POST_ID": {
       "NODE": ".",
