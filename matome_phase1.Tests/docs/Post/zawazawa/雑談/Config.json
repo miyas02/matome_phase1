@@ -1,0 +1,34 @@
+{
+  "SITE_NAME": "zawazawaSpla3_ƒuƒL",
+  "URL": "https://z.wikiwiki.jp/spla3/topic/280",
+  "LOGIC": "Posts",
+  "LIST_NODE": "//div[@id='main-list-view-widget']",
+  "POST_NODE": ".//*[contains(@class, 'list-view-item')]",
+  "USER_ID": {
+      "NODE": ".//*[contains(@class, 'hashed-track-info')]",
+      "TYPE": "text"
+  },
+  "TEXT": {
+      "NODE": ".//div[contains(@class, 'body')]//p",
+      "TYPE": "text"
+  },
+  "DATE": {
+      "NODE": ".//small[@class='comment-timestamp']/a",
+      "TYPE": "text"
+  },
+  "REPLY": {
+      "NODE": ".//a[contains(@class, 'comment-parent-link')]",
+      "TYPE": "text"
+  },
+  "IMAGE": {
+      "NODE": "//div[contains(@class,'owner-icon-container')]//img",
+      "TYPE": "attribute",
+      "ATTRIBUTE": "src"
+  },
+  "POST_ID": {
+      "NODE": ".",
+      "TYPE": "attribute",
+      "ATTRIBUTE": "data-key"
+  }
+}
+

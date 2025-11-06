@@ -10,29 +10,25 @@ using System.Text.Json;
 
 namespace matome_phase1.Tests {
     public class PostsScraperServcieTest {
-        private const string ConfigPathExistNavi = @"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\PostConfigTest_Pagination.json";
-        private const string ConfigPathNotExistNavi = @"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\PostConfigTest_NotPagination.json";
-        private const string targetHtml = @"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\targetHtml.html";
-        private const string expectPath = @"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\PostExpectList.json";
-        AbstractScraperConfig AConfigExistNavi;
-        AbstractScraperConfig AConfigNotExistNavi;
-        PostsScraperService serviceExistNavi;
-        PostsScraperService serviceNotExistNavi;
+        //書き換える
+        private static string type = "Post";
+        private static string site = "zawazawa";
+        private static string target = "雑談";
+       
+        private string targetHtml = @$"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\{type}\{site}\{target}\targetHtml.html";
+        private string ConfigPath = @$"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\{type}\{site}\{target}\Config.json";
+        private string expectPath = @$"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\{type}\{site}\{target}\Expect.json";
+        
+        AbstractScraperConfig AConfig;
+        PostsScraperService service;
         public PostsScraperServcieTest() {
             //testConfigの読み込みとAConfigとServiceのインスタンス化
-            string config = File.ReadAllText(ConfigPathExistNavi);
-            AConfigExistNavi = ScraperFactory.Create(config);
-            if (AConfigExistNavi.LOGIC == null) {
-                throw new ConfigException(ScraperExceptionType.ConfigJsonLogicNotFound, AConfigExistNavi);
+            string config = File.ReadAllText(ConfigPath);
+            AConfig = ScraperFactory.Create(config);
+            if (AConfig.LOGIC == null) {
+                throw new ConfigException(ScraperExceptionType.ConfigJsonLogicNotFound, AConfig);
             }
-            serviceExistNavi = (PostsScraperService)ScraperFactory.Create(AConfigExistNavi);
-
-            string notNavi = File.ReadAllText(ConfigPathNotExistNavi);
-            AConfigNotExistNavi = ScraperFactory.Create(notNavi);
-            if (AConfigNotExistNavi.LOGIC == null) {
-                throw new ConfigException(ScraperExceptionType.ConfigJsonLogicNotFound, AConfigNotExistNavi);
-            }
-            serviceNotExistNavi = (PostsScraperService)ScraperFactory.Create(AConfigNotExistNavi);
+            service = (PostsScraperService)ScraperFactory.Create(AConfig);
 
         }
 
@@ -44,7 +40,7 @@ namespace matome_phase1.Tests {
             var expectList = JsonSerializer.Deserialize<List<Post>>(expect);
 
             //Act
-            List<Object> Items = serviceNotExistNavi.GetItems(AConfigNotExistNavi);
+            List<Object> Items = service.GetItems(AConfig);
 
             //Assert
             Assert.Equal(expectList, Items);
@@ -64,12 +60,17 @@ namespace matome_phase1.Tests {
 
             //Act
             // actualの作成
-            List<Object> Items = serviceExistNavi.DocParseItems(AConfigExistNavi, doc);
+            List<Object> Items = service.DocParseItems(AConfig, doc);
             List<Post> actualItems = Items.Cast<Post>().ToList();
             var options = new System.Text.Json.JsonSerializerOptions {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 WriteIndented = true
             };
+
+            //actualItemsの書き出し
+            string filePath = @"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\tmp\actualItems.json"; //出力パスの定義
+            string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
+            File.WriteAllText(filePath, json); //書き出し
 
             //Assert
             Assert.Equal(expectList, actualItems);
