@@ -37,10 +37,10 @@ namespace matome_phase1.constants {
             if (!string.IsNullOrEmpty(additionalMessage))
                 baseMessage += " : [additional Message] " + additionalMessage;
             if (config != null)
-                Debug.WriteLine("AbstractScraperConfig : " + config);
+                 Console.WriteLine("AbstractScraperConfig : " + config);
 
             // デバッグログに出力
-            Debug.WriteLine(baseMessage);
+            Console.WriteLine(baseMessage);
             return baseMessage;
         }
     }

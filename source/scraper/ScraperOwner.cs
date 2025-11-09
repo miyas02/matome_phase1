@@ -17,11 +17,7 @@ namespace matome_phase1.scraper {
         public IScraperService ScraperService { get; set; }
         public AbstractScraperConfig AConfig { get; set; }
         public List<Object> LoadConfig(string config) {
-            //using JsonDocument doc = JsonDocument.Parse(config);
-            //string logicValue = doc.RootElement.GetProperty("LOGIC").GetString() ?? "default";
-
             //jsonのlogic属性のvalueで生成するインスタンスを切り替え
-            //サイトカテゴリごとに条件分岐を追加する
             AConfig = ScraperFactory.Create(config);
             //AConfigのプロパティのnullチェック
             if (AConfig.LOGIC == null) {

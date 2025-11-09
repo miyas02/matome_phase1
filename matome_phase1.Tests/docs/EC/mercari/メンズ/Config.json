@@ -1,0 +1,21 @@
+{
+  "SITE_NAME": "メルカリ",
+  "URL": "https://jp.mercari.com/s/253386",
+  "LOGIC": "EC",
+  "LIST_NODE": "//*[contains(@id,'item-grid')]",
+  "ITEM_NODE": ".//div[contains(@class, 'merItemThumbnail')]",
+  "ITEM_NAME": {
+      "NODE":".",
+      "TYPE":"attribute",
+      "ATTRIBUTE":"aria-label"
+  },
+  "IMAGE" :{
+      "NODE": ".//img",
+      "TYPE": "attribute",
+      "ATTRIBUTE": "src"
+  },
+  "PRICE" :{
+      "NODE": ".//*[contains(@class, 'number__6b270ca7')]",
+      "TYPE": "text"
+  }
+}

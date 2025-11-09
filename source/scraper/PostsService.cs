@@ -15,7 +15,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 [assembly: InternalsVisibleTo("matome_phase1.Tests")]
 
 namespace matome_phase1.scraper {
-    public class PostsScraperService : ScraperService {
+    internal class PostsService : ScraperService {
         private PostConfig Config;
         /// <summary>
         /// 

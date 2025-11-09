@@ -20,7 +20,7 @@ namespace matome_phase1.Tests {
         private string expectPath = @$"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\{type}\{site}\{target}\Expect.json";
         
         AbstractScraperConfig AConfig;
-        PostsScraperService service;
+        PostsService service;
         public PostsScraperServcieTest() {
             //testConfigの読み込みとAConfigとServiceのインスタンス化
             string config = File.ReadAllText(ConfigPath);
@@ -28,7 +28,7 @@ namespace matome_phase1.Tests {
             if (AConfig.LOGIC == null) {
                 throw new ConfigException(ScraperExceptionType.ConfigJsonLogicNotFound, AConfig);
             }
-            service = (PostsScraperService)ScraperFactory.Create(AConfig);
+            service = (PostsService)ScraperFactory.Create(AConfig);
 
         }
 

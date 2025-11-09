@@ -1,4 +1,5 @@
 ﻿using matome_phase1.scraper.Configs;
+using matome_phase1.scraper.Configs.EC;
 using matome_phase1.scraper.Interface;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,8 @@ namespace matome_phase1.scraper {
         public static IScraperService Create(AbstractScraperConfig Config) {
 
             return Config switch {
-                PostConfig  => new PostsScraperService(),
+                PostConfig  => new PostsService(),
+                ECConfig => new ECService()
             };
         }
 
@@ -36,7 +38,8 @@ namespace matome_phase1.scraper {
                 }
             };
             return logic switch {
-                "Posts" => JsonSerializer.Deserialize<PostConfig>(json, options)
+                "Posts" => JsonSerializer.Deserialize<PostConfig>(json, options),
+                "EC" => JsonSerializer.Deserialize<ECConfig>(json, options),
             };
         }
     }
