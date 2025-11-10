@@ -2,7 +2,6 @@
 using System.Data;
 using System.Windows;
 using matome_phase1.scraper;
-using matome_phase1.test;
 
 namespace matome_phase1 {
     /// <summary>

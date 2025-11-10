@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace matome_phase1.scraper {
+namespace matome_phase1.scraper.services {
     public abstract class ScraperService : IScraperService {
         public List<System.Object> GetItems(AbstractScraperConfig AConfig) {
 

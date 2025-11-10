@@ -7,6 +7,7 @@ using matome_phase1.scraper.Interface;
 using OpenQA.Selenium.DevTools.V136.Overlay;
 using System.Printing;
 using System.Text.Json;
+using matome_phase1.scraper.services;
 
 namespace matome_phase1.Tests {
     public class PostsScraperServcieTest {

@@ -21,7 +21,7 @@ namespace matome_phase1 {
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged{
         //config.json取得
-        string configPathURL = "https://raw.githubusercontent.com/miyas02/matome_phase1/refs/heads/master/source/docs/SampleConfig.json";
+        string configPathURL = "https://raw.githubusercontent.com/miyas02/matome_phase1/refs/heads/master/source/docs/target_config/Config.json";
 
         //postsの実態(バッキングフィールド)
         private List<Post> _posts = new List<Post>();
