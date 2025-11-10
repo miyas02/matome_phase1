@@ -32,7 +32,6 @@ namespace matome_phase1.scraper {
             }
             HtmlNode? contentNode = doc.DocumentNode.SelectSingleNode(Config.LIST_NODE);
 
-            Debug.WriteLine(contentNode.OuterHtml);
             if (contentNode == null) {
                 throw new ConfigException(ScraperExceptionType.ContentNodeIsNull, Config);
             }

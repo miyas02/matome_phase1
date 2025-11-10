@@ -50,7 +50,7 @@ namespace matome_phase1.Tests {
                 WriteIndented = true
             };
             //actualItemsの書き出し
-            string filePath = @"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\tmp\GetItemsTest_actualItems.json"; //出力パスの定義
+            string filePath = @"C:\work\MyApps\matome_phase1\matome_phase1.Tests\log\EC_GetItemsTest_actualItems.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 
@@ -80,7 +80,7 @@ namespace matome_phase1.Tests {
             };
 
             //actualItemsの書き出し
-            string filePath = @"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\tmp\actualItems.json"; //出力パスの定義
+            string filePath = @"C:\work\MyApps\matome_phase1\matome_phase1.Tests\log\EC_DocParseItems_actualItems.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 

@@ -41,6 +41,16 @@ namespace matome_phase1.Tests {
 
             //Act
             List<Object> Items = service.GetItems(AConfig);
+            List<Post> actualItems = Items.Cast<Post>().ToList();
+            var options = new System.Text.Json.JsonSerializerOptions {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                WriteIndented = true
+            };
+
+            //actualItemsの書き出し
+            string filePath = @"C:\work\MyApps\matome_phase1\matome_phase1.Tests\log\Post_GetItems_actual.json"; //出力パスの定義
+            string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
+            File.WriteAllText(filePath, json); //書き出し
 
             //Assert
             Assert.Equal(expectList, Items);
@@ -68,7 +78,7 @@ namespace matome_phase1.Tests {
             };
 
             //actualItemsの書き出し
-            string filePath = @"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\tmp\actualItems.json"; //出力パスの定義
+            string filePath = @"C:\work\MyApps\matome_phase1\matome_phase1.Tests\log\Post_DocParseItems_actual.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 
