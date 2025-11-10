@@ -14,7 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 [assembly: InternalsVisibleTo("matome_phase1.Tests")]
 
-namespace matome_phase1.scraper {
+namespace matome_phase1.scraper.services {
     internal class PostsService : ScraperService {
         private PostConfig Config;
         /// <summary>
