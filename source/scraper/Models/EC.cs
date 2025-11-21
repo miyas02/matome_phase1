@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace matome_phase1.scraper.Models {
-    internal class EC {
+    public class EC {
         public string? Name { get; set; }
         public string? Price { get; set; }
         public string? img { get; set; }

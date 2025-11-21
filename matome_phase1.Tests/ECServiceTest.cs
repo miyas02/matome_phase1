@@ -19,9 +19,9 @@ namespace matome_phase1.Tests {
         private static string site = "mercari";
         private static string target = "メンズ";
 
-        private string targetHtml = @$"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\{type}\{site}\{target}\targetHtml.html";
-        private string ConfigPath = @$"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\{type}\{site}\{target}\Config.json";
-        private string expectPath = @$"C:\work\MyApps\matome_phase1\matome_phase1.Tests\docs\{type}\{site}\{target}\Expect.json";
+        private string targetHtml = @$"..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
+        private string ConfigPath = @$"..\..\..\docs\{type}\{site}\{target}\Config.json";
+        private string expectPath = @$"..\..\..\docs\{type}\{site}\{target}\Expect.json";
 
         AbstractScraperConfig AConfig;
         ECService service;
@@ -51,7 +51,7 @@ namespace matome_phase1.Tests {
                 WriteIndented = true
             };
             //actualItemsの書き出し
-            string filePath = @"C:\work\MyApps\matome_phase1\matome_phase1.Tests\log\EC_GetItemsTest_actualItems.json"; //出力パスの定義
+            string filePath = @"..\..\..\log\EC_GetItemsTest_actualItems.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 
@@ -81,7 +81,7 @@ namespace matome_phase1.Tests {
             };
 
             //actualItemsの書き出し
-            string filePath = @"C:\work\MyApps\matome_phase1\matome_phase1.Tests\log\EC_DocParseItems_actualItems.json"; //出力パスの定義
+            string filePath = @"..\..\..\log\EC_DocParseItems_actualItems.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 

@@ -1,6 +1,7 @@
 ﻿using matome_phase1.scraper;
 using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
+using System.Collections;
 using System.ComponentModel;
 using System.Net.Http;
 using System.Text;
@@ -23,13 +24,28 @@ namespace matome_phase1 {
         //config.json取得
         string configPathURL = "https://raw.githubusercontent.com/miyas02/matome_phase1/refs/heads/master/source/docs/target_config/Config.json";
 
-        //postsの実態(バッキングフィールド)
         private List<Post> _posts = new List<Post>();
-        public List<Post> Posts {
+        public List<Post> posts {
             get { return _posts; }//バッキングフィールドの値を返す
             set {
                 _posts = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Posts)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(posts)));
+            }
+        }
+        private List<EC> _ecItems = new List<EC>();
+        public List<EC> ECitems {
+            get { return _ecItems; }//バッキングフィールドの値を返す
+            set {
+                _ecItems = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(posts)));
+            }
+        }
+        private IEnumerable _currentItems;
+        public IEnumerable CurrentItems {
+            get => _currentItems;
+            set { 
+                _currentItems = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentItems)));
             }
         }
 
@@ -46,7 +62,15 @@ namespace matome_phase1 {
 
             IScraperOwner scraperOwner = new ScraperOwner();
             List<Object> Items = scraperOwner.LoadConfig(config);
-            Posts = Items.ConvertAll(item => (Post)item);
+
+            switch(Items.FirstOrDefault()) {
+                case Post:
+                    CurrentItems = Items.ConvertAll(item => (Post)item);
+                    break;
+                case EC:
+                    CurrentItems = Items.ConvertAll(item => (EC)item);
+                    break;
+            }
             MessageBox.Show($"スクレイピングが完了しました。取得件数: {Items.Count}件");
         }
     }
