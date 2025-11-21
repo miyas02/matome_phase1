@@ -1,21 +1,47 @@
 {
-  "SITE_NAME": "メルカリ",
-  "URL": "https://jp.mercari.com/s/253386",
-  "LOGIC": "EC",
-  "LIST_NODE": "//*[contains(@id,'item-grid')]",
-  "ITEM_NODE": ".//div[contains(@class, 'merItemThumbnail')]",
-  "ITEM_NAME": {
-      "NODE":".",
-      "TYPE":"attribute",
-      "ATTRIBUTE":"aria-label"
+  "SITE_NAME": "zawazawaSpla3_ブキ",
+  "URL": "https://zawazawa.jp/spla3/tag/%E3%83%96%E3%82%AD",
+  "NAVIGATE_PAGES": [
+    {
+      "TYPE": "pagination_search",
+      "TARGET_LINK": {
+          "NODE": "//h3[contains(@class, 'list-view-item-heading')]/a",
+          "TEXT": "わかばシューター"
+        },
+      "PAGINATION": {
+        "NODE": "//li[contains(@class, 'next')]/a",
+        "ACTION": "click",
+        "MAX_LOOP": 20
+      }
+    }
+  ],
+  "LOGIC": "Posts",
+  "LIST_NODE": "//div[@id='main-list-view-widget']",
+  "POST_NODE": ".//*[contains(@class, 'list-view-item')]",
+  "USER_ID": {
+      "NODE": ".//*[contains(@class, 'hashed-track-info')]",
+      "TYPE": "text"
   },
-  "IMAGE" :{
-      "NODE": ".//img",
+  "TEXT": {
+      "NODE": ".//div[contains(@class, 'body')]//p",
+      "TYPE": "text"
+  },
+  "DATE": {
+      "NODE": ".//small[@class='comment-timestamp']/a",
+      "TYPE": "text"
+  },
+  "REPLY": {
+      "NODE": ".//a[contains(@class, 'comment-parent-link')]",
+      "TYPE": "text"
+  },
+  "IMAGE": {
+      "NODE": "//div[contains(@class,'owner-icon-container')]//img",
       "TYPE": "attribute",
       "ATTRIBUTE": "src"
   },
-  "PRICE" :{
-      "NODE": ".//*[contains(@class, 'number__6b270ca7')]",
-      "TYPE": "text"
+  "POST_ID": {
+      "NODE": ".",
+      "TYPE": "attribute",
+      "ATTRIBUTE": "data-key"
   }
 }
