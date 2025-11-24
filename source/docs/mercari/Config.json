@@ -8,6 +8,10 @@
       "NODE":".//span[@data-testid='thumbnail-item-name']",
       "TYPE":"text"
   },
+  "PRICE": {
+      "NODE": ".//span[contains(@class,'number')]",
+      "TYPE": "text"
+  },
   "IMAGE" :{
       "NODE": ".//div[contains(@class,'owner-icon-container')]//img",
       "TYPE": "attribute",
