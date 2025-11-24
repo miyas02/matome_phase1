@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using matome_phase1.scraper.Models;
 
 namespace matome_phase1.scraper.Interface {
     internal interface IScraperOwner {
         IScraperService ScraperService {get; set;}
         AbstractScraperConfig AConfig { get; set; }
-        public List<Object> LoadConfig(string configPath);
+        public ItemsVM LoadConfig(string configPath);
     }
 }

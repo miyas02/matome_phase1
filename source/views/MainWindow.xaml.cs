@@ -2,8 +2,10 @@
 using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
 using System.Collections;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net.Http;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,54 +26,73 @@ namespace matome_phase1 {
         //config.json取得
         string configPathURL = "https://raw.githubusercontent.com/miyas02/matome_phase1/refs/heads/master/source/docs/target_config/Config.json";
 
-        private List<Post> _posts = new List<Post>();
-        public List<Post> posts {
-            get { return _posts; }//バッキングフィールドの値を返す
-            set {
-                _posts = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(posts)));
-            }
-        }
-        private List<EC> _ecItems = new List<EC>();
-        public List<EC> ECitems {
-            get { return _ecItems; }//バッキングフィールドの値を返す
-            set {
-                _ecItems = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(posts)));
-            }
-        }
-        private IEnumerable _currentItems;
-        public IEnumerable CurrentItems {
+        private ObservableCollection<Object> _currentItems;
+        public ObservableCollection<Object> CurrentItems {
             get => _currentItems;
             set { 
                 _currentItems = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentItems)));
+                OnPropertyChanged(nameof(CurrentItems));
+            }
+        }
+        private string _siteName;
+        public string SiteName {
+            get => _siteName;
+            set {
+                _siteName = value;
+                OnPropertyChanged(nameof(SiteName));
+            }
+        }
+        private string _url;
+        public string URL {
+            get => _url;
+            set {
+                _url = value;
+                OnPropertyChanged(nameof(URL));
             }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string propertyName) {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         public MainWindow() {
             InitializeComponent();
             DataContext = this;
         }
-        private void Button_Click(object sender, RoutedEventArgs e) {
+        private void ScrapingBtn_Click(object sender, RoutedEventArgs e) {
             MessageBox.Show("スクレイピングを開始します。");
             using HttpClient client = new HttpClient();
             string config = client.GetStringAsync(configPathURL).Result;
 
             IScraperOwner scraperOwner = new ScraperOwner();
-            List<Object> Items = scraperOwner.LoadConfig(config);
-
-            switch(Items.FirstOrDefault()) {
+            ItemsVM ItemsVM = scraperOwner.LoadConfig(config);
+            SiteName = ItemsVM.Config.SITE_NAME;
+            URL = ItemsVM.Config.URL;
+            switch (ItemsVM.Items.FirstOrDefault()) {
                 case Post:
-                    CurrentItems = Items.ConvertAll(item => (Post)item);
+                    CurrentItems = new ObservableCollection<Object>(ItemsVM.Items.ConvertAll(item => (Post)item));
                     break;
                 case EC:
-                    CurrentItems = Items.ConvertAll(item => (EC)item);
+                    CurrentItems = new ObservableCollection<Object>(ItemsVM.Items.ConvertAll(item => (EC)item));
                     break;
             }
-            MessageBox.Show($"スクレイピングが完了しました。取得件数: {Items.Count}件");
+            MessageBox.Show($"スクレイピングが完了しました。取得件数: {ItemsVM.Items.Count}件");
         }
+        private void ClearBtn_Click(object sender, RoutedEventArgs e) {
+            CurrentItems.Clear();
+            SiteName = string.Empty;
+            URL = string.Empty;
+        }
+        private void ItemsDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e) {
+            if (e.PropertyName != "Text") return;
+            e.Column.Width = new DataGridLength(600);
+            if (e.Column is DataGridTextColumn textColumn) {
+                if (ItemsDataGrid.Resources["WrapTextBlockStyle"] is Style wrapStyle) {
+                    textColumn.ElementStyle = wrapStyle;
+                }
+            }
+        }
+
     }
 }

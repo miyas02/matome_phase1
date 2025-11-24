@@ -5,10 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:matome_phase1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1000">
+        Title="MainWindow" Height="900" Width="1000"
+        WindowState="Maximized">
     <Grid>
-        <Button Content="実行" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" Width="38" Click="Button_Click"/>
-        <DataGrid HorizontalAlignment="Stretch" Margin="0,80,0,0" VerticalAlignment="Stretch" ItemsSource="{Binding CurrentItems}"/>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0" Content="実行" HorizontalAlignment="Left" Margin="20,30,0,0" VerticalAlignment="Top" Width="50" Click="ScrapingBtn_Click"/>
+        <Button Grid.Column="1" Content="Clear" HorizontalAlignment="Left" Margin="20,30,0,0" VerticalAlignment="Top" Width="50" Click="ClearBtn_Click"/>
+        <TextBlock Grid.Column="2" Text="{Binding SiteName}" FontSize="24" FontWeight="Bold" Margin="20,20,0,0"/>
+        <TextBlock Grid.Column="2" Text="{Binding URL}" FontSize="18" Margin="20,50,0,0"/>
+        <DataGrid 
+            x:Name="ItemsDataGrid"
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Margin="0,80,0,0"
+            ItemsSource="{Binding CurrentItems}"
+            AutoGenerateColumns="True"
+            AutoGeneratingColumn="ItemsDataGrid_AutoGeneratingColumn"/>
     </Grid>
 </Window>

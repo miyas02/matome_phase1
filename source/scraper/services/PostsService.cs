@@ -62,13 +62,21 @@ namespace matome_phase1.scraper.services {
         }
 
         private string GetValue(HtmlNode postNode, ConfigNodeBase configNode) {
+            string value = null;
             if (configNode.TYPE == "attribute") {
-                return GetAttributeValue(postNode, configNode.NODE, configNode.ATTRIBUTE);
+                value = GetAttributeValue(postNode, configNode.NODE, configNode.ATTRIBUTE);
             } 
             if (configNode.TYPE == "text"){
-                return GetInnerText(postNode, configNode.NODE);
+                value = GetInnerText(postNode, configNode.NODE);
             }
-            throw new ConfigException(ScraperExceptionType.ContentNodeIsNull);
+            if (configNode.REGEX != null) {
+                var match = Regex.Match(value, configNode.REGEX);
+                if (match.Success && match.Groups.Count > 1) {
+                    value = match.Groups[1].Value.Trim();
+                }
+                return "";
+            }
+            return value;
         }
         /// <summary>
         /// 

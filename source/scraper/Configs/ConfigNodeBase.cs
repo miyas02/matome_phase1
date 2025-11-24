@@ -13,6 +13,8 @@ namespace matome_phase1.scraper.Configs {
         public string? NODE {  get; set; }
         [JsonPropertyName("ATTRIBUTE")]
         public string? ATTRIBUTE { get; set; }
+        [JsonPropertyName("REGEX")]
+        public string? REGEX { get; set; }
 
     }
 }

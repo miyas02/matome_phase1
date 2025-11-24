@@ -16,7 +16,8 @@ namespace matome_phase1.scraper {
     internal class ScraperOwner : IScraperOwner  {
         public IScraperService ScraperService { get; set; }
         public AbstractScraperConfig AConfig { get; set; }
-        public List<Object> LoadConfig(string config) {
+        public ItemsVM ItemsVM { get; set; }
+        public ItemsVM LoadConfig(string config) {
             //jsonのlogic属性のvalueで生成するインスタンスを切り替え
             AConfig = ScraperFactory.Create(config);
             //AConfigのプロパティのnullチェック
@@ -27,9 +28,9 @@ namespace matome_phase1.scraper {
             ScraperService = ScraperFactory.Create(AConfig);
 
             //TODO AConfigの入力(読み込み)チェック
-
             List<Object> Items = ScraperService.GetItems(AConfig);
-            return Items;
+            ItemsVM = new ItemsVM(AConfig,Items);
+            return ItemsVM;
         }
     }
 }
