@@ -2,7 +2,7 @@
   "SITE_NAME": "メルカリ",
   "URL": "https://jp.mercari.com/s/253386",
   "LOGIC": "EC",
-  "LIST_NODE": "//*[contains(@id,'item-grid')/ul]",
+  "LIST_NODE": "//*[contains(@id,'item-grid')]/ul",
   "ITEM_NODE": ".//div[contains(@class, 'merItemThumbnail')]",
   "ITEM_NAME": {
       "NODE":".",
