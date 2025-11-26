@@ -3,6 +3,7 @@ using matome_phase1.constants;
 using matome_phase1.scraper.Configs;
 using matome_phase1.scraper.Configs.EC;
 using matome_phase1.scraper.Models;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -81,6 +82,33 @@ namespace matome_phase1.scraper.services {
             Debug.WriteLine(node);
             var bodyNode = itemNode.SelectSingleNode(node);
             return bodyNode?.GetAttributeValue(attribute, "").Trim() ?? "";
+        }
+        /// <summary>
+        /// スクロールしてitemを全て読み込む
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <param name="containerBy"></param>
+        /// <param name="itemBy"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        internal override IReadOnlyCollection<IWebElement> EnsureLoadedItems(IWebDriver driver, AbstractScraperConfig AConfig) {
+            var timeout = TimeSpan.FromSeconds(50);
+            ECConfig config = (ECConfig)AConfig;
+            var end = DateTime.UtcNow + timeout;
+            var container = driver.FindElement(By.XPath("//*[contains(@id,'item-grid')]/ul"));
+            int previousCount = -1;
+
+            while (DateTime.UtcNow < end) {
+                var items = container.FindElements(By.XPath(config.ITEM_NODE));
+                if (items.Count > previousCount) {
+                    previousCount = items.Count;
+                    var ret = ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView({behavior:'auto', block:'end'});", items.Last());
+                    Thread.Sleep(1000);
+                    continue;
+                }
+                return items;
+            }
+            return container.FindElements(By.XPath(config.ITEM_NODE));
         }
     }
 }

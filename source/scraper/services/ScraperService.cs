@@ -28,16 +28,8 @@ namespace matome_phase1.scraper.services {
 
             IWebDriver driver = GetDriver(AConfig.URL);
             driver = NavigateToPage(driver, AConfig);
-            //wait
-            //var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-            //wait.Until(d => ((IJavaScriptExecutor)d).ExecuteScript("return document.readyState").ToString() == "complete");
-            ECConfig ecConfig = (ECConfig)AConfig;
-            //var element = driver.FindElement(By.XPath(ecConfig.LIST_NODE));
-            //var elements = element.FindElements(By.XPath(ecConfig.ITEM_NODE));
-            var containerBy = By.XPath(ecConfig.LIST_NODE);
-            var itemBy = By.XPath(ecConfig.ITEM_NODE);
-            EnsureLoadedItems(driver, containerBy, itemBy, TimeSpan.FromSeconds(20));
-            Thread.Sleep(10000);
+            //スクロールして読み込み
+            EnsureLoadedItems(driver, AConfig);
             string html = driver.PageSource;
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
@@ -47,6 +39,7 @@ namespace matome_phase1.scraper.services {
         }
 
         internal abstract List<System.Object> DocParseItems(AbstractScraperConfig AConfig, HtmlDocument doc);
+        internal abstract IReadOnlyCollection<IWebElement> EnsureLoadedItems(IWebDriver driver, AbstractScraperConfig AConfig);
 
         /// <summary>
         /// urlを渡してDriverを取得するメソッド
@@ -56,13 +49,13 @@ namespace matome_phase1.scraper.services {
         /// <returns>Driver</returns>
         private IWebDriver GetDriver(string url) {
             var options = new ChromeOptions();
-            //options.AddArgument("--no-sandbox");
-            //options.AddArgument("--disable-gpu");
-            //options.AddArgument("--disable-dev-shm-usage");
-            //options.AddArgument("--disable-extensions");
-            //options.AddArgument("--headless=new");
-            //options.AddArgument("--disable-features=VizDisplayCompositor");
-            //options.AddArgument($"--user-data-dir={Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString())}");
+            options.AddArgument("--no-sandbox");
+            options.AddArgument("--disable-gpu");
+            options.AddArgument("--disable-dev-shm-usage");
+            options.AddArgument("--disable-extensions");
+            options.AddArgument("--headless=new");
+            options.AddArgument("--disable-features=VizDisplayCompositor");
+            options.AddArgument($"--user-data-dir={Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString())}");
 
             var service = ChromeDriverService.CreateDefaultService();
             service.HideCommandPromptWindow = true; // コンソール非表示
@@ -118,30 +111,31 @@ namespace matome_phase1.scraper.services {
                 
             }
         }
-        // スクロールしてアイテムを追加読み込みするユーティリティ
-        public static IReadOnlyCollection<IWebElement> EnsureLoadedItems(IWebDriver driver, By containerBy, By itemBy, TimeSpan timeout) {
-            var end = DateTime.UtcNow + timeout;
-            var container = driver.FindElement(containerBy);
-            int previousCount = -1;
+        /// <summary>
+        /// スクロールしてitemを全て読み込む
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <param name="containerBy"></param>
+        /// <param name="itemBy"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        //public static IReadOnlyCollection<IWebElement> EnsureLoadedItems(IWebDriver driver, By containerBy, By itemBy, TimeSpan timeout) {
+        //    var end = DateTime.UtcNow + timeout;
+        //    var container = driver.FindElement(containerBy);
+        //    int previousCount = -1;
 
-            while (DateTime.UtcNow < end) {
-                var items = container.FindElements(itemBy);
-                if (items.Count > previousCount) {
-                    // 件数が増えたらさらにスクロールして待つ
-                    previousCount = items.Count;
-                    // コンテナ内を下までスクロール
-                    ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollTop = arguments[0].scrollHeight;", container);
-                    // 少し待つ（非同期読み込みの余地）
-                    Thread.Sleep(500);
-                    continue;
-                }
-                // 件数が増えない＝安定したと判断
-                return items;
-            }
-
-            // タイムアウト時は最後の取得を返す
-            return container.FindElements(itemBy);
-        }
+        //    while (DateTime.UtcNow < end) {
+        //        var items = container.FindElements(itemBy);
+        //        if (items.Count > previousCount) {
+        //            previousCount = items.Count;
+        //            var ret = ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView({behavior:'auto', block:'end'});", items.Last());
+        //            Thread.Sleep(1000);
+        //            continue;
+        //        }
+        //        return items;
+        //    }
+        //    return container.FindElements(itemBy);
+        //}
 
     }
 }
