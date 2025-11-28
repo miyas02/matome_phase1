@@ -104,13 +104,13 @@ namespace matome_phase1.scraper.services {
         /// <returns></returns>
         internal override IReadOnlyCollection<IWebElement> EnsureLoadedItems(IWebDriver driver, AbstractScraperConfig AConfig) {
             var timeout = TimeSpan.FromSeconds(50);
-            ECConfig config = (ECConfig)AConfig;
+            PostConfig config = (PostConfig)AConfig;
             var end = DateTime.UtcNow + timeout;
             var container = driver.FindElement(By.XPath(config.LIST_NODE));
             int previousCount = -1;
 
             while (DateTime.UtcNow < end) {
-                var items = container.FindElements(By.XPath(config.ITEM_NODE));
+                var items = container.FindElements(By.XPath(config.POST_NODE));
                 if (items.Count > previousCount) {
                     previousCount = items.Count;
                     var ret = ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView({behavior:'auto', block:'end'});", items.Last());
@@ -119,7 +119,7 @@ namespace matome_phase1.scraper.services {
                 }
                 return items;
             }
-            return container.FindElements(By.XPath(config.ITEM_NODE));
+            return container.FindElements(By.XPath(config.POST_NODE));
         }
     }
 }

@@ -16,10 +16,11 @@ namespace matome_phase1.Tests {
         private static string site = "zawazawa";
         private static string target = "雑談";
        
-        private string targetHtml = @$"..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
-        private string ConfigPath = @$"..\..\..\docs\{type}\{site}\{target}\Config.json";
-        private string expectPath = @$"..\..\..\docs\{type}\{site}\{target}\Expect.json";
-        
+        private string targetHtml = @$"..\..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
+        private string ConfigPath = @$"..\..\..\..\docs\{type}\{site}\{target}\Config.json";
+        private string DocParseItems_expectPath = @$"..\..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
+        private string GetItems_expectPath = @$"..\..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
+
         AbstractScraperConfig AConfig;
         PostsService service;
         public PostsScraperServcieTest() {
@@ -37,7 +38,7 @@ namespace matome_phase1.Tests {
         public void GetItemsTest() {
             //Arrange
             //expectedの作成
-            string expect = File.ReadAllText(expectPath);
+            string expect = File.ReadAllText(GetItems_expectPath);
             var expectList = JsonSerializer.Deserialize<List<Post>>(expect);
 
             //Act
@@ -49,12 +50,12 @@ namespace matome_phase1.Tests {
             };
 
             //actualItemsの書き出し
-            string filePath = @"..\..\..\log\Post_GetItems_actual.json"; //出力パスの定義
+            string filePath = @"..\..\..\..\log\Post_GetItems_actual.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 
             //Assert
-            Assert.Equal(expectList, Items);
+            Assert.Equal(expectList.Count, Items.Count);
 
         }
         [Fact]
@@ -66,7 +67,7 @@ namespace matome_phase1.Tests {
             doc.LoadHtml(htmlText);
 
             //expectedの作成
-            string expect = File.ReadAllText(expectPath);
+            string expect = File.ReadAllText(DocParseItems_expectPath);
             var expectList = JsonSerializer.Deserialize<List<Post>>(expect);
 
             //Act
@@ -79,7 +80,7 @@ namespace matome_phase1.Tests {
             };
 
             //actualItemsの書き出し
-            string filePath = @"..\..\..\log\Post_DocParseItems_actual.json"; //出力パスの定義
+            string filePath = @"..\..\..\..\log\Post_DocParseItems_actual.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 

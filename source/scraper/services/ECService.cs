@@ -95,7 +95,7 @@ namespace matome_phase1.scraper.services {
             var timeout = TimeSpan.FromSeconds(50);
             ECConfig config = (ECConfig)AConfig;
             var end = DateTime.UtcNow + timeout;
-            var container = driver.FindElement(By.XPath("//*[contains(@id,'item-grid')]/ul"));
+            var container = driver.FindElement(By.XPath(config.LIST_NODE));
             int previousCount = -1;
 
             while (DateTime.UtcNow < end) {

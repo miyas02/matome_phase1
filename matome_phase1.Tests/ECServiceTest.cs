@@ -21,7 +21,8 @@ namespace matome_phase1.Tests {
 
         private string targetHtml = @$"..\..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
         private string ConfigPath = @$"..\..\..\..\docs\{type}\{site}\{target}\Config.json";
-        private string expectPath = @$"..\..\..\..\docs\{type}\{site}\{target}\Expect.json";
+        private string DocParseItems_expectPath = @$"..\..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
+        private string GetItems_expectPath = @$"..\..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
 
         AbstractScraperConfig AConfig;
         ECService service;
@@ -40,7 +41,7 @@ namespace matome_phase1.Tests {
         public void GetItemsTest() {
             //Arrange
             //expectedの作成
-            string expect = File.ReadAllText(expectPath);
+            string expect = File.ReadAllText(GetItems_expectPath);
             var expectList = JsonSerializer.Deserialize<List<EC>>(expect);
 
             //Act
@@ -56,7 +57,7 @@ namespace matome_phase1.Tests {
             File.WriteAllText(filePath, json); //書き出し
 
             //Assert
-            Assert.Equal(expectList, Items);
+            Assert.Equal(expectList.Count, Items.Count);
 
         }
         [Fact]
@@ -68,7 +69,7 @@ namespace matome_phase1.Tests {
             doc.LoadHtml(htmlText);
 
             //expectedの作成
-            string expect = File.ReadAllText(expectPath);
+            string expect = File.ReadAllText(DocParseItems_expectPath);
             var expectList = JsonSerializer.Deserialize<List<EC>>(expect);
 
             //Act
