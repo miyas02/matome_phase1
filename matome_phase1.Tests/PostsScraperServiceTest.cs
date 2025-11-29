@@ -13,13 +13,13 @@ namespace matome_phase1.Tests {
     public class PostsScraperServcieTest {
         //書き換える
         private static string type = "Post";
-        private static string site = "zawazawa";
-        private static string target = "雑談";
+        private static string site = "5ch";
+        private static string target = "splatoon";
        
-        private string targetHtml = @$"..\..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
-        private string ConfigPath = @$"..\..\..\..\docs\{type}\{site}\{target}\Config.json";
-        private string DocParseItems_expectPath = @$"..\..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
-        private string GetItems_expectPath = @$"..\..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
+        private string targetHtml = @$"..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
+        private string ConfigPath = @$"..\..\..\docs\{type}\{site}\{target}\Config.json";
+        private string DocParseItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
+        private string GetItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
 
         AbstractScraperConfig AConfig;
         PostsService service;
@@ -50,7 +50,7 @@ namespace matome_phase1.Tests {
             };
 
             //actualItemsの書き出し
-            string filePath = @"..\..\..\..\log\Post_GetItems_actual.json"; //出力パスの定義
+            string filePath = @"..\..\..\log\Post_GetItems_actual.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 
@@ -80,7 +80,7 @@ namespace matome_phase1.Tests {
             };
 
             //actualItemsの書き出し
-            string filePath = @"..\..\..\..\log\Post_DocParseItems_actual.json"; //出力パスの定義
+            string filePath = @"..\..\..\log\Post_DocParseItems_actual.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 

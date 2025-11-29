@@ -28,4 +28,8 @@
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="138.0.7204.4900" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="docs\log\" />
+  </ItemGroup>
+
 </Project>

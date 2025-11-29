@@ -1,0 +1,26 @@
+{
+	"SITE_NAME": "5ch",
+	"URL": "https://itest.5ch.net/pug/test/read.cgi/famicom/1763726316",
+	"LOGIC": "Posts",
+	"LIST_NODE": "//ul[@id='thread']",
+	"POST_NODE": ".//li[contains(@class, 'threadview_response')]",
+	"USER_ID": {
+		"NODE": ".",
+		"TYPE": "text",
+		"REGEX":"(?<=\\bÜ¯Á®²\\s)([0-9A-Za-z-]+)"
+	},
+	"DATE": {
+		"NODE": ".",
+		"TYPE": "text",
+		"REGEX":"\\b\\d{4}/\\d{2}/\\d{2}\\b"
+	},
+	"REPLY": {
+		"NODE": ".//a[contains(@class, 'threadview_response_body_link')]",
+		"TYPE": "text"
+	},
+	"POST_ID": {
+		"NODE": ".",
+		"TYPE": "text",
+		"REGEX": "^(\\d+)"
+	}
+}

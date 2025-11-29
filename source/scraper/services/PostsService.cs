@@ -48,11 +48,11 @@ namespace matome_phase1.scraper.services {
             var posts = new List<System.Object>();
             foreach (var postNode in postNodes) {
                 Post post = new();
-                post.Text = GetValue(postNode, Config.TEXT);//GetInnerText(postNode, Config.TEXT.NODE);
+                //post.Text = GetValue(postNode, Config.TEXT);//GetInnerText(postNode, Config.TEXT.NODE);
                 post.Id = GetValue(postNode, Config.POST_ID);//GetInnerText(postNode, Config.POST_ID.NODE);
                 post.UserId = GetValue(postNode, Config.USER_ID);//GetInnerText(postNode, Config.USER_ID.NODE);
                 post.Reply = GetValue(postNode, Config.REPLY);//GetInnerText(postNode, Config.REPLY.NODE);
-                post.ImageUrl = GetValue(postNode, Config.IMAGE);//GetInnerText(postNode, Config.IMAGE.NODE);
+                //post.ImageUrl = GetValue(postNode, Config.IMAGE);//GetInnerText(postNode, Config.IMAGE.NODE);
                 var timestamp = GetValue(postNode, Config.DATE);//GetInnerText(postNode, Config.DATE.NODE);
                 var cleanedDateString = Regex.Replace(timestamp, @"\s*\(.\)\s*", " ");
                 if (DateTime.TryParseExact(cleanedDateString.Trim(), "yyyy/MM/dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out var dt)) {

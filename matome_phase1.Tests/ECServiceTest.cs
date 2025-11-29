@@ -19,10 +19,10 @@ namespace matome_phase1.Tests {
         private static string site = "mercari";
         private static string target = "メンズ";
 
-        private string targetHtml = @$"..\..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
-        private string ConfigPath = @$"..\..\..\..\docs\{type}\{site}\{target}\Config.json";
-        private string DocParseItems_expectPath = @$"..\..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
-        private string GetItems_expectPath = @$"..\..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
+        private string targetHtml = @$"..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
+        private string ConfigPath = @$"..\..\..\docs\{type}\{site}\{target}\Config.json";
+        private string DocParseItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
+        private string GetItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
 
         AbstractScraperConfig AConfig;
         ECService service;
@@ -52,7 +52,7 @@ namespace matome_phase1.Tests {
                 WriteIndented = true
             };
             //actualItemsの書き出し
-            string filePath = @"..\..\..\..\log\EC_GetItemsTest_actualItems.json"; //出力パスの定義
+            string filePath = @"..\..\..\log\EC_GetItemsTest_actualItems.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 
@@ -82,7 +82,7 @@ namespace matome_phase1.Tests {
             };
 
             //actualItemsの書き出し
-            string filePath = @"..\..\..\..\log\EC_DocParseItems_actualItems.json"; //出力パスの定義
+            string filePath = @"..\..\..\log\EC_DocParseItems_actualItems.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 
