@@ -62,7 +62,12 @@ namespace matome_phase1.scraper.services {
             }
             return posts;
         }
-
+        /// <summary>
+        /// ノードから値を取得する
+        /// </summary>
+        /// <param name="postNode"></param>
+        /// <param name="configNode"></param>
+        /// <returns></returns>
         private string GetValue(HtmlNode postNode, ConfigNodeBase configNode) {
             string value = null;
             if (configNode.TYPE == "attribute") {
@@ -72,9 +77,11 @@ namespace matome_phase1.scraper.services {
                 value = GetInnerText(postNode, configNode.NODE);
             }
             if (configNode.REGEX != null) {
+                value = GetInnerText(postNode, configNode.NODE);
                 var match = Regex.Match(value, configNode.REGEX);
                 if (match.Success && match.Groups.Count > 1) {
                     value = match.Groups[1].Value.Trim();
+                    return value;
                 }
                 return "";
             }

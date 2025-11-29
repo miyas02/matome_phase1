@@ -1,46 +1,30 @@
 {
-  "SITE_NAME": "5ch",
-  "URL": "https://itest.5ch.net/pug/test/read.cgi/famicom/1763726316",
-  "LOGIC": "Posts",
-  "LIST_NODE": "*[@id='thred']",//
-  "POST_NODE": ".//li[@class, threadview_response']",
-    "USER_ID": {
-      "NODE": ".//*[contains(@class, 'hashed-track-info')]",
-      "TYPE": "text"
-  },
-}
-
-{
-  "SITE_NAME": "ÅySwitchÅzSplatoon3/ÉXÉvÉâÉgÉDÅ[Éì3 1041ît",
-  "URL": "https://itest.5ch.net/pug/test/read.cgi/famicom/1763726316",
-  "LOGIC": "Posts",
-  "LIST_NODE": "//div[@id='main-list-view-widget']",
-  "POST_NODE": ".//*[contains(@class, 'list-view-item')]",
-  "USER_ID": {
-      "NODE": ".//*[contains(@class, 'hashed-track-info')]",
-      "TYPE": "text",
-      "REGEX": "(?<=\b‹Ø¡Æ≤\s)([0-9A-Za-z-]+)"
-  },
-  "TEXT": {
-      "NODE": ".//div[contains(@class, 'body')]//p",
-      "TYPE": "text"
-  },
-  "DATE": {
-      "NODE": ".//small[@class='comment-timestamp']/a",
-      "TYPE": "text"
-  },
-  "REPLY": {
-      "NODE": ".//a[contains(@class, 'comment-parent-link')]",
-      "TYPE": "text"
-  },
-  "IMAGE": {
-      "NODE": "//div[contains(@class,'owner-icon-container')]//img",
-      "TYPE": "attribute",
-      "ATTRIBUTE": "src"
-  },
-  "POST_ID": {
-      "NODE": ".",
-      "TYPE": "attribute",
-      "ATTRIBUTE": "data-key"
-  }
+	"SITE_NAME": "5ch",
+	"URL": "https://itest.5ch.net/pug/test/read.cgi/famicom/1763726316",
+	"LOGIC": "Posts",
+	"LIST_NODE": "*[@id='thred']",//
+	"POST_NODE": ".//li[@class, threadview_response']",
+	"USER_ID": {
+		"NODE": ".",
+		"TYPE": "text",
+		"REGEX":"(?<=\b‹Ø¡Æ≤\s)([0-9A-Za-z-]+)"
+	},
+	"TEXT": {
+		"NODE": ".//div[contains(@class, 'body')]//p",
+		"TYPE": "text"
+	},
+	"DATE": {
+		"NODE": ".",
+		"TYPE": "text",
+		"REGEX":"\b\d{4}/\d{2}/\d{2}\b"
+	},
+	"REPLY": {
+		"NODE": ".//[@class, threadview_response_body_link]",
+		"TYPE": "text"
+	},
+	"POST_ID": {
+		"NODE": ".",
+		"TYPE": "text",
+		"REGEX": "^(\d+)"
+	}
 }
