@@ -14,7 +14,8 @@
   },
   "DATE": {
       "NODE": ".//small[@class='comment-timestamp']/a",
-      "TYPE": "text"
+      "TYPE": "text",
+      "REGEX":"\\s*\\(.\\)\\s*"
   },
   "REPLY": {
       "NODE": ".//a[contains(@class, 'comment-parent-link')]",

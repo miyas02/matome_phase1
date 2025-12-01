@@ -9,7 +9,7 @@ namespace matome_phase1.scraper.Models {
         public string? Id { 
             get; set; 
         }
-        public DateTime? Date{ 
+        public string? Date{ 
             get; set; 
         }
         public string? Text { 
