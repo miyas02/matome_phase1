@@ -49,20 +49,11 @@ namespace matome_phase1.scraper.services {
             foreach (var postNode in postNodes) {
                 Post post = new();
                 post.Text = Config.TEXT != null ? GetValue(postNode, Config.TEXT) : "nonValue";
-                //post.Text = GetValue(postNode, Config.TEXT);//GetInnerText(postNode, Config.TEXT.NODE);
                 post.Id = Config.POST_ID != null ? GetValue(postNode, Config.POST_ID) : "nonValue";
-                //post.Id = GetValue(postNode, Config.POST_ID);//GetInnerText(postNode, Config.POST_ID.NODE);
                 post.UserId = Config.USER_ID != null ? GetValue(postNode, Config.USER_ID) : "nonValue";
-                //post.UserId = GetValue(postNode, Config.USER_ID);//GetInnerText(postNode, Config.USER_ID.NODE);
                 post.Reply = Config.REPLY != null ? GetValue(postNode, Config.REPLY) : "nonValue";
-                //post.Reply = GetValue(postNode, Config.REPLY);//GetInnerText(postNode, Config.REPLY.NODE);
-                //post.ImageUrl = GetValue(postNode, Config.IMAGE);//GetInnerText(postNode, Config.IMAGE.NODE);
+                post.ImageUrl = Config.IMAGE != null ? GetValue(postNode, Config.IMAGE) : "nonValue";
                 var timestamp = Config.DATE != null ? GetValue(postNode, Config.DATE) : "nonValue";
-                //var timestamp = GetValue(postNode, Config.DATE);//GetInnerText(postNode, Config.DATE.NODE);
-                //var cleanedDateString = Regex.Replace(timestamp, @"\s*\(.\)\s*", " ");
-                //if (DateTime.TryParseExact(timestamp.Trim(), "yyyy/MM/dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out var dt)) {
-                //    post.Date = dt;
-                //}
                 post.Date = timestamp;
                 posts.Add(post);
             }
