@@ -15,18 +15,42 @@ using System.Threading.Tasks;
 namespace matome_phase1.Tests {
     public class ECServiceTest {
         //書き換える
-        private static string type = "EC";
-        private static string site = "mercari";
-        private static string target = "メンズ";
+        //private static string type = "EC";
+        //private static string site = "mercari";
+        //private static string target = "メンズ";
 
-        private string targetHtml = @$"..\..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
-        private string ConfigPath = @$"..\..\..\..\docs\{type}\{site}\{target}\Config.json";
-        private string DocParseItems_expectPath = @$"..\..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
-        private string GetItems_expectPath = @$"..\..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
+        //private string targetHtml = @$"..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
+        //private string ConfigPath = @$"..\..\..\docs\{type}\{site}\{target}\Config.json";
+        //private string DocParseItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
+        //private string GetItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
+
+        //AbstractScraperConfig AConfig;
+        //ECService service;
+        //public ECServiceTest() {
+
+        //    //testConfigの読み込みとAConfigとServiceのインスタンス化
+        //    string config = File.ReadAllText(ConfigPath);
+        //    AConfig = ScraperFactory.Create(config);
+        //    if (AConfig.LOGIC == null) {
+        //        throw new ConfigException(ScraperExceptionType.ConfigJsonLogicNotFound, AConfig);
+        //    }
+        //    service = (ECService)ScraperFactory.Create(AConfig);
+
+        //}
+
+        [Fact]
+        public void mercari_GetItemsTest() {
+        string type = "EC";
+        string site = "mercari";
+        string target = "メンズ";
+        string targetHtml = @$"..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
+        string ConfigPath = @$"..\..\..\docs\{type}\{site}\{target}\Config.json";
+        string DocParseItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
+        string GetItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
 
         AbstractScraperConfig AConfig;
         ECService service;
-        public ECServiceTest() {
+            //Arrange
             //testConfigの読み込みとAConfigとServiceのインスタンス化
             string config = File.ReadAllText(ConfigPath);
             AConfig = ScraperFactory.Create(config);
@@ -34,12 +58,6 @@ namespace matome_phase1.Tests {
                 throw new ConfigException(ScraperExceptionType.ConfigJsonLogicNotFound, AConfig);
             }
             service = (ECService)ScraperFactory.Create(AConfig);
-
-        }
-
-        [Fact]
-        public void GetItemsTest() {
-            //Arrange
             //expectedの作成
             string expect = File.ReadAllText(GetItems_expectPath);
             var expectList = JsonSerializer.Deserialize<List<EC>>(expect);
@@ -52,7 +70,7 @@ namespace matome_phase1.Tests {
                 WriteIndented = true
             };
             //actualItemsの書き出し
-            string filePath = @"..\..\..\..\log\EC_GetItemsTest_actualItems.json"; //出力パスの定義
+            string filePath = @"..\..\..\log\EC_GetItemsTest_actualItems.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 
@@ -61,8 +79,24 @@ namespace matome_phase1.Tests {
 
         }
         [Fact]
-        public void DocParseItemsTest() {
+        public void mercari_DocParseItemsTest() {
+            string type = "EC";
+            string site = "mercari";
+            string target = "メンズ";
+            string targetHtml = @$"..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
+            string ConfigPath = @$"..\..\..\docs\{type}\{site}\{target}\Config.json";
+            string DocParseItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
+            string GetItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
+            AbstractScraperConfig AConfig;
+            ECService service;
             //Arrange
+            //testConfigの読み込みとAConfigとServiceのインスタンス化
+            string config = File.ReadAllText(ConfigPath);
+            AConfig = ScraperFactory.Create(config);
+            if (AConfig.LOGIC == null) {
+                throw new ConfigException(ScraperExceptionType.ConfigJsonLogicNotFound, AConfig);
+            }
+            service = (ECService)ScraperFactory.Create(AConfig);
             //ターゲットhtml読み込み
             string htmlText = File.ReadAllText(targetHtml);
             var doc = new HtmlDocument();
@@ -82,7 +116,7 @@ namespace matome_phase1.Tests {
             };
 
             //actualItemsの書き出し
-            string filePath = @"..\..\..\..\log\EC_DocParseItems_actualItems.json"; //出力パスの定義
+            string filePath = @"..\..\..\log\EC_DocParseItems_actualItems.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 

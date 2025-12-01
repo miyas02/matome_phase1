@@ -11,20 +11,20 @@ using matome_phase1.scraper.services;
 
 namespace matome_phase1.Tests {
     public class PostsScraperServcieTest {
-        //書き換える
-        private static string type = "Post";
-        private static string site = "zawazawa";
-        private static string target = "雑談";
-       
-        private string targetHtml = @$"..\..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
-        private string ConfigPath = @$"..\..\..\..\docs\{type}\{site}\{target}\Config.json";
-        private string DocParseItems_expectPath = @$"..\..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
-        private string GetItems_expectPath = @$"..\..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
 
-        AbstractScraperConfig AConfig;
-        PostsService service;
-        public PostsScraperServcieTest() {
-            //testConfigの読み込みとAConfigとServiceのインスタンス化
+        [Fact]
+        public void ch5_GetItemsTest() {
+            string type = "Post";
+            string site = "5ch";
+            string target = "splatoon";
+
+            string targetHtml = @$"..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
+            string ConfigPath = @$"..\..\..\docs\{type}\{site}\{target}\Config.json";
+            string DocParseItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
+            string GetItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
+            //Arrange
+            AbstractScraperConfig AConfig;
+            PostsService service;
             string config = File.ReadAllText(ConfigPath);
             AConfig = ScraperFactory.Create(config);
             if (AConfig.LOGIC == null) {
@@ -32,11 +32,6 @@ namespace matome_phase1.Tests {
             }
             service = (PostsService)ScraperFactory.Create(AConfig);
 
-        }
-
-        [Fact]
-        public void GetItemsTest() {
-            //Arrange
             //expectedの作成
             string expect = File.ReadAllText(GetItems_expectPath);
             var expectList = JsonSerializer.Deserialize<List<Post>>(expect);
@@ -50,7 +45,7 @@ namespace matome_phase1.Tests {
             };
 
             //actualItemsの書き出し
-            string filePath = @"..\..\..\..\log\Post_GetItems_actual.json"; //出力パスの定義
+            string filePath = @"..\..\..\log\5ch_GetItems_actual.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 
@@ -59,8 +54,66 @@ namespace matome_phase1.Tests {
 
         }
         [Fact]
-        public void DocParseItemsTest() {
+        public void zawazawa_GetItemsTest() {
+            string type = "Post";
+            string site = "zawazawa";
+            string target = "雑談";
+
+            string targetHtml = @$"..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
+            string ConfigPath = @$"..\..\..\docs\{type}\{site}\{target}\Config.json";
+            string DocParseItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
+            string GetItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
             //Arrange
+            AbstractScraperConfig AConfig;
+            PostsService service;
+            string config = File.ReadAllText(ConfigPath);
+            AConfig = ScraperFactory.Create(config);
+            if (AConfig.LOGIC == null) {
+                throw new ConfigException(ScraperExceptionType.ConfigJsonLogicNotFound, AConfig);
+            }
+            service = (PostsService)ScraperFactory.Create(AConfig);
+
+            //expectedの作成
+            string expect = File.ReadAllText(GetItems_expectPath);
+            var expectList = JsonSerializer.Deserialize<List<Post>>(expect);
+
+            //Act
+            List<Object> Items = service.GetItems(AConfig);
+            List<Post> actualItems = Items.Cast<Post>().ToList();
+            var options = new System.Text.Json.JsonSerializerOptions {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                WriteIndented = true
+            };
+
+            //actualItemsの書き出し
+            string filePath = @"..\..\..\log\zawazawa_GetItems_actual.json"; //出力パスの定義
+            string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
+            File.WriteAllText(filePath, json); //書き出し
+
+            //Assert
+            Assert.Equal(expectList.Count, Items.Count);
+
+        }
+        [Fact]
+        public void ch5_DocParseItemsTest() {
+        string type = "Post";
+        string site = "5ch";
+        string target = "splatoon";
+
+        string targetHtml = @$"..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
+        string ConfigPath = @$"..\..\..\docs\{type}\{site}\{target}\Config.json";
+        string DocParseItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
+        string GetItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
+            //Arrange
+            AbstractScraperConfig AConfig;
+            PostsService service;
+            string config = File.ReadAllText(ConfigPath);
+            AConfig = ScraperFactory.Create(config);
+            if (AConfig.LOGIC == null) {
+                throw new ConfigException(ScraperExceptionType.ConfigJsonLogicNotFound, AConfig);
+            }
+            service = (PostsService)ScraperFactory.Create(AConfig);
+
             //ターゲットhtml読み込み
             string htmlText = File.ReadAllText(targetHtml);
             var doc = new HtmlDocument();
@@ -80,7 +133,53 @@ namespace matome_phase1.Tests {
             };
 
             //actualItemsの書き出し
-            string filePath = @"..\..\..\..\log\Post_DocParseItems_actual.json"; //出力パスの定義
+            string filePath = @"..\..\..\log\5ch_DocParseItems_actual.json"; //出力パスの定義
+            string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
+            File.WriteAllText(filePath, json); //書き出し
+
+            //Assert
+            Assert.Equal(expectList, actualItems);
+        }
+        [Fact]
+        public void zawazawa_DocParseItemsTest() {
+            string type = "Post";
+            string site = "zawazawa";
+            string target = "雑談";
+
+            string targetHtml = @$"..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
+            string ConfigPath = @$"..\..\..\docs\{type}\{site}\{target}\Config.json";
+            string DocParseItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
+            string GetItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
+            //Arrange
+            AbstractScraperConfig AConfig;
+            PostsService service;
+            string config = File.ReadAllText(ConfigPath);
+            AConfig = ScraperFactory.Create(config);
+            if (AConfig.LOGIC == null) {
+                throw new ConfigException(ScraperExceptionType.ConfigJsonLogicNotFound, AConfig);
+            }
+            service = (PostsService)ScraperFactory.Create(AConfig);
+
+            //ターゲットhtml読み込み
+            string htmlText = File.ReadAllText(targetHtml);
+            var doc = new HtmlDocument();
+            doc.LoadHtml(htmlText);
+
+            //expectedの作成
+            string expect = File.ReadAllText(DocParseItems_expectPath);
+            var expectList = JsonSerializer.Deserialize<List<Post>>(expect);
+
+            //Act
+            // actualの作成
+            List<Object> Items = service.DocParseItems(AConfig, doc);
+            List<Post> actualItems = Items.Cast<Post>().ToList();
+            var options = new System.Text.Json.JsonSerializerOptions {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                WriteIndented = true
+            };
+
+            //actualItemsの書き出し
+            string filePath = @"..\..\..\log\zawazawa_DocParseItems_actual.json"; //出力パスの定義
             string json = JsonSerializer.Serialize(actualItems, options); //Listをjsonにシリアライズ
             File.WriteAllText(filePath, json); //書き出し
 
