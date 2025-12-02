@@ -48,21 +48,23 @@ namespace matome_phase1.scraper.services {
             var posts = new List<System.Object>();
             foreach (var postNode in postNodes) {
                 Post post = new();
-                post.Text = GetValue(postNode, Config.TEXT);//GetInnerText(postNode, Config.TEXT.NODE);
-                post.Id = GetValue(postNode, Config.POST_ID);//GetInnerText(postNode, Config.POST_ID.NODE);
-                post.UserId = GetValue(postNode, Config.USER_ID);//GetInnerText(postNode, Config.USER_ID.NODE);
-                post.Reply = GetValue(postNode, Config.REPLY);//GetInnerText(postNode, Config.REPLY.NODE);
-                post.ImageUrl = GetValue(postNode, Config.IMAGE);//GetInnerText(postNode, Config.IMAGE.NODE);
-                var timestamp = GetValue(postNode, Config.DATE);//GetInnerText(postNode, Config.DATE.NODE);
-                var cleanedDateString = Regex.Replace(timestamp, @"\s*\(.\)\s*", " ");
-                if (DateTime.TryParseExact(cleanedDateString.Trim(), "yyyy/MM/dd HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out var dt)) {
-                    post.Date = dt;
-                }
+                post.Text = Config.TEXT != null ? GetValue(postNode, Config.TEXT) : "nonValue";
+                post.Id = Config.POST_ID != null ? GetValue(postNode, Config.POST_ID) : "nonValue";
+                post.UserId = Config.USER_ID != null ? GetValue(postNode, Config.USER_ID) : "nonValue";
+                post.Reply = Config.REPLY != null ? GetValue(postNode, Config.REPLY) : "nonValue";
+                post.ImageUrl = Config.IMAGE != null ? GetValue(postNode, Config.IMAGE) : "nonValue";
+                var timestamp = Config.DATE != null ? GetValue(postNode, Config.DATE) : "nonValue";
+                post.Date = timestamp;
                 posts.Add(post);
             }
             return posts;
         }
-
+        /// <summary>
+        /// ノードから値を取得する
+        /// </summary>
+        /// <param name="postNode"></param>
+        /// <param name="configNode"></param>
+        /// <returns></returns>
         private string GetValue(HtmlNode postNode, ConfigNodeBase configNode) {
             string value = null;
             if (configNode.TYPE == "attribute") {
@@ -72,9 +74,11 @@ namespace matome_phase1.scraper.services {
                 value = GetInnerText(postNode, configNode.NODE);
             }
             if (configNode.REGEX != null) {
+                value = GetInnerText(postNode, configNode.NODE);
                 var match = Regex.Match(value, configNode.REGEX);
-                if (match.Success && match.Groups.Count > 1) {
-                    value = match.Groups[1].Value.Trim();
+                if (match.Groups.Count > 0) {
+                    value = match.Groups[0].Value.Trim();
+                    return value;
                 }
                 return "";
             }

@@ -111,31 +111,5 @@ namespace matome_phase1.scraper.services {
                 
             }
         }
-        /// <summary>
-        /// スクロールしてitemを全て読み込む
-        /// </summary>
-        /// <param name="driver"></param>
-        /// <param name="containerBy"></param>
-        /// <param name="itemBy"></param>
-        /// <param name="timeout"></param>
-        /// <returns></returns>
-        //public static IReadOnlyCollection<IWebElement> EnsureLoadedItems(IWebDriver driver, By containerBy, By itemBy, TimeSpan timeout) {
-        //    var end = DateTime.UtcNow + timeout;
-        //    var container = driver.FindElement(containerBy);
-        //    int previousCount = -1;
-
-        //    while (DateTime.UtcNow < end) {
-        //        var items = container.FindElements(itemBy);
-        //        if (items.Count > previousCount) {
-        //            previousCount = items.Count;
-        //            var ret = ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView({behavior:'auto', block:'end'});", items.Last());
-        //            Thread.Sleep(1000);
-        //            continue;
-        //        }
-        //        return items;
-        //    }
-        //    return container.FindElements(itemBy);
-        //}
-
     }
 }
