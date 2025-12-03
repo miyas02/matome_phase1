@@ -20,8 +20,9 @@ namespace matome_phase1.scraper {
         public static IScraperService Create(AbstractScraperConfig Config) {
 
             return Config switch {
-                PostConfig  => new PostsService(),
-                ECConfig => new ECService()
+                NewsConfig  => new PostsService(),
+                ECConfig => new ECService(),
+                NewsConfig => new NewsService(),
             };
         }
 
@@ -39,7 +40,7 @@ namespace matome_phase1.scraper {
                 }
             };
             return logic switch {
-                "Posts" => JsonSerializer.Deserialize<PostConfig>(json, options),
+                "Posts" => JsonSerializer.Deserialize<NewsConfig>(json, options),
                 "EC" => JsonSerializer.Deserialize<ECConfig>(json, options),
             };
         }
