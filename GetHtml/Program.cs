@@ -3,7 +3,7 @@ using System;
 
 Console.WriteLine("Hello, World!");
 
-const string url = "https://itest.5ch.net/pug/test/read.cgi/famicom/1763726316";
+const string url = "https://news.yahoo.co.jp/topics/it";
 const string filePath = "C:\\work\\repos\\matome_phase1\\GetHtml\\log\\targetHtml.html";
 using var client = new HttpClient();
 Task<string> tsk = client.GetStringAsync(url);
