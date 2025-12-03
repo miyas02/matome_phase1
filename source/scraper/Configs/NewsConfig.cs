@@ -1,4 +1,5 @@
-﻿using System;
+﻿using matome_phase1.scraper.Configs.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace matome_phase1.scraper.Configs {
+namespace matome_phase1.scraper.Configs.News {
     internal class NewsConfig : AbstractScraperConfig {
         public override string ToString() {
             return JsonSerializer.Serialize(this);

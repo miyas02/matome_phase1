@@ -8,8 +8,8 @@ using System.Text.Json;
 using matome_phase1.constants;
 using System.Diagnostics;
 using matome_phase1.scraper.Models;
-using matome_phase1.scraper.Configs;
 using matome_phase1.scraper.Interface;
+using matome_phase1.scraper.Configs.Base;
 
 
 namespace matome_phase1.scraper {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using matome_phase1.scraper.Configs.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace matome_phase1.scraper.Configs {
+namespace matome_phase1.scraper.Configs.Post {
     public class PostConfig : AbstractScraperConfig {
         public override string ToString() {
             return JsonSerializer.Serialize(this);
@@ -42,29 +43,6 @@ namespace matome_phase1.scraper.Configs {
     public class IMAGE : ConfigNodeBase {
 
     }
-
-    public class NAVIGATEPAGE {
-        [JsonPropertyName("TYPE")]
-        public NavigatePageTypes TYPE { get; set; }
-
-        [JsonPropertyName("TARGET_LINK")]
-        public TARGETLINK? TARGET_LINK { get; set; }
-
-        [JsonPropertyName("PAGINATION")]
-        public PAGINATION? PAGINATION { get; set; }
-    }
-
-    public class PAGINATION {
-        [JsonPropertyName("NODE")]
-        public string? NODE { get; set; }
-
-        [JsonPropertyName("ACTION")]
-        public string? ACTION { get; set; }
-
-        [JsonPropertyName("MAX_LOOP")]
-        public int? MAX_LOOP { get; set; }
-    }
-
     public class POSTID : ConfigNodeBase {
 
     }
@@ -72,17 +50,9 @@ namespace matome_phase1.scraper.Configs {
     public class REPLY : ConfigNodeBase {
 
     }
-
-    public class TARGETLINK : ConfigNodeBase {
-        [JsonPropertyName("TEXT")]
-        public string? TEXT { get; set; }
-
-    }
-
     public class TEXT : ConfigNodeBase {
 
     }
-
     public class USERID : ConfigNodeBase {
 
     }

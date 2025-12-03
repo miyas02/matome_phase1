@@ -1,4 +1,5 @@
-﻿using System;
+﻿using matome_phase1.scraper.Configs.Base;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Printing;
@@ -33,25 +34,25 @@ namespace matome_phase1.scraper.Configs.EC {
     public class IMAGE : ConfigNodeBase {
 
     }
-    public class NAVIGATEPAGE {
-        [JsonPropertyName("TYPE")]
-        public NavigatePageTypes TYPE { get; set; }
+    //public class NAVIGATEPAGE {
+    //    [JsonPropertyName("TYPE")]
+    //    public NavigatePageTypes TYPE { get; set; }
 
-        [JsonPropertyName("TARGET_LINK")]
-        public TARGETLINK? TARGET_LINK { get; set; }
+    //    [JsonPropertyName("TARGET_LINK")]
+    //    public TARGETLINK? TARGET_LINK { get; set; }
 
-        [JsonPropertyName("PAGINATION")]
-        public PAGINATION? PAGINATION { get; set; }
-    }
+    //    [JsonPropertyName("PAGINATION")]
+    //    public PAGINATION? PAGINATION { get; set; }
+    //}
 
-    public class PAGINATION {
-        [JsonPropertyName("NODE")]
-        public string? NODE { get; set; }
+    //public class PAGINATION {
+    //    [JsonPropertyName("NODE")]
+    //    public string? NODE { get; set; }
 
-        [JsonPropertyName("ACTION")]
-        public string? ACTION { get; set; }
+    //    [JsonPropertyName("ACTION")]
+    //    public string? ACTION { get; set; }
 
-        [JsonPropertyName("MAX_LOOP")]
-        public int? MAX_LOOP { get; set; }
-    }
+    //    [JsonPropertyName("MAX_LOOP")]
+    //    public int? MAX_LOOP { get; set; }
+    //}
 }

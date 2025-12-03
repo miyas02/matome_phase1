@@ -1,7 +1,7 @@
 using HtmlAgilityPack;
 using matome_phase1.constants;
 using matome_phase1.scraper;
-using matome_phase1.scraper.Configs;
+using matome_phase1.scraper.Configs.Base;
 using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
 using matome_phase1.scraper.services;
