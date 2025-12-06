@@ -1,6 +1,6 @@
 {
 	"SITE_NAME": "5ch",
-	"URL": "https://itest.5ch.net/pug/test/read.cgi/famicom/1763726316",
+	"URL": "https://itest.5ch.net/pug/test/read.cgi/famicom/1763726316/l-",
 	"LOGIC": "Posts",
 	"LIST_NODE": "//ul[@id='thread']",
 	"POST_NODE": ".//li[contains(@class, 'threadview_response')]",
