@@ -1,4 +1,4 @@
-﻿using matome_phase1.scraper.Configs;
+﻿using matome_phase1.scraper.Configs.Base;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;

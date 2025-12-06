@@ -1,6 +1,7 @@
-﻿using HtmlAgilityPack;
+﻿using matome_phase1.scraper.Configs.News;
+using HtmlAgilityPack;
 using matome_phase1.constants;
-using matome_phase1.scraper.Configs;
+using matome_phase1.scraper.Configs.Base;
 using matome_phase1.scraper.Models;
 using OpenQA.Selenium;
 using System;

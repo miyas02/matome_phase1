@@ -4,6 +4,7 @@ using matome_phase1.scraper.Models;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Net.Http;
 using System.Security.RightsManagement;
 using System.Text;
@@ -24,7 +25,7 @@ namespace matome_phase1 {
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged{
         //config.json取得
-        string configPathURL = "https://raw.githubusercontent.com/miyas02/matome_phase1/refs/heads/master/source/docs/target_config/Config.json";
+        string configPath = @"C:\\work\\repos\\matome_phase1\\source\\docs\\target_config\\Config.json";
 
         private ObservableCollection<Object> _currentItems;
         public ObservableCollection<Object> CurrentItems {
@@ -62,11 +63,11 @@ namespace matome_phase1 {
         }
         private void ScrapingBtn_Click(object sender, RoutedEventArgs e) {
             MessageBox.Show("スクレイピングを開始します。");
-            using HttpClient client = new HttpClient();
-            string config = client.GetStringAsync(configPathURL).Result;
+            //using HttpClient client = new HttpClient();
+            //string config = client.GetStringAsync(configPath).Result;
 
             IScraperOwner scraperOwner = new ScraperOwner();
-            ItemsVM ItemsVM = scraperOwner.LoadConfig(config);
+            ItemsVM ItemsVM = scraperOwner.LoadConfig(File.ReadAllText(configPath));
             SiteName = ItemsVM.Config.SITE_NAME;
             URL = ItemsVM.Config.URL;
             switch (ItemsVM.Items.FirstOrDefault()) {

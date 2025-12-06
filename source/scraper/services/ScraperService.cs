@@ -1,7 +1,9 @@
 ﻿
+using matome_phase1.scraper.Configs;
+using matome_phase1.scraper.Configs.Base;
 using HtmlAgilityPack;
 using matome_phase1.constants;
-using matome_phase1.scraper.Configs;
+using matome_phase1.scraper.Configs.Base;
 using matome_phase1.scraper.Configs.EC;
 using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
@@ -71,7 +73,7 @@ namespace matome_phase1.scraper.services {
                 return driver;
             }
             //NavigatePagesConfigのListの各要素を取り出す
-            foreach (var navi in AConfig.NAVIGATE_PAGES) {
+            foreach (NavigatePage navi in AConfig.NAVIGATE_PAGES) {
                 if (navi.TYPE == NavigatePageTypes.pagination_search) {
                     
                     //configのNodeとリンクテキストを検索
@@ -92,7 +94,7 @@ namespace matome_phase1.scraper.services {
             return driver;
         }
 
-        private IWebDriver Pagination(IWebDriver driver, Configs.NAVIGATEPAGE navi) {
+        private IWebDriver Pagination(IWebDriver driver, NavigatePage navi) {
             while(true) {
                 //configのNodeとリンクテキストを検索
                 string text = navi.TARGET_LINK.NODE + "[contains(text(),'" + navi.TARGET_LINK.TEXT + "')]";

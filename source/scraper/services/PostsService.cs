@@ -1,7 +1,9 @@
-﻿using HtmlAgilityPack;
+﻿
+using matome_phase1.scraper.Configs.Post;
+using HtmlAgilityPack;
 using matome_phase1.constants;
+using matome_phase1.scraper.Configs.Base;
 using matome_phase1.scraper.Configs;
-using matome_phase1.scraper.Configs.EC;
 using matome_phase1.scraper.Models;
 using OpenQA.Selenium;
 using OpenQA.Selenium.BiDi.Script;
