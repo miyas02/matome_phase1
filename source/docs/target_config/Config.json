@@ -2,29 +2,29 @@
 	"SITE_NAME": "5ch",
 	"URL": "https://itest.5ch.net/pug/test/read.cgi/famicom/1763726316",
 	"LOGIC": "Posts",
-	"LIST_NODE": "*[@id='thred']",
-	"POST_NODE": ".//li[@class, threadview_response']",
-	"USER_ID": {
-		"NODE": ".",
-		"TYPE": "text",
-		"REGEX":"(?<=\bﾜｯﾁｮｲ\s)([0-9A-Za-z-]+)"
-	},
+	"LIST_NODE": "//ul[@id='thread']",
+	"POST_NODE": ".//li[contains(@class, 'threadview_response')]",
 	"TEXT": {
-		"NODE": ".//div[contains(@class, 'body')]//p",
+		"NODE": ".//div[contains(@class, 'threadview_response_body')]",
 		"TYPE": "text"
 	},
-	"DATE": {
-		"NODE": ".",
+	"USER_ID": {
+		"NODE": ".//div[contains(@class, 'threadview_response_info')]",
 		"TYPE": "text",
-		"REGEX":"\b\d{4}/\d{2}/\d{2}\b"
+		"REGEX":"([0-9A-Za-z+\\-/]+)(?= \\[)"
+	},
+	"DATE": {
+		"NODE": ".//div[contains(@class, 'threadview_response_info')]",
+		"TYPE": "text",
+		"REGEX":"\\d{4}/\\d{2}/\\d{2}\\(.\\)"
 	},
 	"REPLY": {
-		"NODE": ".//[@class, threadview_response_body_link]",
+		"NODE": ".//a[contains(@class, 'threadview_response_body_link')]",
 		"TYPE": "text"
 	},
 	"POST_ID": {
-		"NODE": ".",
+		"NODE": ".//div[contains(@class, 'threadview_response_info')]",
 		"TYPE": "text",
-		"REGEX": "^(\d+)"
+		"REGEX": "\\s*(\\d{4})"
 	}
 }
