@@ -17,8 +17,8 @@ namespace matome_phase1.scraper.Models {
         }
 
         public override bool Equals(object? obj) {
-            if (obj is EC other) {
-                return Name == other.Name && link == other.Price && img == other.img;
+            if (obj is News other) {
+                return Name == other.Name && link == other.link && img == other.img;
             }
             return false;
         }

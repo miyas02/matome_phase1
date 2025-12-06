@@ -10,12 +10,12 @@
 	},
 	"LINK": {
 		"NODE": "./a",
-		"TYPE": "ATTRIBUTE",
+		"TYPE": "attribute",
 		"ATTRIBUTE": "href"
 	},
 	"IMAGE": {
 		"NODE": ".//source",
-		"TYPE": "ATRIBUTE",
+		"TYPE": "attribute",
 		"ATTRIBUTE": "srcset"
 	}
 }
