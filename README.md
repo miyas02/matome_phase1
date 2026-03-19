@@ -1,13 +1,40 @@
-# スクレイピングシステム
+# スクレイピングシステム phase_1
 
 ## 概要
 
-このアプリケーションは、**サイトごとに定義された設定ファイル（ScraperConfig.json）をもとにサイトの情報をスクレイピング**するシステムです。ユーザーは UI を通じて収集対象のサイト設定を選択し、ScraperOwner クラスがその設定を元にスクレイピングを実行します。
+このアプリケーションは、**サイトごとに定義された設定ファイル（ScraperConfig.json）をもとにサイトの情報をスクレイピング**するシステムです。  
+ユーザーは UI を通じて収集対象のサイト設定を選択し、ScraperOwner クラスがその設定を元にスクレイピングを実行します。  
+phase_1ではconfigファイルからスクレイピングを実行する機能を実装しました。  
+phase_2以降にconfigファイルを選択するGUI, configファイルを作成する機能を実装予定です。  
 
 ---
 
-## アーキテクチャ構成図
+## シーケンス図
+```mermaid
+---
+title: Scraperシーケンス図
+config:
+  theme: forest
+---
+sequenceDiagram
+autonumber
+actor User
+participant UI
+participant ScraperOwner
+participant ScraperFactory
 
+User ->> UI: Configファイルの指定
+UI ->> ScraperOwner: LoadConfig(configFilePah)
+ScraperOwner ->> +ScraperFactory: Create(json)
+ScraperFactory -->> ScraperOwner: AbstractScraperConfig
+ScraperOwner ->> ScraperFactory: Create(ScraperConfig)
+ScraperFactory -->> -ScraperOwner: IScraperService
+ScraperOwner ->> +ScraperService: GetItems(ScraperConfig)
+Note over ScraperService:  NavigateToPages(driver, AConfig): IWebDriver
+Note over ScraperService: Pagination(driver, NavigatePagesConfig)
+Note over ScraperService : DocParseItems(AConfig, doc)
+ScraperService -->> -ScraperOwner:List<Object>
+```
 ---
 
 ## 構成要素
