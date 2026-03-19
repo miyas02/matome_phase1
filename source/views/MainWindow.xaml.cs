@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Security.RightsManagement;
 using System.Text;
 using System.Windows;
@@ -25,7 +26,9 @@ namespace matome_phase1 {
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged{
         //config.json取得
-        string configPath = @"C:\\work\\repos\\matome_phase1\\source\\docs\\target_config\\Config.json";
+        //string configPath = @"C:\\work\\repos\\matome_phase1\\source\\docs\\target_config\\Config.json";
+        string configPath;
+
 
         private ObservableCollection<Object> _currentItems;
         public ObservableCollection<Object> CurrentItems {
@@ -60,6 +63,10 @@ namespace matome_phase1 {
         public MainWindow() {
             InitializeComponent();
             DataContext = this;
+            string type = "target_config";
+            string site = "yahoo";
+            string target = "post";
+            configPath = @$"..\..\..\docs\{type}\{site}\{target}\Config.json";
         }
         private void ScrapingBtn_Click(object sender, RoutedEventArgs e) {
             MessageBox.Show("スクレイピングを開始します。");

@@ -29,15 +29,17 @@ namespace matome_phase1.scraper.services {
         public List<System.Object> GetItems(AbstractScraperConfig AConfig) {
 
             IWebDriver driver = GetDriver(AConfig.URL);
-            driver = NavigateToPage(driver, AConfig);
-            //スクロールして読み込み
-            EnsureLoadedItems(driver, AConfig);
-            string html = driver.PageSource;
-            var doc = new HtmlDocument();
-            doc.LoadHtml(html);
-
-            driver.Quit(); // ドライバーを閉じる
-            return DocParseItems(AConfig, doc);
+            try {
+                driver = NavigateToPage(driver, AConfig);
+                //スクロールして読み込み
+                EnsureLoadedItems(driver, AConfig);
+                string html = driver.PageSource;
+                var doc = new HtmlDocument();
+                doc.LoadHtml(html);
+                return DocParseItems(AConfig, doc);
+            } finally {
+                driver.Quit();
+            }
         }
 
         internal abstract List<System.Object> DocParseItems(AbstractScraperConfig AConfig, HtmlDocument doc);
@@ -95,7 +97,7 @@ namespace matome_phase1.scraper.services {
         }
 
         private IWebDriver Pagination(IWebDriver driver, NavigatePage navi) {
-            while(true) {
+            for (int i = 0; i < 50; i++) {
                 //configのNodeとリンクテキストを検索
                 string text = navi.TARGET_LINK.NODE + "[contains(text(),'" + navi.TARGET_LINK.TEXT + "')]";
                 var nodes = driver.FindElements(By.XPath(text));
@@ -105,13 +107,13 @@ namespace matome_phase1.scraper.services {
                 }
                 if (nodes.Count == 0) {
                     var paginationNodes = driver.FindElements(By.XPath(navi.PAGINATION.NODE ?? throw new ConfigException(ScraperExceptionType.ContentNodeIsNull)));
-                    if(paginationNodes == null || paginationNodes.Count == 0) {
-                        throw new ConfigException(ScraperExceptionType.NavigateToPagesIsNull,null, "paginationNode is Null");
+                    if (paginationNodes == null || paginationNodes.Count == 0) {
+                        throw new ConfigException(ScraperExceptionType.NavigateToPagesIsNull, null, "paginationNode is Null");
                     }
                     paginationNodes[0].Click();
                 }
-                
             }
+            throw new ConfigException(ScraperExceptionType.NavigateToPagesIsNull, null, "paginationNode is Null");
         }
     }
 }
