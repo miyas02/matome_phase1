@@ -3,26 +3,26 @@
 {
 	"name": "C# (.NET)",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/dotnet:2-10.0-noble"
-
-
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [5000, 5001],
-	// "portsAttributes": {
-	//		"5001": {
-	//			"protocol": "https"
-	//		}
-	// }
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "dotnet restore",
-
-	// Configure tool-specific properties.
-	// "customizations": {},
-
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+	"image": "mcr.microsoft.com/devcontainers/dotnet:2-10.0-noble",
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "lts"
+		}
+	},
+	"mounts": [
+        "source=${localEnv:USERPROFILE}/.claude,target=/home/vscode/.claude,type=bind",
+        "source=${localEnv:USERPROFILE}/.claude.json,target=/home/vscode/.claude.json,type=bind"
+    ],
+    "remoteEnv": {
+        "CLAUDE_CODE_OAUTH_TOKEN": "${localEnv:CLAUDE_CODE_OAUTH_TOKEN}"
+    },
+    "postCreateCommand": "npm install -g @anthropic-ai/claude-code @linear/sdk && claude mcp add --transport stdio linear -- npx -y @modelcontextprotocol/server-linear",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "anthropic.claude-dev"
+            ]
+        }
+    },
+    "remoteUser": "vscode"
 }
