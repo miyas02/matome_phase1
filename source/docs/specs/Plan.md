@@ -1,6 +1,5 @@
 # 改修したいこと
 - ScraperをSeleniumからPlaywrightに変更する
-<<<<<<< HEAD
 - Configのデータ構造を変更
 - UIをいい感じにしたい→優先度低、将来的にはblazorかasp.netでwebアプリにしたい
 - テストコードの充実→unitTestSammaryを追加してunitTestのカバレッジ管理、unitTestを充実+github ActionsでCI環境構築
