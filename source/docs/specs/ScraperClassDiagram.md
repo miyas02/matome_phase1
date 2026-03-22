@@ -9,18 +9,18 @@ classDiagram
 %% Interfact,Abstract,Component定義
 class UI
 <<Component>> UI
-class IScraperOwner {
+class IScraperOwner :::interfaceStyle {
     <<Interface>>
     + IScraperService 
     + LoadConfig(configPaht)void
 }
-class IScraperService
+class IScraperService:::interfaceStyle
 <<Interface>>IScraperService
-class AbstractScraperConfig
+class AbstractScraperConfig :::abstractStyle
 <<Abstract>>AbstractScraperConfig
 
 %% クラス定義
-class ScraperOwner{
+class ScraperOwner {
     + IScraperService
     + LoadCofig(configFIlePath)void
 }
@@ -45,4 +45,7 @@ IScraperService <|-- ScraperService
 ScraperService <|-- PostsScraperService
 IScraperOwner --* AbstractScraperConfig
 AbstractScraperConfig <|-- PostsScraperConfig
+
+classDef interfaceStyle fill:#CECBF6,stroke:#534AB7,color:#3C3489
+classDef abstractStyle fill:#9FE1CB,stroke:#0F6E56,color:#085041
 ```
