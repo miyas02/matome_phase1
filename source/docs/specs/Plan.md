@@ -1,5 +1,6 @@
 # 改修したいこと
 - ScraperをSeleniumからPlaywrightに変更する
+<<<<<<< HEAD
 - Configのデータ構造を変更
 - UIをいい感じにしたい→優先度低、将来的にはblazorかasp.netでwebアプリにしたい
 - テストコードの充実→unitTestSammaryを追加してunitTestのカバレッジ管理、unitTestを充実+github ActionsでCI環境構築
@@ -158,3 +159,8 @@ foreach (var (key, def) in config.EXTRACT)
 - SingleとListを同一Config内に混在できる
 - UI側もキー名からDataGridカラムを動的生成できる
 - Config自動生成システムが扱いやすいシンプルな構造
+=======
+- Configのデータ構造を変更→要件定義から。Configをつくるシステムは別で開発予定だから、webページからConfigを自動生成しやすいデータ構造にしたい
+- UIをいい感じにしたい→優先度低、将来的にはblazorかasp.netでwebアプリにしたい
+- テストコードの充実→unitTestSammaryを追加してunitTestのカバレッジ管理、unitTestを充実+github ActionsでCI環境構築
+>>>>>>> 5fa3a1804a648899c8560f197a5d7ec4216e94d1
