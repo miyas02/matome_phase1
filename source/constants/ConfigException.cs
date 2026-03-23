@@ -1,4 +1,4 @@
-﻿using matome_phase1.scraper.Configs.Base;
+﻿using matome_phase1.scraper.Configs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,11 +28,11 @@ namespace matome_phase1.constants {
         /// <param name="type"></param>
         /// <param name="config" type="AbstractScraperConfig"></param>
         /// <param name="additionalMessage" type="string"></param>
-        public ConfigException(ScraperExceptionType type, AbstractScraperConfig? config = null, string ? additionalMessage = null)
+        public ConfigException(ScraperExceptionType type, ScraperConfig? config = null, string ? additionalMessage = null)
             : base(FormatMessage(type, config, additionalMessage)) {
         }
 
-        private static string FormatMessage(ScraperExceptionType type, AbstractScraperConfig? config, string? additionalMessage) {
+        private static string FormatMessage(ScraperExceptionType type, ScraperConfig? config, string? additionalMessage) {
             string baseMessage = Messages.ContainsKey(type) ? Messages[type] : "Unknown scraper error.";
             if (!string.IsNullOrEmpty(additionalMessage))
                 baseMessage += " : [additional Message] " + additionalMessage;

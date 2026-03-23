@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="docs\log\" />
+    <Folder Include="ScraperConfigs\" />
   </ItemGroup>
 
 </Project>

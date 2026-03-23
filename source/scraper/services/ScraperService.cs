@@ -1,10 +1,8 @@
 ﻿
-using matome_phase1.scraper.Configs;
-using matome_phase1.scraper.Configs.Base;
 using HtmlAgilityPack;
 using matome_phase1.constants;
-using matome_phase1.scraper.Configs.Base;
-using matome_phase1.scraper.Configs.EC;
+using matome_phase1.scraper.Configs;
+using matome_phase1.scraper.Configs.Post;
 using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
 using OpenQA.Selenium;
@@ -26,24 +24,21 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace matome_phase1.scraper.services {
     public abstract class ScraperService : IScraperService {
-        public List<System.Object> GetItems(AbstractScraperConfig AConfig) {
+        public Dictionary<string, string> GetItems(ScraperConfig scraperConfig) {
 
-            IWebDriver driver = GetDriver(AConfig.URL);
+            IWebDriver driver = GetDriver(scraperConfig.URL);
             try {
-                driver = NavigateToPage(driver, AConfig);
+                driver = NavigateToPage(driver, scraperConfig);
                 //スクロールして読み込み
-                EnsureLoadedItems(driver, AConfig);
+                EnsureLoadedItems(driver, scraperConfig);
                 string html = driver.PageSource;
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
-                return DocParseItems(AConfig, doc);
+                return DocParseItems(scraperConfig, doc);
             } finally {
                 driver.Quit();
             }
         }
-
-        internal abstract List<System.Object> DocParseItems(AbstractScraperConfig AConfig, HtmlDocument doc);
-        internal abstract IReadOnlyCollection<IWebElement> EnsureLoadedItems(IWebDriver driver, AbstractScraperConfig AConfig);
 
         /// <summary>
         /// urlを渡してDriverを取得するメソッド
@@ -69,13 +64,13 @@ namespace matome_phase1.scraper.services {
             driver.Navigate().GoToUrl(url);
             return driver;
         }
-        private IWebDriver NavigateToPage(IWebDriver driver, AbstractScraperConfig AConfig) {
+        private IWebDriver NavigateToPage(IWebDriver driver, ScraperConfig scraperConfig) {
             //NavigatePagesConfig nullチェック
-            if (AConfig.NAVIGATE_PAGES == null || AConfig.NAVIGATE_PAGES.Count == 0) {
+            if (scraperConfig.NAVIGATE_PAGES == null || scraperConfig.NAVIGATE_PAGES.Count == 0) {
                 return driver;
             }
             //NavigatePagesConfigのListの各要素を取り出す
-            foreach (NavigatePage navi in AConfig.NAVIGATE_PAGES) {
+            foreach (NavigatePage navi in scraperConfig.NAVIGATE_PAGES) {
                 if (navi.TYPE == NavigatePageTypes.pagination_search) {
                     
                     //configのNodeとリンクテキストを検索
@@ -114,6 +109,98 @@ namespace matome_phase1.scraper.services {
                 }
             }
             throw new ConfigException(ScraperExceptionType.NavigateToPagesIsNull, null, "paginationNode is Null");
+        }
+
+        internal Dictionary<string, string> DocParseItems(ScraperConfig scraperConfig, HtmlDocument doc) {
+            Dictionary<string, ExtractDef> extractDict = scraperConfig.EXTRACT;
+            Dictionary<string, string> items = new Dictionary<string, string>();
+            foreach (var (key, extractDef) in extractDict) { //key=posts, extractDef=ExtractDef
+
+                var context = extractDef.CONTEXT;
+                HtmlNode? contentNode = doc.DocumentNode.SelectSingleNode(extractDef.CONTEXT) ?? throw new ConfigException(ScraperExceptionType.ContentNodeIsNull);
+                List<HtmlNode> nodes = new List<HtmlNode>();
+                if (contentNode.SelectNodes(extractDef.ITEM) != null) {
+                    nodes.AddRange(contentNode.SelectNodes(extractDef.ITEM) ?? Enumerable.Empty<HtmlNode>());
+                }
+
+                
+                foreach (var node in nodes) {
+                    foreach (var (fieldKey, fieldValue) in extractDef.FIELDS) {
+                        items.Add(fieldKey, GetValue(node, fieldValue));
+                    }
+                }
+            }
+            return items;
+        }
+        /// <summary>
+        /// ノードから値を取得する
+        /// </summary>
+        /// <param name="postNode"></param>
+        /// <param name="configNode"></param>
+        /// <returns></returns>
+        private string GetValue(HtmlNode postNode, ExtractDef configNode) {
+            string value = null;
+            if (configNode.TYPE == "attribute") {
+                value = GetAttributeValue(postNode, configNode.NODE, configNode.ATTRIBUTE);
+            }
+            if (configNode.TYPE == "text") {
+                value = GetInnerText(postNode, configNode.NODE);
+            }
+            if (configNode.REGEX != null) {
+                value = GetInnerText(postNode, configNode.NODE);
+                var match = Regex.Match(value, configNode.REGEX);
+                if (match.Groups.Count > 0) {
+                    value = match.Groups[0].Value.Trim();
+                    return value;
+                }
+                return "";
+            }
+            return value;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="postNode"></param>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        private static string GetInnerText(HtmlNode postNode, string node) {
+            var bodyNode = postNode.SelectSingleNode(node);
+            return bodyNode?.InnerText.Trim() ?? "";
+        }
+        private static string GetAttributeValue(HtmlNode postNode, string node, string attribute) {
+            var bodyNode = postNode.SelectSingleNode(node);
+            return bodyNode?.GetAttributeValue(attribute, "").Trim() ?? "";
+        }
+        /// <summary>
+        /// スクロールしてitemを全て読み込む
+        /// </summary>
+        /// <param name="driver"></param>
+        /// <param name="containerBy"></param>
+        /// <param name="itemBy"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        internal IReadOnlyCollection<IWebElement> EnsureLoadedItems(IWebDriver driver, ScraperConfig scraperConfig) {
+            Dictionary<string, ExtractDef> extractDict = scraperConfig.EXTRACT;
+            foreach (var (key, extractDef) in extractDict) {
+                var timeout = TimeSpan.FromSeconds(50);
+                var end = DateTime.UtcNow + timeout;
+                var container = driver.FindElement(By.XPath(extractDef.CONTEXT));
+                int previousCount = -1;
+
+
+                while (DateTime.UtcNow < end) {
+                    var items = container.FindElements(By.XPath(extractDef.ITEM));
+                    if (items.Count > previousCount) {
+                        previousCount = items.Count;
+                        var ret = ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView({behavior:'auto', block:'end'});", items.Last());
+                        Thread.Sleep(1000);
+                        continue;
+                    }
+                    return items;
+                }
+                return container.FindElements(By.XPath(extractDef.ITEM));
+            }
+            throw new NotImplementedException();
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace matome_phase1.scraper.Configs.Base {
+namespace matome_phase1.scraper.Configs {
     public enum NavigatePageTypes {
         pagination_search,
         search
