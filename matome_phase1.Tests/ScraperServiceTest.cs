@@ -1,7 +1,7 @@
 using HtmlAgilityPack;
 using matome_phase1.constants;
 using matome_phase1.scraper;
-using matome_phase1.scraper.Configs.Base;
+using matome_phase1.scraper.Configs;
 using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
 using matome_phase1.scraper.services;
@@ -10,7 +10,7 @@ using System.Printing;
 using System.Security.Policy;
 using System.Text.Json;
 
-namespace matome_phase1.Tests.PostsScraperServiceTest {
+namespace matome_phase1.Tests.ScraperServiceTest {
     internal class DocsPaths {
         internal string targetHtml { get ; init; }
         internal string ConfigPath { get; init; }
@@ -27,14 +27,12 @@ namespace matome_phase1.Tests.PostsScraperServiceTest {
             GetItems_actualPath = @$"..\..\..\log\{site}_GetItems_actual.json";
         }
     }
-    public class PostsScraperServcieTest {
-        private AbstractScraperConfig CreateAConfigAndService(string configPath, out PostsService service) {
-            AbstractScraperConfig AConfig;
-            string config = File.ReadAllText(configPath);
-            AConfig = ScraperFactory.Create(config);
-            service = (PostsService)ScraperFactory.Create(AConfig);
-            return AConfig;
-        }
+    public class ScraperServcieTest {
+        //private ScraperConfig CreateAConfigAndService(string configPath, out ScraperService service) {
+        //    ScraperConfig scraperConfig;
+        //    string config = File.ReadAllText(configPath);
+        //    return scraperConfig;
+        //}
 
         [Fact]
         public void ch5_GetItemsTest() {
@@ -42,15 +40,14 @@ namespace matome_phase1.Tests.PostsScraperServiceTest {
             string site = "5ch";
             string target = "splatoon";
             DocsPaths docs = new(type, site, target);
-            AbstractScraperConfig AConfig;
-            AConfig = CreateAConfigAndService(docs.ConfigPath, out PostsService service);
+            ScraperConfig scraperConfig;
 
             //expectedÇÃçÏê¨
-            string expect = File.ReadAllText(docs.GetItems_expectPath);
-            var expectList = JsonSerializer.Deserialize<List<Post>>(expect);
+            //string expect = File.ReadAllText(docs.GetItems_expectPath);
+            //var expectList = JsonSerializer.Deserialize<List<Post>>(expect);
 
             //Act
-            List<Object> Items = service.GetItems(AConfig);
+            List<Object> Items = ScraperService.GetItems(AConfig);
             List<Post> actualItems = Items.Cast<Post>().ToList();
             var options = new System.Text.Json.JsonSerializerOptions {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
@@ -72,7 +69,7 @@ namespace matome_phase1.Tests.PostsScraperServiceTest {
             string target = "éGík";
             //Arrange
             DocsPaths docs = new(type, site, target);
-            AbstractScraperConfig AConfig;
+            ScraperConfig AConfig;
             PostsService service;
             string config = File.ReadAllText(docs.ConfigPath);
             AConfig = ScraperFactory.Create(config);
@@ -109,7 +106,7 @@ namespace matome_phase1.Tests.PostsScraperServiceTest {
             
             //Arrange
             DocsPaths docs = new(type, site, target);
-            AbstractScraperConfig AConfig;
+            ScraperConfig AConfig;
             PostsService service;
             string config = File.ReadAllText(docs.ConfigPath);
             AConfig = ScraperFactory.Create(config);
@@ -150,7 +147,7 @@ namespace matome_phase1.Tests.PostsScraperServiceTest {
             string target = "éGík";
             //Arrange
             DocsPaths docs = new(type, site, target);
-            AbstractScraperConfig AConfig;
+            ScraperConfig AConfig;
             PostsService service;
             string config = File.ReadAllText(docs.ConfigPath);
             AConfig = ScraperFactory.Create(config);
