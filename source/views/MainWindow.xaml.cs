@@ -25,10 +25,7 @@ namespace matome_phase1 {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged{
-        //config.json取得
-        //string configPath = @"C:\\work\\repos\\matome_phase1\\source\\docs\\target_config\\Config.json";
         string configPath;
-
 
         private ObservableCollection<Object> _currentItems;
         public ObservableCollection<Object> CurrentItems {
@@ -73,18 +70,19 @@ namespace matome_phase1 {
             //using HttpClient client = new HttpClient();
             //string config = client.GetStringAsync(configPath).Result;
 
-            IScraperOwner scraperOwner = new ScraperOwner();
+            ScraperOwner scraperOwner = new ScraperOwner();
             ItemsVM ItemsVM = scraperOwner.LoadConfig(File.ReadAllText(configPath));
             SiteName = ItemsVM.Config.SITE_NAME;
             URL = ItemsVM.Config.URL;
-            switch (ItemsVM.Items.FirstOrDefault()) {
-                case Post:
-                    CurrentItems = new ObservableCollection<Object>(ItemsVM.Items.ConvertAll(item => (Post)item));
-                    break;
-                case EC:
-                    CurrentItems = new ObservableCollection<Object>(ItemsVM.Items.ConvertAll(item => (EC)item));
-                    break;
-            }
+            CurrentItems = new ObservableCollection<Object>(ItemsVM.Items);
+            //switch (ItemsVM.Items.FirstOrDefault()) {
+            //    case Post:
+            //        CurrentItems = new ObservableCollection<Object>(ItemsVM.Items.ConvertAll(item => (Post)item));
+            //        break;
+            //    case EC:
+            //        CurrentItems = new ObservableCollection<Object>(ItemsVM.Items.ConvertAll(item => (EC)item));
+            //        break;
+            //}
             MessageBox.Show($"スクレイピングが完了しました。取得件数: {ItemsVM.Items.Count}件");
         }
         private void ClearBtn_Click(object sender, RoutedEventArgs e) {

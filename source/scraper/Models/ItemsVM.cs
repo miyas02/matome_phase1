@@ -7,6 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace matome_phase1.scraper.Models {
-    public record ItemsVM(ScraperConfig Config, List<object> Items);
+    public record ItemsVM(ScraperConfig Config, List<Dictionary<string, string>> Items);
 
 }

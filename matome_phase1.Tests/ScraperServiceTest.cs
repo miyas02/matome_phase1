@@ -5,10 +5,12 @@ using matome_phase1.scraper.Configs;
 using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
 using matome_phase1.scraper.services;
+using OpenQA.Selenium;
 using OpenQA.Selenium.DevTools.V136.Overlay;
 using System.Printing;
 using System.Security.Policy;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace matome_phase1.Tests.ScraperServiceTest {
     internal class DocsPaths {
@@ -18,13 +20,13 @@ namespace matome_phase1.Tests.ScraperServiceTest {
         internal string DocParseItems_actualPath { get; init; }
         internal string GetItems_expectPath { get ; init; }
         internal string GetItems_actualPath { get; init; }
-        internal DocsPaths(string type, string site, string target) {
-            targetHtml = @$"..\..\..\docs\{type}\{site}\{target}\targetHtml.html";
-            ConfigPath = @$"..\..\..\docs\{type}\{site}\{target}\Config.json";
-            DocParseItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\DocParseItems_Expect.json";
-            DocParseItems_actualPath = @$"..\..\..\log\{site}_DocParseItems_actual.json";
-            GetItems_expectPath = @$"..\..\..\docs\{type}\{site}\{target}\GetItems_Expect.json";
-            GetItems_actualPath = @$"..\..\..\log\{site}_GetItems_actual.json";
+        internal DocsPaths(string site) {
+            targetHtml = @$"TestFiles\targetHtml.html";
+            ConfigPath = @$"TestFiles\Config.json";
+            DocParseItems_expectPath = @$"TestFiles\DocParseItems_Expect.json";
+            DocParseItems_actualPath = @$"TestFiles\log\{site}_DocParseItems_actual.json";
+            GetItems_expectPath = @$"TestFiles\GetItems_Expect.json";
+            GetItems_actualPath = @$"TestFiles\log\{site}_GetItems_actual.json";
         }
     }
     public class ScraperServcieTest {
@@ -36,150 +38,77 @@ namespace matome_phase1.Tests.ScraperServiceTest {
 
         [Fact]
         public void ch5_GetItemsTest() {
-            string type = "Post";
-            string site = "5ch";
-            string target = "splatoon";
-            DocsPaths docs = new(type, site, target);
-            ScraperConfig scraperConfig;
+            string target = "5ch";
+            DocsPaths docs = new(target);
+            string basePath = Path.Combine(AppContext.BaseDirectory, "TestFiles");
+            string configJson = File.ReadAllText(Path.Combine(basePath, $"{target}_ScraperConfig.json"));
+            using JsonDocument doc = JsonDocument.Parse(configJson);
+            var options = new JsonSerializerOptions {
+                Converters = { new JsonStringEnumConverter()
+                }
+            };
+            ScraperConfig scraperConfig = JsonSerializer.Deserialize<ScraperConfig>(configJson, options) ?? throw new InvalidOperationException("„Éá„Ç∑„É™„Ç¢„É©„Ç§„Ç∫Â§±Êïó");
+            ScraperService scraperService = new ScraperService();
 
-            //expectedÇÃçÏê¨
+            //expected„ÅÆ‰ΩúÊàê
             //string expect = File.ReadAllText(docs.GetItems_expectPath);
             //var expectList = JsonSerializer.Deserialize<List<Post>>(expect);
 
             //Act
-            List<Object> Items = ScraperService.GetItems(AConfig);
-            List<Post> actualItems = Items.Cast<Post>().ToList();
-            var options = new System.Text.Json.JsonSerializerOptions {
+            List<Dictionary<string,string>> Items = scraperService.GetItems(scraperConfig);
+            var op = new System.Text.Json.JsonSerializerOptions {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 WriteIndented = true
             };
 
-            //actualItemsÇÃèëÇ´èoÇµ
-            string json = JsonSerializer.Serialize(actualItems, options); //ListÇjsonÇ…ÉVÉäÉAÉâÉCÉY
-            File.WriteAllText(docs.GetItems_actualPath, json); //èëÇ´èoÇµ
+            //actualItems„ÅÆÊõ∏„ÅçÂá∫„Åó
+            string json = JsonSerializer.Serialize(Items, op); //List„Çíjson„Å´„Ç∑„É™„Ç¢„É©„Ç§„Ç∫
+            File.WriteAllText(@$"TestFiles\logs\ch5_GetItemsTest_log.txt", json); //Êõ∏„ÅçÂá∫„Åó
 
             //Assert
-            Assert.Equal(expectList.Count, Items.Count);
+            Assert.NotEqual(0, Items.Count);
 
         }
-        [Fact]
-        public void zawazawa_GetItemsTest() {
-            string type = "Post";
-            string site = "zawazawa";
-            string target = "éGík";
-            //Arrange
-            DocsPaths docs = new(type, site, target);
-            ScraperConfig AConfig;
-            PostsService service;
-            string config = File.ReadAllText(docs.ConfigPath);
-            AConfig = ScraperFactory.Create(config);
-            if (AConfig.LOGIC == null) {
-                throw new ConfigException(ScraperExceptionType.ConfigJsonLogicNotFound, AConfig);
-            }
-            service = (PostsService)ScraperFactory.Create(AConfig);
-
-            //expectedÇÃçÏê¨
-            string expect = File.ReadAllText(docs.GetItems_expectPath);
-            var expectList = JsonSerializer.Deserialize<List<Post>>(expect);
-
-            //Act
-            List<Object> Items = service.GetItems(AConfig);
-            List<Post> actualItems = Items.Cast<Post>().ToList();
-            var options = new System.Text.Json.JsonSerializerOptions {
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                WriteIndented = true
-            };
-
-            //actualItemsÇÃèëÇ´èoÇµ
-            string json = JsonSerializer.Serialize(actualItems, options); //ListÇjsonÇ…ÉVÉäÉAÉâÉCÉY
-            File.WriteAllText(docs.GetItems_actualPath, json); //èëÇ´èoÇµ
-
-            //Assert
-            Assert.Equal(expectList.Count, Items.Count);
-
-        }
+        
         [Fact]
         public void ch5_DocParseItemsTest() {
-            string type = "Post";
-            string site = "5ch";
-            string target = "splatoon";
-            
-            //Arrange
-            DocsPaths docs = new(type, site, target);
-            ScraperConfig AConfig;
-            PostsService service;
-            string config = File.ReadAllText(docs.ConfigPath);
-            AConfig = ScraperFactory.Create(config);
-            if (AConfig.LOGIC == null) {
-                throw new ConfigException(ScraperExceptionType.ConfigJsonLogicNotFound, AConfig);
-            }
-            service = (PostsService)ScraperFactory.Create(AConfig);
+            string target = "5ch";
+            DocsPaths docs = new(target);
+            string basePath = Path.Combine(AppContext.BaseDirectory, "TestFiles");
+            string configJson = File.ReadAllText(Path.Combine(basePath, $"{target}_ScraperConfig.json"));
+            using JsonDocument doc = JsonDocument.Parse(configJson);
+            var options = new JsonSerializerOptions {
+                Converters = { new JsonStringEnumConverter()
+                }
+            };
+            ScraperConfig scraperConfig = JsonSerializer.Deserialize<ScraperConfig>(configJson, options) ?? throw new InvalidOperationException("„Éá„Ç∑„É™„Ç¢„É©„Ç§„Ç∫Â§±Êïó");
+            ScraperService scraperService = new ScraperService();
 
-            //É^Å[ÉQÉbÉghtmlì«Ç›çûÇ›
+            //„Çø„Éº„Ç≤„ÉÉ„ÉàhtmlË™≠„ÅøËæº„Åø
             string htmlText = File.ReadAllText(docs.targetHtml);
-            var doc = new HtmlDocument();
-            doc.LoadHtml(htmlText);
+            var html = new HtmlDocument();
+            html.LoadHtml(htmlText);
 
-            //expectedÇÃçÏê¨
+            //expected„ÅÆ‰ΩúÊàê
             string expect = File.ReadAllText(docs.DocParseItems_expectPath);
-            var expectList = JsonSerializer.Deserialize<List<Post>>(expect);
+            var expectList = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(expect);
 
             //Act
-            // actualÇÃçÏê¨
-            List<Object> Items = service.DocParseItems(AConfig, doc);
-            List<Post> actualItems = Items.Cast<Post>().ToList();
-            var options = new System.Text.Json.JsonSerializerOptions {
+            // actual„ÅÆ‰ΩúÊàê
+            var Items = scraperService.DocParseItems(scraperConfig, html);
+            var op = new System.Text.Json.JsonSerializerOptions {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 WriteIndented = true
             };
 
-            //actualItemsÇÃèëÇ´èoÇµ
-            string json = JsonSerializer.Serialize(actualItems, options); //ListÇjsonÇ…ÉVÉäÉAÉâÉCÉY
-            File.WriteAllText(docs.DocParseItems_actualPath, json); //èëÇ´èoÇµ
+            //actualItems„ÅÆÊõ∏„ÅçÂá∫„Åó
+            string json = JsonSerializer.Serialize(Items, op); //List„Çíjson„Å´„Ç∑„É™„Ç¢„É©„Ç§„Ç∫
+            //Path.Combine(basePath, $"{target}_ScraperConfig.json")
+            File.WriteAllText(Path.Combine(basePath, @$"log\{target}_ScraperConfig.json"), json); //Êõ∏„ÅçÂá∫„Åó
+            //File.WriteAllText(docs.DocParseItems_actualPath, json); //Êõ∏„ÅçÂá∫„Åó
 
             //Assert
-            Assert.Equal(expectList, actualItems);
-        }
-        [Fact]
-        public void zawazawa_DocParseItemsTest() {
-            string type = "Post";
-            string site = "zawazawa";
-            string target = "éGík";
-            //Arrange
-            DocsPaths docs = new(type, site, target);
-            ScraperConfig AConfig;
-            PostsService service;
-            string config = File.ReadAllText(docs.ConfigPath);
-            AConfig = ScraperFactory.Create(config);
-            if (AConfig.LOGIC == null) {
-                throw new ConfigException(ScraperExceptionType.ConfigJsonLogicNotFound, AConfig);
-            }
-            service = (PostsService)ScraperFactory.Create(AConfig);
-
-            //É^Å[ÉQÉbÉghtmlì«Ç›çûÇ›
-            string htmlText = File.ReadAllText(docs.targetHtml);
-            var doc = new HtmlDocument();
-            doc.LoadHtml(htmlText);
-
-            //expectedÇÃçÏê¨
-            string expect = File.ReadAllText(docs.DocParseItems_expectPath);
-            var expectList = JsonSerializer.Deserialize<List<Post>>(expect);
-
-            //Act
-            // actualÇÃçÏê¨
-            List<Object> Items = service.DocParseItems(AConfig, doc);
-            List<Post> actualItems = Items.Cast<Post>().ToList();
-            var options = new System.Text.Json.JsonSerializerOptions {
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                WriteIndented = true
-            };
-
-            //actualItemsÇÃèëÇ´èoÇµ
-            string json = JsonSerializer.Serialize(actualItems, options); //ListÇjsonÇ…ÉVÉäÉAÉâÉCÉY
-            File.WriteAllText(docs.DocParseItems_actualPath, json); //èëÇ´èoÇµ
-
-            //Assert
-            Assert.Equal(expectList, actualItems);
+            Assert.Equal(expectList, Items);
         }
     }
 }

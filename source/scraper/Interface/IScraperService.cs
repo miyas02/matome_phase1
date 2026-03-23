@@ -10,6 +10,6 @@ namespace matome_phase1.scraper.Interface {
     public interface IScraperService {
         //protected IWebDriver GetDriver(string url);
         //protected IWebDriver NavigateToPage(IWebDriver driver, AbstractScraperConfig AConfig);
-        public Dictionary<string, string> GetItems(ScraperConfig AConfig);
+        public List<Dictionary<string, string>> GetItems(ScraperConfig scraperConfig);
     }
 }

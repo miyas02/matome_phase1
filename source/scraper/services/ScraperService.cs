@@ -2,7 +2,6 @@
 using HtmlAgilityPack;
 using matome_phase1.constants;
 using matome_phase1.scraper.Configs;
-using matome_phase1.scraper.Configs.Post;
 using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
 using OpenQA.Selenium;
@@ -23,8 +22,8 @@ using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace matome_phase1.scraper.services {
-    public abstract class ScraperService : IScraperService {
-        public Dictionary<string, string> GetItems(ScraperConfig scraperConfig) {
+    public class ScraperService : IScraperService {
+        public List<Dictionary<string, string>> GetItems(ScraperConfig scraperConfig) {
 
             IWebDriver driver = GetDriver(scraperConfig.URL);
             try {
@@ -111,23 +110,23 @@ namespace matome_phase1.scraper.services {
             throw new ConfigException(ScraperExceptionType.NavigateToPagesIsNull, null, "paginationNode is Null");
         }
 
-        internal Dictionary<string, string> DocParseItems(ScraperConfig scraperConfig, HtmlDocument doc) {
+        internal List<Dictionary<string, string>> DocParseItems(ScraperConfig scraperConfig, HtmlDocument doc) {
             Dictionary<string, ExtractDef> extractDict = scraperConfig.EXTRACT;
-            Dictionary<string, string> items = new Dictionary<string, string>();
+            var items = new List<Dictionary<string, string>>();
             foreach (var (key, extractDef) in extractDict) { //key=posts, extractDef=ExtractDef
 
-                var context = extractDef.CONTEXT;
                 HtmlNode? contentNode = doc.DocumentNode.SelectSingleNode(extractDef.CONTEXT) ?? throw new ConfigException(ScraperExceptionType.ContentNodeIsNull);
                 List<HtmlNode> nodes = new List<HtmlNode>();
                 if (contentNode.SelectNodes(extractDef.ITEM) != null) {
                     nodes.AddRange(contentNode.SelectNodes(extractDef.ITEM) ?? Enumerable.Empty<HtmlNode>());
                 }
 
-                
                 foreach (var node in nodes) {
+                    var item = new Dictionary<string, string>();
                     foreach (var (fieldKey, fieldValue) in extractDef.FIELDS) {
-                        items.Add(fieldKey, GetValue(node, fieldValue));
+                        item.Add(fieldKey, GetValue(node, fieldValue));
                     }
+                    items.Add(item);
                 }
             }
             return items;

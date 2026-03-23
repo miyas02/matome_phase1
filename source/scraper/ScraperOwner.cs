@@ -1,6 +1,5 @@
 ﻿using matome_phase1.constants;
 using matome_phase1.scraper.Configs;
-using matome_phase1.scraper.Configs.Post;
 using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
 using System;
@@ -28,8 +27,9 @@ namespace matome_phase1.scraper {
             scraperConfig = JsonSerializer.Deserialize<ScraperConfig>(configJson, options) ?? throw new InvalidOperationException("デシリアライズ失敗");
 
             //TODO AConfigの入力(読み込み)チェック
-            //List<Object> Items = ScraperService.GetItems(scraperConfig);
-            ItemsVM = new ItemsVM(AConfig,Items);
+            List<Dictionary<string,string>> Items = ScraperService.GetItems(scraperConfig);
+
+            ItemsVM = new ItemsVM(scraperConfig,Items);
             return ItemsVM;
         }
     }
