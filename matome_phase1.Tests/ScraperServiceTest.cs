@@ -20,6 +20,8 @@ namespace matome_phase1.Tests.ScraperServiceTest {
         internal string DocParseItems_actualPath { get; init; }
         internal string GetItems_expectPath { get ; init; }
         internal string GetItems_actualPath { get; init; }
+        internal string log { get; init; }
+        internal string basePath = Path.Combine(AppContext.BaseDirectory, "TestFiles");
         internal DocsPaths(string site) {
             targetHtml = @$"TestFiles\targetHtml.html";
             ConfigPath = @$"TestFiles\Config.json";
@@ -27,6 +29,7 @@ namespace matome_phase1.Tests.ScraperServiceTest {
             DocParseItems_actualPath = @$"TestFiles\log\{site}_DocParseItems_actual.json";
             GetItems_expectPath = @$"TestFiles\GetItems_Expect.json";
             GetItems_actualPath = @$"TestFiles\log\{site}_GetItems_actual.json";
+            log = @$"TestFiles\logs\{site}_ScraperServiceTest_log.txt";
         }
     }
     public class ScraperServcieTest {
@@ -40,8 +43,7 @@ namespace matome_phase1.Tests.ScraperServiceTest {
         public void ch5_GetItemsTest() {
             string target = "5ch";
             DocsPaths docs = new(target);
-            string basePath = Path.Combine(AppContext.BaseDirectory, "TestFiles");
-            string configJson = File.ReadAllText(Path.Combine(basePath, $"{target}_ScraperConfig.json"));
+            string configJson = File.ReadAllText(Path.Combine(docs.basePath, $"{target}_ScraperConfig.json"));
             using JsonDocument doc = JsonDocument.Parse(configJson);
             var options = new JsonSerializerOptions {
                 Converters = { new JsonStringEnumConverter()
@@ -63,7 +65,9 @@ namespace matome_phase1.Tests.ScraperServiceTest {
 
             //actualItemsの書き出し
             string json = JsonSerializer.Serialize(Items, op); //Listをjsonにシリアライズ
-            File.WriteAllText(@$"TestFiles\logs\ch5_GetItemsTest_log.txt", json); //書き出し
+            string outPath = Path.Combine(AppContext.BaseDirectory, "TestFiles", "log", $"{target}_GetItems_actual.json");
+            Directory.CreateDirectory(Path.GetDirectoryName(outPath)!);
+            File.WriteAllText(outPath, json); //書き出し
 
             //Assert
             Assert.NotEqual(0, Items.Count);
@@ -74,8 +78,7 @@ namespace matome_phase1.Tests.ScraperServiceTest {
         public void ch5_DocParseItemsTest() {
             string target = "5ch";
             DocsPaths docs = new(target);
-            string basePath = Path.Combine(AppContext.BaseDirectory, "TestFiles");
-            string configJson = File.ReadAllText(Path.Combine(basePath, $"{target}_ScraperConfig.json"));
+            string configJson = File.ReadAllText(Path.Combine(docs.basePath, $"{target}_ScraperConfig.json"));
             using JsonDocument doc = JsonDocument.Parse(configJson);
             var options = new JsonSerializerOptions {
                 Converters = { new JsonStringEnumConverter()
@@ -103,9 +106,9 @@ namespace matome_phase1.Tests.ScraperServiceTest {
 
             //actualItemsの書き出し
             string json = JsonSerializer.Serialize(Items, op); //Listをjsonにシリアライズ
-            //Path.Combine(basePath, $"{target}_ScraperConfig.json")
-            File.WriteAllText(Path.Combine(basePath, @$"log\{target}_ScraperConfig.json"), json); //書き出し
-            //File.WriteAllText(docs.DocParseItems_actualPath, json); //書き出し
+            string outPath = Path.Combine(AppContext.BaseDirectory, "TestFiles", "log", $"{target}_DocParseItems_actual.json");
+            Directory.CreateDirectory(Path.GetDirectoryName(outPath)!);
+            File.WriteAllText(outPath, json); //書き出し
 
             //Assert
             Assert.Equal(expectList, Items);
