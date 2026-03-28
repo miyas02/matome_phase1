@@ -25,10 +25,10 @@ namespace matome_phase1.Tests.ScraperServiceTest {
         internal DocsPaths(string site) {
             targetHtml = @$"TestFiles\targetHtml.html";
             ConfigPath = @$"TestFiles\Config.json";
-            DocParseItems_expectPath = @$"TestFiles\DocParseItems_Expect.json";
-            DocParseItems_actualPath = @$"TestFiles\log\{site}_DocParseItems_actual.json";
-            GetItems_expectPath = @$"TestFiles\GetItems_Expect.json";
-            GetItems_actualPath = @$"TestFiles\log\{site}_GetItems_actual.json";
+            DocParseItems_expectPath = @$"TestFiles\{site}_DocParseItems_Expect.json";
+            DocParseItems_actualPath = @$"TestFiles\{site}_DocParseItems_actual.json";
+            GetItems_expectPath = @$"TestFiles\{site}_GetItems_Expect.json";
+            GetItems_actualPath = @$"TestFiles\{site}_GetItems_actual.json";
             log = @$"TestFiles\logs\{site}_ScraperServiceTest_log.txt";
         }
     }
