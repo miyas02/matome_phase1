@@ -17,6 +17,8 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="xunit" Version="2.5.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <!-- ローカルWindows開発用。Docker環境ではchromium-driverを使用 -->
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="138.0.7204.4900" Condition="'$(DOCKER_BUILD)' != 'true'" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TestFiles\log\" />
     <None Update="TestFiles\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

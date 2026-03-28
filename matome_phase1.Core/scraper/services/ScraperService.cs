@@ -33,9 +33,15 @@ namespace matome_phase1.scraper.services {
             options.AddArgument("--disable-extensions");
             options.AddArgument("--headless=new");
             options.AddArgument("--disable-features=VizDisplayCompositor");
+            options.AddArgument("--disable-quic");
+            options.AddArgument("--ignore-certificate-errors");
             options.AddArgument($"--user-data-dir={Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString())}");
 
-            var service = ChromeDriverService.CreateDefaultService();
+            // CHROMEDRIVER_DIR 環境変数でシステムのchromedriverを直接指定可能（Docker/Linux用）
+            string? chromedriverDir = Environment.GetEnvironmentVariable("CHROMEDRIVER_DIR");
+            var service = chromedriverDir != null
+                ? ChromeDriverService.CreateDefaultService(chromedriverDir)
+                : ChromeDriverService.CreateDefaultService();
             service.HideCommandPromptWindow = true;
             service.SuppressInitialDiagnosticInformation = true;
 

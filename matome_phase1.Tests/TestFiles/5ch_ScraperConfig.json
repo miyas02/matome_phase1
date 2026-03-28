@@ -14,7 +14,7 @@
                 "date": {
                     "NODE": ".//div[contains(@class, 'threadview_response_info')]",
                     "TYPE": "text",
-                    "REGEX:": "\\d{4}/\\d{2}/\\d{2}\\(.\\)"
+                    "REGEX": "\\d{4}/\\d{2}/\\d{2}\\(.\\)"
                 },
                 "text": {
                     "NODE": ".//div[contains(@class, 'threadview_response_body')]",
