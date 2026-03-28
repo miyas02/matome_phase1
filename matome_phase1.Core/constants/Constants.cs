@@ -1,0 +1,13 @@
+namespace matome_phase1.constants
+{
+    public class Constants {
+        public const string ZAWAZAWA = "https://zawazawa.jp/spla3/";
+        public const string CHATLOG3 = "https://zawazawa.jp/spla3/chatlog/3";
+        public const string NODES = "//div[@id='main-list-view-widget']";
+        public const string POSTNODE = ".//*[contains(@class, 'list-view-item')]";
+        public const string TEXTNODE = ".//*[contains(@class, 'body')]";
+        public const string DATE = "data-key";
+        public const string USERIDNODE = ".//*[contains(@class, 'hashed-track-info')]";
+        public const string USERIDNODE_2 = ".//*[contains(@class, 'posted-user-account')]";
+    }
+}
