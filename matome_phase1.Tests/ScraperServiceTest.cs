@@ -5,10 +5,6 @@ using matome_phase1.scraper.Configs;
 using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
 using matome_phase1.scraper.services;
-using OpenQA.Selenium;
-using OpenQA.Selenium.DevTools.V136.Overlay;
-using System.Printing;
-using System.Security.Policy;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
