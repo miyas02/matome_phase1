@@ -21,16 +21,24 @@
   <ItemGroup>
     <Compile Remove="scraper\AbstractPost.cs" />
     <Compile Remove="scraper\IScraperLogic.cs" />
+    <Compile Remove="constants\**" />
+    <Compile Remove="scraper\Configs\**" />
+    <Compile Remove="scraper\Interface\**" />
+    <Compile Remove="scraper\Models\**" />
+    <Compile Remove="scraper\services\**" />
+    <Compile Remove="scraper\ScraperOwner.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.34.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="138.0.7204.4900" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="docs\log\" />
+    <ProjectReference Include="..\matome_phase1.Core\matome_phase1.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ScraperConfigs\" />
   </ItemGroup>
 
 </Project>

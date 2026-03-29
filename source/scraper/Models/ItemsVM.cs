@@ -1,4 +1,4 @@
-﻿using matome_phase1.scraper.Configs.Base;
+﻿using matome_phase1.scraper.Configs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace matome_phase1.scraper.Models {
-    public record ItemsVM(AbstractScraperConfig Config, List<object> Items);
+    public record ItemsVM(ScraperConfig Config, List<Dictionary<string, string>> Items);
 
 }

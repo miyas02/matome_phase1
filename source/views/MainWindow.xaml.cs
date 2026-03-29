@@ -1,39 +1,23 @@
 ﻿using matome_phase1.scraper;
-using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
-using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Net.Http;
-using System.Security.Policy;
-using System.Security.RightsManagement;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 
 namespace matome_phase1 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged{
-        //config.json取得
-        //string configPath = @"C:\\work\\repos\\matome_phase1\\source\\docs\\target_config\\Config.json";
+    public partial class MainWindow : Window, INotifyPropertyChanged {
         string configPath;
-
 
         private ObservableCollection<Object> _currentItems;
         public ObservableCollection<Object> CurrentItems {
             get => _currentItems;
-            set { 
+            set {
                 _currentItems = value;
                 OnPropertyChanged(nameof(CurrentItems));
             }
@@ -73,18 +57,19 @@ namespace matome_phase1 {
             //using HttpClient client = new HttpClient();
             //string config = client.GetStringAsync(configPath).Result;
 
-            IScraperOwner scraperOwner = new ScraperOwner();
+            ScraperOwner scraperOwner = new ScraperOwner();
             ItemsVM ItemsVM = scraperOwner.LoadConfig(File.ReadAllText(configPath));
             SiteName = ItemsVM.Config.SITE_NAME;
             URL = ItemsVM.Config.URL;
-            switch (ItemsVM.Items.FirstOrDefault()) {
-                case Post:
-                    CurrentItems = new ObservableCollection<Object>(ItemsVM.Items.ConvertAll(item => (Post)item));
-                    break;
-                case EC:
-                    CurrentItems = new ObservableCollection<Object>(ItemsVM.Items.ConvertAll(item => (EC)item));
-                    break;
-            }
+            CurrentItems = new ObservableCollection<Object>(ItemsVM.Items);
+            //switch (ItemsVM.Items.FirstOrDefault()) {
+            //    case Post:
+            //        CurrentItems = new ObservableCollection<Object>(ItemsVM.Items.ConvertAll(item => (Post)item));
+            //        break;
+            //    case EC:
+            //        CurrentItems = new ObservableCollection<Object>(ItemsVM.Items.ConvertAll(item => (EC)item));
+            //        break;
+            //}
             MessageBox.Show($"スクレイピングが完了しました。取得件数: {ItemsVM.Items.Count}件");
         }
         private void ClearBtn_Click(object sender, RoutedEventArgs e) {

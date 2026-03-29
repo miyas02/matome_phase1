@@ -1,4 +1,4 @@
-﻿using matome_phase1.scraper.Configs;
+using matome_phase1.scraper.Configs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,13 +22,7 @@ namespace matome_phase1.constants {
             { ScraperExceptionType.NavigateToPagesIsNull, "NavigateToPages property not found in the config JSON." }
         };
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="config" type="AbstractScraperConfig"></param>
-        /// <param name="additionalMessage" type="string"></param>
-        public ConfigException(ScraperExceptionType type, ScraperConfig? config = null, string ? additionalMessage = null)
+        public ConfigException(ScraperExceptionType type, ScraperConfig? config = null, string? additionalMessage = null)
             : base(FormatMessage(type, config, additionalMessage)) {
         }
 
