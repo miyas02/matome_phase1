@@ -8,3 +8,4 @@ services:
       - CHROMEDRIVER_DIR=/usr/bin
     volumes:
       - ./matome_phase1.Tests/TestFiles:/app/matome_phase1.Tests/bin/Debug/net8.0/TestFiles
+      - ./matome_phase1.Tests/log:/app/matome_phase1.Tests/bin/Debug/net8.0/log
