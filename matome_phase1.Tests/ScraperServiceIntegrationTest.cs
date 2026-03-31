@@ -18,10 +18,10 @@ namespace matome_phase1.Tests.ScraperServiceIntegrationTest {
                 Converters = { new JsonStringEnumConverter() }
             };
             ScraperConfig scraperConfig = JsonSerializer.Deserialize<ScraperConfig>(configJson, options) ?? throw new InvalidOperationException("デシリアライズ失敗");
-            ScraperService scraperService = new ScraperService();
+            PlaywrightService scraperService = new PlaywrightService();
 
             //Act
-            List<Dictionary<string, string>> Items = scraperService.GetItems(scraperConfig);
+            List<Dictionary<string, string>> Items = scraperService.GetItems(scraperConfig).Result;
             var op = new System.Text.Json.JsonSerializerOptions {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 WriteIndented = true

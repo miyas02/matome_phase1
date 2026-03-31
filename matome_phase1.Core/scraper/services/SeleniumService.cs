@@ -9,8 +9,8 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 
 namespace matome_phase1.scraper.services {
-    public class ScraperService : IScraperService {
-        public List<Dictionary<string, string>> GetItems(ScraperConfig scraperConfig) {
+    public class PlaywrightService : IScraperService {
+        public Task<List<Dictionary<string, string>>> GetItems(ScraperConfig scraperConfig) {
 
             IWebDriver driver = GetDriver(scraperConfig.URL);
             try {
@@ -19,7 +19,7 @@ namespace matome_phase1.scraper.services {
                 string html = driver.PageSource;
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
-                return DocParseItems(scraperConfig, doc);
+                return Task.FromResult(DocParseItems(scraperConfig, doc));
             } finally {
                 driver.Quit();
             }

@@ -15,7 +15,7 @@ namespace matome_phase1.scraper {
                 Converters = { new JsonStringEnumConverter() }
             };
             scraperConfig = JsonSerializer.Deserialize<ScraperConfig>(configJson, options) ?? throw new InvalidOperationException("デシリアライズ失敗");
-            List<Dictionary<string, string>> Items = ScraperService.GetItems(scraperConfig);
+            List<Dictionary<string, string>> Items = ScraperService.GetItems(scraperConfig).Result;
             ItemsVM = new ItemsVM(scraperConfig, Items);
             return ItemsVM;
         }

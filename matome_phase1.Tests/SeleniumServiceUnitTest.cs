@@ -12,7 +12,7 @@ using System.Text.Json.Serialization;
 using Serilog;
 
 namespace matome_phase1.Tests.ScraperServiceUnitTest {
-    public class ScraperServcieUnitTest {
+    public class SeleniumServcieUnitTest {
         public static IEnumerable<object[]> TestCases => new[] {
             new object[] { "5ch", @"TestFiles/5ch_ScraperConfig.json", @"TestFiles/5ch_DocParseItems_Expect.json", @"log/5ch_DocParseItems_Actual.json", @"TestFiles/targetHtml.html" }
         };
@@ -43,7 +43,7 @@ namespace matome_phase1.Tests.ScraperServiceUnitTest {
                 }
             };
             ScraperConfig scraperConfig = JsonSerializer.Deserialize<ScraperConfig>(configJson, options) ?? throw new InvalidOperationException("デシリアライズ失敗");
-            ScraperService scraperService = new ScraperService();
+            PlaywrightService scraperService = new PlaywrightService();
 
             //ターゲットhtml読み込み
             string htmlText = File.ReadAllText(Path.Combine(projectRoot, targetHtml));
