@@ -3,7 +3,7 @@ name: Sync customScraping docs to Google Drive
 on:
   push:
     branches:
-      - feature/github_actions
+        - '**'
   workflow_dispatch:  # 手動実行ボタンを有効化
 
 jobs:
