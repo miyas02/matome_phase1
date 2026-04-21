@@ -1,0 +1,40 @@
+name: Sync customScraping docs to Google Drive
+
+on:
+  push:
+    branches:
+      - feature/github_actions
+  workflow_dispatch:  # 手動実行ボタンを有効化
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install rclone
+        run: sudo curl https://rclone.org/install.sh | sudo bash
+
+      - name: Configure rclone
+        env:
+          # GitHub Secrets に保存したトークンを呼び出す
+          GDRIVE_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
+          RCLONE_CONFIG_BASE64: ${{ secrets.RCLONE_CONFIG_BASE64 }}
+        run: |
+          mkdir -p ~/.config/rclone
+          # Base64をデコードして設定ファイルを作成
+          echo "${{ secrets.RCLONE_CONFIG_BASE64 }}" | base64 -d > ~/.config/rclone/rclone.conf
+
+      - name: rclone copy
+        run: |
+          # gdrive: の後ろを空にすることで root_folder_id の直下に同期されます
+          rclone copy ./docs gdrive:$GDRIVE_FOLDER_ID \
+            --filter "+ *.md" \
+            --filter "+ *.pdf" \
+            --filter "+ *.png" \
+            --filter "+ *.jpg" \
+            --filter "- .git/**" \
+            --filter "- .obsidian/**" \
+            --filter "- **" \
+            -v
