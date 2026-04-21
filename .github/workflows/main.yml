@@ -28,13 +28,6 @@ jobs:
 
       - name: rclone copy
         run: |
-          # gdrive: の後ろを空にすることで root_folder_id の直下に同期されます
-          rclone copy ./docs gdrive:$GDRIVE_FOLDER_ID \
-            --filter "+ *.md" \
-            --filter "+ *.pdf" \
-            --filter "+ *.png" \
-            --filter "+ *.jpg" \
-            --filter "- .git/**" \
-            --filter "- .obsidian/**" \
-            --filter "- **" \
+          rclone sync ./docs gdrive:CustomScraping_docs \
+            --drive-use-trash=true \
             -v
