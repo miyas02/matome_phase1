@@ -3,6 +3,7 @@ using matome_phase1.scraper.Interface;
 using matome_phase1.scraper.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using matome_phase1.Core.scraper;
 
 namespace matome_phase1.scraper {
     public class ScraperOwner {
@@ -10,7 +11,9 @@ namespace matome_phase1.scraper {
         public ScraperConfig scraperConfig { get; set; }
         public ItemsVM ItemsVM { get; set; }
         public ItemsVM LoadConfig(string configJson) {
-            using JsonDocument doc = JsonDocument.Parse(configJson);
+            using var doc = JsonDocument.Parse(configJson);
+            ScraperConfigValidator.Validate(doc);
+
             var options = new JsonSerializerOptions {
                 Converters = { new JsonStringEnumConverter() }
             };
