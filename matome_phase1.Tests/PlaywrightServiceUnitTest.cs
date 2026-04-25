@@ -30,11 +30,7 @@ namespace matome_phase1.Tests.ScraperServiceUnitTest {
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger();
 
-            Log.Information("DocParseItemsTest start: target={Target}", target);
-            Log.Information("configPath={ConfigPath}", Path.Combine(projectRoot, configPath));
-            Log.Information("expectPath={ExpectPath}", Path.Combine(projectRoot, expectPath));
-            Log.Information("targetHtml={TargetHtml}", Path.Combine(projectRoot, targetHtml));
-            Log.Information("actualPath={ActualPath}", Path.Combine(projectRoot, actualPath));
+            Log.Information("PlaywrightServiceUnitTest, DocParseItemsTest start: target={Target}", target);
 
             string configJson = File.ReadAllText(Path.Combine(projectRoot, configPath));
             using JsonDocument doc = JsonDocument.Parse(configJson);
@@ -64,10 +60,10 @@ namespace matome_phase1.Tests.ScraperServiceUnitTest {
             };
 
             //actualItemsの書き出し
-            string json = JsonSerializer.Serialize(Items, op); //Listをjsonにシリアライズ
-            string outPath = Path.Combine(projectRoot, actualPath);
-            Directory.CreateDirectory(Path.GetDirectoryName(outPath)!);
-            File.WriteAllText(outPath, json); //書き出し
+            //string json = JsonSerializer.Serialize(Items, op); //Listをjsonにシリアライズ
+            //string outPath = Path.Combine(projectRoot, actualPath);
+            //Directory.CreateDirectory(Path.GetDirectoryName(outPath)!);
+            //File.WriteAllText(outPath, json); //書き出し
 
             //Assert
             Assert.Equal(expectList, Items);
