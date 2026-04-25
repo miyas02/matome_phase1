@@ -28,6 +28,6 @@ jobs:
 
       - name: rclone copy
         run: |
-          rclone sync ./docs gdrive:CustomScraping_docs \
+          rclone copy ./docs gdrive:CustomScraping_docs \
             --drive-use-trash=true \
             -v
