@@ -4,7 +4,7 @@ using System.Text.Json;
 using matome_phase1.constants;
 
 namespace matome_phase1.Core.scraper {
-    internal static class ScraperConfigValidator {
+    public static class ScraperConfigValidator {
         public static void Validate(JsonDocument configDocument) {
             var root = configDocument.RootElement;
             ValidateJsonObject(root);
@@ -13,7 +13,6 @@ namespace matome_phase1.Core.scraper {
             ValidateExtract(root);
             ValidateExtractFields(root);
         }
-
         internal static void ValidateFormat(JsonElement root) {
             //schema作成
             var schema = new JsonSchemaBuilder()

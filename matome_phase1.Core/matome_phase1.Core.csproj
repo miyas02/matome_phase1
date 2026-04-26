@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+	<InternalsVisibleTo Include="matome_phase1.Tests" />
     <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
     <PackageReference Include="JsonSchema.Net" Version="9.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
