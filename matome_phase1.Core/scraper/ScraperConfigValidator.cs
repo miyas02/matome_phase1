@@ -2,6 +2,7 @@ using Json.Schema;
 using System;
 using System.Text.Json;
 using matome_phase1.constants;
+using OpenQA.Selenium.DevTools.V136.Page;
 
 namespace matome_phase1.Core.scraper {
     public static class ScraperConfigValidator {
@@ -40,12 +41,13 @@ namespace matome_phase1.Core.scraper {
         }
         internal static void ValidateUrl(JsonElement root) {
             var url = root.GetProperty("URL").GetString();
-            if (!Uri.TryCreate(url, UriKind.Absolute, out _)) {
-                throw new ScraperConfigValidationException(
-                    ScraperConfigValidationErrorCode.InvalidFormat,
-                    "URL",
-                    "URL must be a valid absolute URI.");
-            }
+            
+            var schema = new JsonSchemaBuilder()
+                .Properties(
+                    ("URL", new JsonSchemaBuilder()
+                                .Type(SchemaValueType.String)
+                                .Format(Formats.Uri)));
+            schema.Evaluate(root);
         }
         internal static void ValidateSiteName(JsonElement root) {
             var siteNameElement = root.GetProperty("SITE_NAME");
