@@ -12,7 +12,7 @@ namespace matome_phase1.Tests.ScraperConfigValidatorUnitTest {
             new object[] { "5ch", @"TestFiles/5ch_ScraperConfig.json", @"TestFiles/5ch_DocParseItems_Expect.json", @"log/5ch_DocParseItems_Actual.json", @"TestFiles/targetHtml.html" }
         };
         [Fact]
-        public void ValidateFormatTest() {
+        public void ValidateTest() {
             //Arrange
             string json = """
                 [
@@ -25,7 +25,7 @@ namespace matome_phase1.Tests.ScraperConfigValidatorUnitTest {
             var root = doc.RootElement;
             try {
                 //Act
-                ScraperConfigValidator.ValidateFormat(root);
+                ScraperConfigValidator.Validate(doc);
 
             } catch (Exception ex) {
                 //Assert
