@@ -14,13 +14,13 @@ using Serilog;
 namespace matome_phase1.Tests.ScraperServiceUnitTest {
     public class PlaywrightServcieUnitTest {
         public static IEnumerable<object[]> TestCases => new[] {
-            new object[] { "5ch", @"TestFiles/5ch_ScraperConfig.json", @"TestFiles/5ch_DocParseItems_Expect.json", @"log/5ch_DocParseItems_Actual.json", @"TestFiles/targetHtml.html" }
+            new object[] { "5ch", @"TestFiles/5ch_ScraperConfig.json", @"TestFiles/5ch_DocParseItems_Expect.json", @"TestFiles/targetHtml.html" }
         };
         string projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
 
         [Theory]
         [MemberData(nameof(TestCases))]
-        public void DocParseItemsTest(string target, string configPath, string expectPath, string actualPath, string targetHtml) {
+        public void DocParseItemsTest(string target, string configPath, string expectPath, string targetHtml) {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(projectRoot)
                 .AddJsonFile("appsettings.json")
@@ -49,21 +49,10 @@ namespace matome_phase1.Tests.ScraperServiceUnitTest {
             //expectedの作成
             string expect = File.ReadAllText(Path.Combine(projectRoot, expectPath));
             var expectList = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(expect);
-            
 
             //Act
             // actualの作成
             var Items = scraperService.DocParseItems(scraperConfig, html);
-            var op = new System.Text.Json.JsonSerializerOptions {
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                WriteIndented = true
-            };
-
-            //actualItemsの書き出し
-            //string json = JsonSerializer.Serialize(Items, op); //Listをjsonにシリアライズ
-            //string outPath = Path.Combine(projectRoot, actualPath);
-            //Directory.CreateDirectory(Path.GetDirectoryName(outPath)!);
-            //File.WriteAllText(outPath, json); //書き出し
 
             //Assert
             Assert.Equal(expectList, Items);

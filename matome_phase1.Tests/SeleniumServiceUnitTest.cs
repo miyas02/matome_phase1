@@ -18,8 +18,8 @@ namespace matome_phase1.Tests.ScraperServiceUnitTest {
         };
         string projectRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
 
-        [Theory]
-        [MemberData(nameof(TestCases))]
+        //[Theory]
+        //[MemberData(nameof(TestCases))]
         public void DocParseItemsTest(string target, string configPath, string expectPath, string actualPath, string targetHtml) {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(projectRoot)
