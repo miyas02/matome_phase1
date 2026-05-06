@@ -32,20 +32,6 @@ namespace matome_phase1.Core.scraper {
                     ValidateValues(extract, "TYPE");
                     break;
             }
-            //root.TryGetProperty("EXTRACT", out var extract);
-            //foreach (var extractProperty in extract.EnumerateObject()) {
-            //    var childElement = extractProperty.Value;
-            //    var isFieldsPresent = childElement.TryGetProperty("FIELDS", out var fieldsElement);
-            //    if (isFieldsPresent) {
-            //        ValidateValues(childElement, "CONTEXT");
-            //        ValidateValues(childElement, "ITEM");
-            //        ValidateSchemaExtractFields(fieldsElement);
-            //        foreach (var fieldProperty in fieldsElement.EnumerateObject()) {
-            //            ValidateValues(fieldProperty.Value, "NODE");
-            //        }
-            //        continue;
-            //    }
-            //    ValidateValues(childElement, "NODE");
         }
 
         internal static void ValidateValues(JsonElement element, string target) {
@@ -75,9 +61,11 @@ namespace matome_phase1.Core.scraper {
                 throw new ScraperConfigValidationException(
                     ScraperConfigValidationErrorCode.InvalidFormat,
                     result.EvaluationPath.ToString(),
-                    string.Join(
-                        Environment.NewLine,
-                        result.Errors.Select(x => x.ToString())) ?? "ScraperConfig json does not match the expected schema.");
+                    result.Errors is null
+                        ? "ScraperConfig json does not match the expected schema."
+                        : string.Join(
+                            Environment.NewLine,
+                            result.Errors.Select(x => x.ToString())));
             }
         }
         internal static void ValidateSchemaExtract(JsonElement root,out ScraperConfigType type) {
@@ -132,9 +120,11 @@ namespace matome_phase1.Core.scraper {
                 throw new ScraperConfigValidationException(
                     ScraperConfigValidationErrorCode.InvalidFormat,
                     result.EvaluationPath.ToString(),
-                    string.Join(
-                        Environment.NewLine,
-                        result.Errors.Select(x => x.ToString())) ?? "ScraperConfig EXTRACT child must be a json object");
+                    result.Errors is null
+                        ? "ScraperConfig EXTRACT child must be a json object"
+                        : string.Join(
+                            Environment.NewLine,
+                            result.Errors.Select(x => x.ToString())));
             }
         }
     }

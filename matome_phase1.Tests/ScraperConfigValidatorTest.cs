@@ -26,7 +26,13 @@ namespace matome_phase1.Tests.ScraperConfigValidatorUnitTest {
         static string E10 = @$"{projectRoot}/TestFiles/ScraperConfigValidationTestFiles/E10_ValidationExtractFields_InvalidTypeXPath.json";
         static string E11 = @$"{projectRoot}/TestFiles/ScraperConfigValidationTestFiles/E11_ValidationExtractFields_MissingNode.json";
         static string E12 = @$"{projectRoot}/TestFiles/ScraperConfigValidationTestFiles/E12_ValidationExtractFields_MissingType.json";
+        static string R1 = @$"{projectRoot}/TestFiles/ScraperConfigValidationTestFiles/R1_ValidationRoot_MissingExtract.json";
+        static string R2 = @$"{projectRoot}/TestFiles/ScraperConfigValidationTestFiles/R2_ValidationRoot_MissingUrl.json";
+        static string R3 = @$"{projectRoot}/TestFiles/ScraperConfigValidationTestFiles/R3_ValidationRoot_RootArray.json";
         public static TheoryData<string, ScraperConfigValidationErrorCode> TestCases => new (){
+            {R1, ScraperConfigValidationErrorCode.InvalidFormat},
+            {R2, ScraperConfigValidationErrorCode.InvalidFormat},
+            {R3, ScraperConfigValidationErrorCode.InvalidFormat},
             {E1, ScraperConfigValidationErrorCode.InvalidFormat},
             {E2, ScraperConfigValidationErrorCode.InvalidFormat},
             {E3, ScraperConfigValidationErrorCode.InvalidFormat},
@@ -38,7 +44,7 @@ namespace matome_phase1.Tests.ScraperConfigValidatorUnitTest {
             {E9, ScraperConfigValidationErrorCode.InvalidFormat},
             {E10, ScraperConfigValidationErrorCode.InvalidFormat},
             {E11, ScraperConfigValidationErrorCode.InvalidFormat},
-            {E12, ScraperConfigValidationErrorCode.InvalidFormat}
+            {E12, ScraperConfigValidationErrorCode.InvalidFormat},
         };
         
         [Theory]
@@ -56,18 +62,17 @@ namespace matome_phase1.Tests.ScraperConfigValidatorUnitTest {
 
             var inputFile = File.ReadAllText(inputJson);
             var inputDocument = JsonDocument.Parse(inputFile);
-            try {
-                //Act
-                Log.Information($"Validate実行：{inputJson}");
-                ScraperConfigValidator.Validate(inputDocument);
-            } catch (ScraperConfigValidationException ex) {
-                //Assert
-                Log.Information(
-                    "ScraperConfig validation result. Expected={Expected}, Actual={Actual}",
-                    expectedErrorCode,
-                    ex.ErrorCode);
-                Assert.Equal(ex.ErrorCode, expectedErrorCode);
-            }
+            //Act
+            Log.Information($"Validate実行：{inputJson}");
+            var ex = Assert.Throws<ScraperConfigValidationException>(
+                () => ScraperConfigValidator.Validate(inputDocument));
+
+            //Assert
+            Log.Information(
+                "ScraperConfig validation result. Expected={Expected}, Actual={Actual}",
+                expectedErrorCode,
+                ex.ErrorCode);
+            Assert.Equal(expectedErrorCode, ex.ErrorCode);
             Log.CloseAndFlush();
         }
     }
